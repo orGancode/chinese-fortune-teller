@@ -504,30 +504,6 @@ export function CalendarPage() {
           </Card.Body>
         </Card>
 
-        {/* Gregorian Date Display */}
-        <Card style={{ marginBottom: 16, borderLeft: "4px solid #C41E3A" }}>
-          <div className="p-4 pb-2">
-            <h3 className="flex items-center gap-2 text-lg font-medium">
-              <Sun className="w-5 h-5 text-[#C41E3A]" />
-              公历日期
-            </h3>
-          </div>
-          <Card.Body className="px-4 pb-4">
-            <div className="space-y-3">
-              <div className="text-2xl font-bold text-gray-800">
-                {formatGregorianDate(selectedDate)}
-              </div>
-              <div className="flex items-center gap-4 text-sm text-gray-600">
-                <span className="flex items-center gap-1">
-                  <Clock className="w-4 h-4" />
-                  {weekday}
-                </span>
-                <span>第 {weekNumber} 周</span>
-              </div>
-            </div>
-          </Card.Body>
-        </Card>
-
         {/* Lunar Date Display */}
         <Card style={{ marginBottom: 16, borderLeft: "4px solid #DAA520" }}>
           <div className="p-4 pb-2">

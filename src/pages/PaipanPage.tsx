@@ -11,23 +11,23 @@ import {
   Picker,
 } from "react-vant";
 import { LOCATION_DATA, getCityList } from "../data/locations";
-import { Loader2, Calendar, Clock, MapPin, User } from "lucide-react";
+import { Loader2, Calendar, Clock, MapPin, User, Sparkles, ArrowRight } from "lucide-react";
+import { Logo } from "../components/Logo";
 
-// Traditional Chinese Color Palette
 const COLORS = {
-  primary: "#8B4513",        // Saddle Brown - wood/paper texture
-  primaryLight: "#A0522D",   // Sienna
-  accent: "#C41E3A",         // Chinese Red
-  accentLight: "#D4626A",    // Light Chinese Red
-  gold: "#DAA520",           // Goldenrod
-  goldLight: "#F4D03F",      // Light Gold
-  background: "#FAF8F5",     // Warm rice paper
-  cardBg: "#FFFEF9",         // Off-white card
-  cardBorder: "#E8DFD0",     // Warm border
-  text: "#2C1810",           // Dark brown
-  textMuted: "#6B5344",      // Muted brown
-  inputBg: "#FDFBF7",        // Input background
-  shadow: "rgba(139, 69, 19, 0.12)", // Warm shadow
+  primary: "#C41E3A",
+  primaryLight: "#E85A71",
+  accent: "#C41E3A",
+  accentLight: "#E85A71",
+  gold: "#D4AF37",
+  goldLight: "#F4D03F",
+  background: "var(--color-bg)",
+  cardBg: "var(--color-card)",
+  cardBorder: "var(--color-border)",
+  text: "var(--color-text)",
+  textMuted: "var(--color-text-muted)",
+  inputBg: "var(--color-bg)",
+  shadow: "var(--color-shadow)",
 };
 
 export function PaipanPage() {
@@ -62,7 +62,6 @@ export function PaipanPage() {
     try {
       await calculateBazi(input);
       
-      // Add to history after calculation
       setTimeout(() => {
         const result = useBaziStore.getState().currentBazi;
         if (result) {
@@ -70,14 +69,12 @@ export function PaipanPage() {
         }
       }, 100);
       
-      // Navigate to result page
       navigate("/result");
     } catch (err) {
       console.error("Calculation failed:", err);
     }
   };
 
-  // Format date for display
   const formatDateDisplay = (dateStr: string) => {
     if (!dateStr) return "请选择出生日期";
     const date = new Date(dateStr);
@@ -88,7 +85,6 @@ export function PaipanPage() {
     });
   };
 
-  // Format time for display
   const formatTimeDisplay = (timeStr: string) => {
     if (!timeStr) return "请选择出生时间";
     return timeStr;
@@ -96,64 +92,71 @@ export function PaipanPage() {
 
   return (
     <div 
-      className="flex flex-col h-full min-h-screen" 
+      className="flex flex-col h-full min-h-screen"
       style={{ 
         backgroundColor: COLORS.background,
-        backgroundImage: `linear-gradient(to bottom, ${COLORS.background} 0%, #F5F0E8 100%)`
       }}
     >
       <div 
-        className="px-4 pt-6 pb-4 text-center"
+        className="px-4 pt-6 pb-6 text-center relative overflow-hidden"
         style={{
-          background: `linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.primaryLight} 100%)`,
-          borderBottom: `3px solid ${COLORS.gold}`,
-          boxShadow: `0 2px 12px ${COLORS.shadow}`,
+          background: 'linear-gradient(135deg, var(--color-accent) 0%, #8B0000 100%)',
         }}
       >
-        <h1 className="text-2xl font-bold text-white tracking-wider" style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.3)" }}>
-          八字排盘
-        </h1>
-        <p className="text-sm mt-1" style={{ color: "#F5DEB3" }}>
-          传承千年命理智慧 · 洞悉人生运势
-        </p>
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-4 right-8 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse-soft" />
+          <div className="absolute bottom-0 left-4 w-24 h-24 bg-[var(--color-gold)] rounded-full blur-2xl animate-float" />
+        </div>
+        
+        <div className="relative animate-fade-in">
+          <Logo size="lg" showSlogan={false} />
+          <h1 className="text-2xl font-bold text-white mt-3 tracking-wider" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.2)" }}>
+            八字排盘
+          </h1>
+          <p className="text-sm mt-1.5 text-white/80">
+            传承千年命理智慧 · 洞悉人生运势
+          </p>
+        </div>
       </div>
 
-      <main className="flex-1 p-4 pb-6 overflow-y-auto">
-        {/* Input Form */}
+      <main className="flex-1 p-4 pb-6 overflow-y-auto -mt-2 relative z-10">
         <Card 
           style={{ 
             border: `1px solid ${COLORS.cardBorder}`,
-            boxShadow: `0 4px 16px ${COLORS.shadow}`,
+            boxShadow: '0 8px 32px var(--color-shadow)',
             backgroundColor: COLORS.cardBg,
-            borderRadius: "16px",
-            marginBottom: 12,
+            borderRadius: "20px",
+            marginBottom: 16,
             overflow: "hidden",
           }}
+          className="animate-slide-up stagger-1"
         >
           <div 
-            className="text-center py-4"
+            className="text-center py-5 relative overflow-hidden"
             style={{ 
-              background: `linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.primaryLight} 100%)`,
-              borderBottom: `2px solid ${COLORS.gold}`,
+              background: 'linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%)',
             }}
           >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent shimmer" />
+            <Sparkles className="mx-auto mb-2 text-white/80 animate-pulse-soft" size={24} />
             <h2 className="text-xl font-bold text-white tracking-wide">
               出生信息
             </h2>
-            <p className="text-sm mt-1" style={{ color: "#F5DEB3" }}>
+            <p className="text-sm mt-1 text-white/70">
               请准确填写您的出生信息
             </p>
           </div>
           
-          <Card.Body className="p-4">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Date Picker */}
-              <div className="space-y-1.5">
+          <Card.Body className="p-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-1.5 animate-slide-up stagger-2">
                 <label 
-                  className="text-sm font-semibold flex items-center gap-2" 
+                  className="text-sm font-semibold flex items-center gap-2.5" 
                   style={{ color: COLORS.text }}
                 >
-                  <Calendar size={16} style={{ color: COLORS.accent }} />
+                  <div className="p-1.5 rounded-lg bg-[var(--color-accent)]/10">
+                    <Calendar size={16} style={{ color: COLORS.accent }} />
+                  </div>
                   出生日期
                 </label>
                 <Field
@@ -162,11 +165,14 @@ export function PaipanPage() {
                   labelWidth={150}
                   onClick={() => setShowDatePicker(true)}
                   style={{ 
-                    borderRadius: "10px",
+                    borderRadius: "12px",
                     border: `1px solid ${birthDate ? COLORS.accent : COLORS.cardBorder}`,
                     backgroundColor: birthDate ? "rgba(196, 30, 58, 0.04)" : COLORS.inputBg,
                     fontSize: "14px",
+                    padding: "12px 16px",
+                    transition: 'all 0.3s ease',
                   }}
+                  className="hover:border-[var(--color-accent)] transition-colors"
                 />
                 <DatetimePicker
                   popup={{
@@ -187,13 +193,14 @@ export function PaipanPage() {
                 />
               </div>
 
-              {/* Time Picker */}
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 animate-slide-up stagger-3">
                 <label 
-                  className="text-sm font-semibold flex items-center gap-2" 
+                  className="text-sm font-semibold flex items-center gap-2.5" 
                   style={{ color: COLORS.text }}
                 >
-                  <Clock size={16} style={{ color: COLORS.accent }} />
+                  <div className="p-1.5 rounded-lg bg-[var(--color-accent)]/10">
+                    <Clock size={16} style={{ color: COLORS.accent }} />
+                  </div>
                   出生时间
                 </label>
                 <Field
@@ -202,10 +209,11 @@ export function PaipanPage() {
                   label={formatTimeDisplay(birthTime)}
                   onClick={() => setShowTimePicker(true)}
                   style={{ 
-                    borderRadius: "10px",
+                    borderRadius: "12px",
                     border: `1px solid ${birthTime ? COLORS.accent : COLORS.cardBorder}`,
                     backgroundColor: birthTime ? "rgba(196, 30, 58, 0.04)" : COLORS.inputBg,
                     fontSize: "14px",
+                    padding: "12px 16px",
                   }}
                 />
                 <DatetimePicker
@@ -224,13 +232,14 @@ export function PaipanPage() {
                 />
               </div>
 
-              {/* Location Select */}
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 animate-slide-up stagger-4">
                 <label 
-                  className="text-sm font-semibold flex items-center gap-2" 
+                  className="text-sm font-semibold flex items-center gap-2.5" 
                   style={{ color: COLORS.text }}
                 >
-                  <MapPin size={16} style={{ color: COLORS.accent }} />
+                  <div className="p-1.5 rounded-lg bg-[var(--color-accent)]/10">
+                    <MapPin size={16} style={{ color: COLORS.accent }} />
+                  </div>
                   出生地点
                 </label>
                 <Field
@@ -239,10 +248,11 @@ export function PaipanPage() {
                   label={location || "请选择出生城市"}
                   onClick={() => setShowLocationPicker(true)}
                   style={{ 
-                    borderRadius: "10px",
+                    borderRadius: "12px",
                     border: `1px solid ${location ? COLORS.accent : COLORS.cardBorder}`,
                     backgroundColor: location ? "rgba(196, 30, 58, 0.04)" : COLORS.inputBg,
                     fontSize: "14px",
+                    padding: "12px 16px",
                   }}
                 />
                 <Picker
@@ -258,44 +268,64 @@ export function PaipanPage() {
                   columns={[pickerOptions]}
                   defaultValue={location ? [location] : undefined}
                 />
-                <p className="text-xs" style={{ color: COLORS.textMuted }}>
+                <p className="text-xs pl-1" style={{ color: COLORS.textMuted }}>
                   用于真太阳时校正，确保时辰准确
                 </p>
               </div>
 
-              {/* Gender Radio */}
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 animate-slide-up stagger-4">
                 <label 
-                  className="text-sm font-semibold flex items-center gap-2" 
+                  className="text-sm font-semibold flex items-center gap-2.5" 
                   style={{ color: COLORS.text }}
                 >
-                  <User size={16} style={{ color: COLORS.accent }} />
+                  <div className="p-1.5 rounded-lg bg-[var(--color-accent)]/10">
+                    <User size={16} style={{ color: COLORS.accent }} />
+                  </div>
                   性别
                 </label>
                 <Radio.Group
                   value={gender}
                   onChange={(val) => setGender(val as 0 | 1)}
                   direction="horizontal"
+                  className="flex gap-6"
                 >
-                  <Radio name="1" value={0}>男</Radio>
-                  <Radio name="2" value={1}>女</Radio>
+                  <Radio 
+                    name={1}
+                    style={{ 
+                      '--radio-size': '20px',
+                      '--radio-checked-color': COLORS.accent,
+                    } as React.CSSProperties}
+                  >
+                    <span className="ml-2 font-medium">男</span>
+                  </Radio>
+                  <Radio 
+                    name={0}
+                    style={{ 
+                      '--radio-size': '20px',
+                      '--radio-checked-color': COLORS.accent,
+                    } as React.CSSProperties}
+                  >
+                    <span className="ml-2 font-medium">女</span>
+                  </Radio>
                 </Radio.Group>
               </div>
 
               <Button
                 nativeType="submit"
-                className="w-full mt-2"
+                className="w-full mt-4"
                 size="large"
+                icon={<ArrowRight className="mr-2 h-5 w-5" />}
                 loading={isLoading}
                 disabled={isLoading || !birthDate || !birthTime || !location}
                 style={{
                   backgroundColor: COLORS.accent,
                   border: `2px solid ${COLORS.accent}`,
-                  borderRadius: "10px",
-                  height: "48px",
+                  borderRadius: "14px",
+                  height: "52px",
                   fontSize: "16px",
                   fontWeight: 600,
-                  boxShadow: `0 4px 12px rgba(196, 30, 58, 0.35)`,
+                  color: 'white',
+                  boxShadow: `0 6px 20px rgba(196, 30, 58, 0.35)`,
                   letterSpacing: "0.05em",
                 }}
               >
@@ -305,13 +335,13 @@ export function PaipanPage() {
                     计算中...
                   </>
                 ) : (
-                  "开始排盘"
+                    "开始排盘"
                 )}
               </Button>
 
               {error && (
                 <div 
-                  className="p-3 rounded-lg text-sm text-center"
+                  className="p-3 rounded-lg text-sm text-center animate-fade-in"
                   style={{ 
                     backgroundColor: "rgba(196, 30, 58, 0.1)",
                     color: COLORS.accent,
@@ -325,8 +355,7 @@ export function PaipanPage() {
           </Card.Body>
         </Card>
 
-        {/* Decorative footer */}
-        <div className="text-center mt-6 text-xs" style={{ color: COLORS.textMuted }}>
+        <div className="text-center mt-6 text-xs animate-fade-in" style={{ color: COLORS.textMuted }}>
           <p>八字命理 · 传统文化 · 仅供参考</p>
         </div>
       </main>

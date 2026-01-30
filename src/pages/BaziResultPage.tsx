@@ -1,14 +1,28 @@
-import { Card, Button } from "react-vant";
+import { Card, Button } from "@/components/ui";
 import { useBaziStore } from "../store/baziStore";
 import { baziCalculator } from "../utils/baziCalculator";
 import {
   KNOWLEDGE_BASE,
   getShishen,
   getGeju,
+  getNayin,
 } from "../data/knowledgeBase";
+import {
+  TIANGAN_DETAIL,
+  DIZHI_DETAIL,
+  NAYIN_DETAIL,
+  SHISHEN_DETAIL,
+  GEJU_DETAIL,
+  DAYMASTER_DETAIL,
+  CHANGSHENG,
+  SHENSHA,
+  getChangShengStatus,
+  getShenShaList,
+  analyzeXiYongShen,
+} from "../data/knowledgeBaseExtended";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Share2, RotateCcw } from "lucide-react";
-import { Header } from "@/components/Header";
+import { ArrowLeft, Share2, RotateCcw, Star, Sparkles, Crown, Leaf, Droplets, Flame, Mountain } from "lucide-react";
+import { Header } from "../components/Header";
 
 // 传统中式配色
 const COLORS = {
@@ -22,6 +36,29 @@ const COLORS = {
   text: "#2C1810",
   textMuted: "#6B4423",
   border: "#D4C5B5",
+  wood: "#4CAF50",
+  fire: "#F44336",
+  earth: "#8B4513",
+  metal: "#FFD700",
+  water: "#2196F3",
+};
+
+// 五行对应的颜色
+const WUXING_COLORS: Record<string, string> = {
+  木: COLORS.wood,
+  火: COLORS.fire,
+  土: COLORS.earth,
+  金: COLORS.metal,
+  水: COLORS.water,
+};
+
+// 五行对应的图标
+const WUXING_ICONS: Record<string, React.ReactNode> = {
+  木: <Leaf size={20} />,
+  火: <Flame size={20} />,
+  土: <Mountain size={20} />,
+  金: <Crown size={20} />,
+  水: <Droplets size={20} />,
 };
 
 export function BaziResultPage() {
@@ -53,13 +90,23 @@ export function BaziResultPage() {
   };
 
   const dayMaster = currentBazi.day.charAt(0);
+  const dayMasterDetail = DAYMASTER_DETAIL[dayMaster];
   const wuxingCount = baziCalculator.calculateWuxing(currentBazi);
   const dayMasterInfo = KNOWLEDGE_BASE.DAY_MASTER[dayMaster];
   const geju = getGeju(currentBazi);
+  const gejuDetail = GEJU_DETAIL[geju];
   const gejuInfo = KNOWLEDGE_BASE.GEJU[geju];
   const daYun = baziCalculator.calculateDaYun(currentBazi, 1);
   const currentYear = new Date().getFullYear();
   const liuNian = baziCalculator.calculateLiuNian(currentBazi, currentYear - 2, 7);
+  
+  // 获取新的分析数据
+  const shenShaList = getShenShaList(currentBazi);
+  const xiYongShen = analyzeXiYongShen(currentBazi);
+
+  // 获取四柱纳音
+  const pillars = ['year', 'month', 'day', 'hour'] as const;
+  const pillarNames = { year: '年柱', month: '月柱', day: '日柱', hour: '时柱' };
 
   return (
     <div className="flex flex-col h-full" style={{ backgroundColor: COLORS.background }}>
@@ -162,8 +209,8 @@ export function BaziResultPage() {
                 <tbody>
                   <tr style={{ borderBottom: `1px solid ${COLORS.border}` }}>
                     <td className="p-3 font-medium" style={{ color: COLORS.textMuted, backgroundColor: "#FAFAF8" }}>天干</td>
-                    {['year', 'month', 'day', 'hour'].map((pillar) => {
-                      const ganZhi = currentBazi[pillar as keyof typeof currentBazi] as string;
+                    {pillars.map((pillar) => {
+                      const ganZhi = currentBazi[pillar];
                       const gan = ganZhi.charAt(0);
                       const isDayMaster = pillar === 'day';
                       return (
@@ -182,8 +229,8 @@ export function BaziResultPage() {
                   </tr>
                   <tr>
                     <td className="p-3 font-medium" style={{ color: COLORS.textMuted, backgroundColor: "#FAFAF8" }}>地支</td>
-                    {['year', 'month', 'day', 'hour'].map((pillar) => {
-                      const ganZhi = currentBazi[pillar as keyof typeof currentBazi] as string;
+                    {pillars.map((pillar) => {
+                      const ganZhi = currentBazi[pillar];
                       const zhi = ganZhi.charAt(1);
                       return (
                         <td 
@@ -242,6 +289,78 @@ export function BaziResultPage() {
           </Card.Body>
         </Card>
 
+        {/* 日主详细特性 */}
+        <Card 
+          style={{ 
+            marginBottom: 12,
+            border: `1px solid ${COLORS.border}`,
+            boxShadow: "0 2px 12px rgba(139, 69, 19, 0.08)",
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ 
+            backgroundColor: "#E65100",
+            padding: "16px"
+          }}>
+            <h3 style={{ color: "white", fontSize: "18px", fontWeight: 600 }}>
+              日主详细特性
+            </h3>
+          </div>
+          <Card.Body className="p-4">
+            <div className="space-y-4">
+              <p className="text-sm leading-relaxed" style={{ color: COLORS.textMuted }}>
+                {dayMasterDetail?.desc}
+              </p>
+              
+              {dayMasterDetail?.characteristics && (
+                <div>
+                  <h4 className="text-sm font-medium mb-2" style={{ color: COLORS.text }}>性格特点</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {dayMasterDetail.characteristics.map((char, index) => (
+                      <span 
+                        key={index}
+                        className="px-2 py-1 rounded text-xs"
+                        style={{ 
+                          backgroundColor: `${WUXING_COLORS[dayMasterDetail.element]}20`,
+                          color: WUXING_COLORS[dayMasterDetail.element]
+                        }}
+                      >
+                        {char}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {dayMasterDetail?.suitableCareers && (
+                <div>
+                  <h4 className="text-sm font-medium mb-2" style={{ color: COLORS.text }}>适合职业</h4>
+                  <p className="text-xs" style={{ color: COLORS.textMuted }}>
+                    {dayMasterDetail.suitableCareers.join('、')}
+                  </p>
+                </div>
+              )}
+
+              {dayMasterDetail?.favorableElements && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <h4 className="text-sm font-medium mb-1" style={{ color: COLORS.text }}>喜用五行</h4>
+                    <p className="text-xs" style={{ color: COLORS.wood }}>
+                      {dayMasterDetail.favorableElements.join('、')}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium mb-1" style={{ color: COLORS.text }}>忌讳五行</h4>
+                    <p className="text-xs" style={{ color: COLORS.accent }}>
+                      {dayMasterDetail.unfavorableElements.join('、')}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </Card.Body>
+        </Card>
+
         {/* 五行分析 */}
         <Card 
           style={{ 
@@ -261,26 +380,215 @@ export function BaziResultPage() {
           </div>
           <Card.Body className="p-4">
             <div className="flex justify-around py-4">
-              {Object.entries(wuxingCount).map(([element, count]) => {
-                const colors: Record<string, string> = {
-                  木: "#4CAF50",
-                  火: "#F44336",
-                  土: "#8B4513",
-                  金: "#FFD700",
-                  水: "#2196F3",
-                };
+              {Object.entries(wuxingCount).map(([element, count]) => (
+                <div key={element} className="text-center">
+                  <div 
+                    className="w-12 h-12 rounded-full flex items-center justify-center mb-2"
+                    style={{ 
+                      backgroundColor: WUXING_COLORS[element],
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.15)"
+                    }}
+                  >
+                    <span className="text-white font-bold text-lg">{element}</span>
+                  </div>
+                  <span className="text-sm font-medium" style={{ color: COLORS.text }}>{count}个</span>
+                </div>
+              ))}
+            </div>
+          </Card.Body>
+        </Card>
+
+        {/* 纳音分析 */}
+        <Card 
+          style={{ 
+            marginBottom: 12,
+            border: `1px solid ${COLORS.border}`,
+            boxShadow: "0 2px 12px rgba(139, 69, 19, 0.08)",
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ 
+            backgroundColor: "#6A4C93",
+            padding: "16px"
+          }}>
+            <h3 style={{ color: "white", fontSize: "18px", fontWeight: 600 }}>
+              纳音五行
+            </h3>
+          </div>
+          <Card.Body className="p-4">
+            <div className="space-y-3">
+              {pillars.map((pillar) => {
+                const ganZhi = currentBazi[pillar];
+                const nayin = getNayin(ganZhi);
+                const nayinDetail = NAYIN_DETAIL[nayin];
                 return (
-                  <div key={element} className="text-center">
+                  <div 
+                    key={pillar}
+                    className="p-3 rounded-lg"
+                    style={{ backgroundColor: "#F5F0E8" }}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium" style={{ color: COLORS.text }}>
+                        {pillarNames[pillar]}（{ganZhi}）
+                      </span>
+                      <span 
+                        className="px-2 py-1 rounded text-xs font-medium"
+                        style={{ 
+                          backgroundColor: WUXING_COLORS[nayinDetail?.element || '金'],
+                          color: 'white'
+                        }}
+                      >
+                        {nayin}
+                      </span>
+                    </div>
+                    {nayinDetail && (
+                      <>
+                        <p className="text-xs mb-2" style={{ color: COLORS.textMuted }}>
+                          {nayinDetail.desc}
+                        </p>
+                        <div className="flex flex-wrap gap-1">
+                          {nayinDetail.characteristics.slice(0, 4).map((char, index) => (
+                            <span 
+                              key={index}
+                              className="px-1.5 py-0.5 rounded text-xs"
+                              style={{ 
+                                backgroundColor: `${WUXING_COLORS[nayinDetail.element]}15`,
+                                color: WUXING_COLORS[nayinDetail.element]
+                              }}
+                            >
+                              {char}
+                            </span>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </Card.Body>
+        </Card>
+
+        {/* 神煞分析 */}
+        <Card 
+          style={{ 
+            marginBottom: 12,
+            border: `1px solid ${COLORS.border}`,
+            boxShadow: "0 2px 12px rgba(139, 69, 19, 0.08)",
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ 
+            backgroundColor: "#F57C00",
+            padding: "16px"
+          }}>
+            <h3 style={{ color: "white", fontSize: "18px", fontWeight: 600 }}>
+              神煞分析
+            </h3>
+          </div>
+          <Card.Body className="p-4">
+            {shenShaList.length > 0 ? (
+              <div className="space-y-3">
+                {shenShaList.map((shenShaName) => {
+                  const shenShaInfo = SHENSHA[shenShaName];
+                  return (
                     <div 
-                      className="w-12 h-12 rounded-full flex items-center justify-center mb-2"
+                      key={shenShaName}
+                      className="p-3 rounded-lg"
                       style={{ 
-                        backgroundColor: colors[element],
-                        boxShadow: "0 2px 8px rgba(0,0,0,0.15)"
+                        backgroundColor: shenShaInfo?.type === '吉' ? '#E8F5E9' : 
+                                        shenShaInfo?.type === '凶' ? '#FFEBEE' : '#FFF3E0',
+                        borderLeft: `3px solid ${shenShaInfo?.type === '吉' ? '#4CAF50' : 
+                                                 shenShaInfo?.type === '凶' ? '#F44336' : '#FF9800'}`
                       }}
                     >
-                      <span className="text-white font-bold text-lg">{element}</span>
+                      <div className="flex items-center gap-2 mb-1">
+                        {shenShaInfo?.type === '吉' ? <Star size={16} style={{ color: '#4CAF50' }} /> :
+                         shenShaInfo?.type === '凶' ? <Sparkles size={16} style={{ color: '#F44336' }} /> :
+                         <Crown size={16} style={{ color: '#FF9800' }} />}
+                        <span className="text-sm font-bold" style={{ 
+                          color: shenShaInfo?.type === '吉' ? '#4CAF50' : 
+                                 shenShaInfo?.type === '凶' ? '#F44336' : '#FF9800'
+                        }}>
+                          {shenShaName}
+                          {shenShaInfo?.type === '吉' ? '（吉）' : 
+                           shenShaInfo?.type === '凶' ? '（凶）' : '（中）'}
+                        </span>
+                      </div>
+                      <p className="text-xs" style={{ color: COLORS.textMuted }}>
+                        {shenShaInfo?.desc}
+                      </p>
+                      {shenShaInfo?.effect && (
+                        <p className="text-xs mt-1" style={{ color: COLORS.text }}>
+                          {shenShaInfo.effect}
+                        </p>
+                      )}
                     </div>
-                    <span className="text-sm font-medium" style={{ color: COLORS.text }}>{count}个</span>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="text-center text-sm" style={{ color: COLORS.textMuted }}>
+                本期命局无明显神煞
+              </p>
+            )}
+          </Card.Body>
+        </Card>
+
+        {/* 十二长生状态 */}
+        <Card 
+          style={{ 
+            marginBottom: 12,
+            border: `1px solid ${COLORS.border}`,
+            boxShadow: "0 2px 12px rgba(139, 69, 19, 0.08)",
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ 
+            backgroundColor: "#00796B",
+            padding: "16px"
+          }}>
+            <h3 style={{ color: "white", fontSize: "18px", fontWeight: 600 }}>
+              十二长生状态
+            </h3>
+          </div>
+          <Card.Body className="p-4">
+            <div className="space-y-2">
+              {pillars.map((pillar) => {
+                const ganZhi = currentBazi[pillar];
+                const zhi = ganZhi.charAt(1);
+                const changSheng = getChangShengStatus(dayMaster, zhi);
+                const changShengInfo = CHANGSHENG[changSheng];
+                return (
+                  <div 
+                    key={pillar}
+                    className="flex items-center justify-between py-2 px-3 rounded-lg"
+                    style={{ backgroundColor: "#F5F0E8" }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm font-medium" style={{ color: COLORS.text }}>
+                        {pillarNames[pillar]}
+                      </span>
+                      <span className="text-sm" style={{ color: COLORS.textMuted }}>
+                        {zhi}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span 
+                        className="text-sm font-bold"
+                        style={{ 
+                          color: ['长生', '临官', '帝旺'].includes(changSheng) ? '#4CAF50' :
+                                 ['衰', '病', '死'].includes(changSheng) ? '#F44336' : COLORS.text
+                        }}
+                      >
+                        {changSheng}
+                      </span>
+                      {changShengInfo && (
+                        <p className="text-xs mt-1" style={{ color: COLORS.textMuted }}>
+                          {changShengInfo.meaning}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 );
               })}
@@ -316,9 +624,223 @@ export function BaziResultPage() {
               >
                 {geju}
               </span>
-              <p className="text-sm leading-relaxed" style={{ color: COLORS.textMuted }}>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: COLORS.textMuted }}>
                 {gejuInfo?.detail}
               </p>
+              
+              {gejuDetail && (
+                <div className="text-left space-y-4">
+                  <div>
+                    <h4 className="text-sm font-medium mb-2" style={{ color: COLORS.text }}>格局特点</h4>
+                    <p className="text-xs leading-relaxed" style={{ color: COLORS.textMuted }}>
+                      {gejuDetail.detail}
+                    </p>
+                  </div>
+                  
+                  {gejuDetail.strengths && (
+                    <div>
+                      <h4 className="text-sm font-medium mb-2" style={{ color: '#4CAF50' }}>优势</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {gejuDetail.strengths.map((strength, index) => (
+                          <span 
+                            key={index}
+                            className="px-2 py-1 rounded text-xs"
+                            style={{ 
+                              backgroundColor: '#E8F5E9',
+                              color: '#4CAF50'
+                            }}
+                          >
+                            {strength}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {gejuDetail.weaknesses && (
+                    <div>
+                      <h4 className="text-sm font-medium mb-2" style={{ color: '#F44336' }}>注意</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {gejuDetail.weaknesses.map((weakness, index) => (
+                          <span 
+                            key={index}
+                            className="px-2 py-1 rounded text-xs"
+                            style={{ 
+                              backgroundColor: '#FFEBEE',
+                              color: '#F44336'
+                            }}
+                          >
+                            {weakness}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {gejuDetail.career && (
+                    <div>
+                      <h4 className="text-sm font-medium mb-1" style={{ color: COLORS.text }}>适合职业</h4>
+                      <p className="text-xs" style={{ color: COLORS.textMuted }}>
+                        {gejuDetail.career}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {gejuDetail.famousExamples && (
+                    <div>
+                      <h4 className="text-sm font-medium mb-1" style={{ color: COLORS.text }}>代表人物</h4>
+                      <p className="text-xs" style={{ color: COLORS.textMuted }}>
+                        {gejuDetail.famousExamples.join('、')}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </Card.Body>
+        </Card>
+
+        {/* 喜用神分析 */}
+        <Card 
+          style={{ 
+            marginBottom: 12,
+            border: `1px solid ${COLORS.border}`,
+            boxShadow: "0 2px 12px rgba(139, 69, 19, 0.08)",
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ 
+            backgroundColor: "#1565C0",
+            padding: "16px"
+          }}>
+            <h3 style={{ color: "white", fontSize: "18px", fontWeight: 600 }}>
+              喜用神分析
+            </h3>
+          </div>
+          <Card.Body className="p-4">
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div 
+                  className="p-3 rounded-lg text-center"
+                  style={{ backgroundColor: `${WUXING_COLORS[xiYongShen.xiShen]}15` }}
+                >
+                  <span className="text-xs block mb-1" style={{ color: COLORS.textMuted }}>喜神</span>
+                  <span className="text-xl font-bold" style={{ color: WUXING_COLORS[xiYongShen.xiShen] || COLORS.text }}>
+                    {xiYongShen.xiShen}
+                  </span>
+                  <p className="text-xs mt-1" style={{ color: COLORS.textMuted }}>
+                    {xiYongShen.xiShenDesc}
+                  </p>
+                </div>
+                <div 
+                  className="p-3 rounded-lg text-center"
+                  style={{ backgroundColor: `${WUXING_COLORS[xiYongShen.yongShen]}15` }}
+                >
+                  <span className="text-xs block mb-1" style={{ color: COLORS.textMuted }}>用神</span>
+                  <span className="text-xl font-bold" style={{ color: WUXING_COLORS[xiYongShen.yongShen] || COLORS.text }}>
+                    {xiYongShen.yongShen}
+                  </span>
+                  <p className="text-xs mt-1" style={{ color: COLORS.textMuted }}>
+                    {xiYongShen.yongShenDesc}
+                  </p>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="text-sm font-medium mb-2" style={{ color: COLORS.text }}>分析依据</h4>
+                <p className="text-sm" style={{ color: COLORS.textMuted }}>
+                  {xiYongShen.reason}
+                </p>
+              </div>
+              
+              {xiYongShen.suggestions && (
+                <div>
+                  <h4 className="text-sm font-medium mb-2" style={{ color: COLORS.text }}>生活建议</h4>
+                  <ul className="space-y-1">
+                    {xiYongShen.suggestions.map((suggestion, index) => (
+                      <li 
+                        key={index}
+                        className="text-xs flex items-start gap-2"
+                        style={{ color: COLORS.textMuted }}
+                      >
+                        <span style={{ color: COLORS.gold }}>•</span>
+                        {suggestion}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </Card.Body>
+        </Card>
+
+        {/* 十神详解 */}
+        <Card 
+          style={{ 
+            marginBottom: 12,
+            border: `1px solid ${COLORS.border}`,
+            boxShadow: "0 2px 12px rgba(139, 69, 19, 0.08)",
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ 
+            backgroundColor: "#C62828",
+            padding: "16px"
+          }}>
+            <h3 style={{ color: "white", fontSize: "18px", fontWeight: 600 }}>
+              十神详解
+            </h3>
+          </div>
+          <Card.Body className="p-4">
+            <div className="space-y-4">
+              {['year', 'month', 'hour'].map((pillar) => {
+                const ganZhi = currentBazi[pillar as keyof typeof currentBazi];
+                const gan = ganZhi.charAt(0);
+                const shishen = getShishen(dayMaster, gan);
+                const shishenDetail = SHISHEN_DETAIL[shishen];
+                
+                if (!shishenDetail) return null;
+                
+                return (
+                  <div 
+                    key={pillar}
+                    className="p-3 rounded-lg"
+                    style={{ backgroundColor: "#F5F0E8" }}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium" style={{ color: COLORS.text }}>
+                        {pillarNames[pillar as keyof typeof pillarNames]}（{gan}）
+                      </span>
+                      <span 
+                        className="px-2 py-1 rounded text-xs font-medium"
+                        style={{ 
+                          backgroundColor: COLORS.primary,
+                          color: 'white'
+                        }}
+                      >
+                        {shishen}
+                      </span>
+                    </div>
+                    <p className="text-xs mb-2" style={{ color: COLORS.textMuted }}>
+                      {shishenDetail.detail}
+                    </p>
+                    <div className="flex flex-wrap gap-1">
+                      {shishenDetail.strengths?.slice(0, 3).map((strength, index) => (
+                        <span 
+                          key={index}
+                          className="px-1.5 py-0.5 rounded text-xs"
+                          style={{ 
+                            backgroundColor: '#E8F5E9',
+                            color: '#4CAF50'
+                          }}
+                        >
+                          {strength}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </Card.Body>
         </Card>

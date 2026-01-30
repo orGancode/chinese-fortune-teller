@@ -21,7 +21,6 @@ export function Header({
         </div>
       }
       fixed={false}
-      leftArrow={showBack}
       style={{ 
         background: '#8B4513',
         color: 'white'

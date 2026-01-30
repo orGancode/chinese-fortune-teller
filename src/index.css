@@ -4,15 +4,15 @@
 
 /* React-Vant 基础样式变量 */
 :root {
-  --rv-primary-color: #e74c3c;
+  --rv-primary-color: #C41E3A;
   --rv-success-color: #07c160;
   --rv-danger-color: #ff4d4f;
   --rv-warning-color: #faad14;
-  --rv-text-color: #323233;
+  --rv-text-color: #1a1a1a;
   --rv-active-color: #f2f3f5;
-  --rv-background-color: #f7f8fa;
-  --rv-background-color-light: #fafafa;
-  --rv-text-link-color: #576b95;
+  --rv-background-color: #fafafa;
+  --rv-background-color-light: #ffffff;
+  --rv-text-link-color: #C41E3A;
   --rv-padding-base: 4px;
   --rv-padding-xs: 8px;
   --rv-padding-sm: 12px;
@@ -23,28 +23,53 @@
   --rv-font-size-sm: 12px;
   --rv-font-size-md: 14px;
   --rv-font-size-lg: 16px;
-  --rv-border-radius-sm: 2px;
-  --rv-border-radius-md: 4px;
-  --rv-border-radius-lg: 8px;
+  --rv-border-radius-sm: 6px;
+  --rv-border-radius-md: 10px;
+  --rv-border-radius-lg: 16px;
   --rv-border-radius-max: 999px;
+
+  --color-accent: #C41E3A;
+  --color-accent-light: #E85A71;
+  --color-gold: #D4AF37;
+  --color-gold-light: #F4D03F;
+  --color-text: #1a1a1a;
+  --color-text-muted: #666666;
+  --color-bg: #FAFAFA;
+  --color-card: #FFFFFF;
+  --color-border: #E8E8E8;
+  --color-shadow: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] {
+  --rv-text-color: #f5f5f5;
+  --rv-background-color: #121212;
+  --rv-background-color-light: #1e1e1e;
+  --rv-text-link-color: #E85A71;
+  --color-text: #f5f5f5;
+  --color-text-muted: #a0a0a0;
+  --color-bg: #121212;
+  --color-card: #1e1e1e;
+  --color-border: #333333;
+  --color-shadow: rgba(0, 0, 0, 0.4);
 }
 
 @layer base {
   * {
     box-sizing: border-box;
   }
-  
+
   html {
     -webkit-text-size-adjust: 100%;
   }
-  
+
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
     -webkit-font-smoothing: antialiased;
-    background-color: var(--rv-background-color);
-    color: var(--rv-text-color);
+    background-color: var(--color-bg);
+    color: var(--color-text);
     margin: 0;
     padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
@@ -63,6 +88,10 @@
   border-radius: 2px;
 }
 
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #444444;
+}
+
 /* Animations */
 @keyframes spin {
   to {
@@ -70,31 +99,203 @@
   }
 }
 
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce-subtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
 .animate-spin {
   animation: spin 1s linear infinite;
 }
 
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.2s ease-out forwards;
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s ease-in-out infinite;
+}
+
+/* Staggered animation delays */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+
 /* React-Vant 样式覆盖 */
 .rv-button--primary {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  background: linear-gradient(135deg, var(--color-accent) 0%, #A01830 100%);
   border: none;
+  box-shadow: 0 4px 12px rgba(196, 30, 58, 0.3);
+  transition: all 0.3s ease;
+}
+
+.rv-button--primary:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(196, 30, 58, 0.3);
 }
 
 .rv-nav-bar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--color-card);
+  color: var(--color-text);
+  box-shadow: 0 1px 3px var(--color-shadow);
 }
 
 .rv-card {
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border-radius: var(--rv-border-radius-lg);
+  box-shadow: 0 4px 20px var(--color-shadow);
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  transition: all 0.3s ease;
+}
+
+.rv-card:hover {
+  box-shadow: 0 8px 30px var(--color-shadow);
+  transform: translateY(-2px);
 }
 
 .rv-tabs__nav {
-  background: white;
+  background: var(--color-card);
+}
+
+.rv-tabbar-item--active {
+  color: var(--color-accent) !important;
+}
+
+.rv-tabbar-item__icon {
+  transition: all 0.3s ease;
+}
+
+.rv-tabbar-item:active {
+  transform: scale(0.95);
+}
+
+/* Page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.3s ease;
+}
+
+.page-exit {
+  opacity: 1;
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.3s ease;
 }
 
 /* Safe area for bottom navigation */
 .pb-safe {
   padding-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+
+/* Glassmorphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] .glass {
+  background: rgba(30, 30, 30, 0.7);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

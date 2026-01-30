@@ -5,6 +5,7 @@ import { BaziResultPage } from "./pages/BaziResultPage";
 import { CalendarPage } from "./pages/CalendarPage";
 import { SolarTermsPage } from "./pages/SolarTermsPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { HistoryPage } from "./pages/HistoryPage";
 
 function Layout() {
   return (
@@ -19,13 +20,16 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* 带底部导航的主路由 */}
         <Route path="/" element={<Layout />}>
           <Route index element={<PaipanPage />} />
-          <Route path="result" element={<BaziResultPage />} />
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="solar-terms" element={<SolarTermsPage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
+        {/* 二级页面（不带底部导航） */}
+        <Route path="result" element={<BaziResultPage />} />
+        <Route path="history" element={<HistoryPage />} />
       </Routes>
     </BrowserRouter>
   );

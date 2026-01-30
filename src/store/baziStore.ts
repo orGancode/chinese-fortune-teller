@@ -7,6 +7,7 @@ interface BaziState {
   isLoading: boolean;
   error: string | null;
   calculateBazi: (input: BaziInput) => void;
+  setCurrentBazi: (result: BaziResult) => void;
   clearBazi: () => void;
 }
 
@@ -23,5 +24,6 @@ export const useBaziStore = create<BaziState>((set) => ({
       set({ error: '计算过程中出现错误', isLoading: false });
     }
   },
+  setCurrentBazi: (result: BaziResult) => set({ currentBazi: result, isLoading: false, error: null }),
   clearBazi: () => set({ currentBazi: null, error: null })
 }));

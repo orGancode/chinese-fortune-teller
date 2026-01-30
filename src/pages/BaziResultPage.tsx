@@ -82,7 +82,7 @@ export function BaziResultPage() {
   }
 
   const handleBack = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   const handleRecalculate = () => {

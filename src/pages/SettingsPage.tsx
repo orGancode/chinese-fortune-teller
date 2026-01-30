@@ -1,12 +1,16 @@
 import { Header } from "../components/Header";
-import { Card, Button, Dialog } from "react-vant";
+import { Card, Button, Dialog, Cell } from "react-vant";
 import { useSettingsStore } from "../store/settingsStore";
-import { Trash2, Github, Info, AlertTriangle, Shield, ExternalLink, Database, Code } from "lucide-react";
+import { useHistoryStore } from "../store/historyStore";
+import { Trash2, Github, Info, AlertTriangle, Shield, ExternalLink, Database, Code, History } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function SettingsPage() {
   const { version, clearAllData } = useSettingsStore();
+  const { history } = useHistoryStore();
   const [dialogVisible, setDialogVisible] = useState(false);
+  const navigate = useNavigate();
 
   const handleClearCache = () => {
     clearAllData();
@@ -17,6 +21,26 @@ export function SettingsPage() {
     <div className="flex flex-col h-full">
       <Header title="设置" subtitle="应用设置" />
       <main className="flex-1 p-4 pb-24 overflow-y-auto">
+        {/* History Management */}
+        <Card style={{ marginBottom: 24 }}>
+          <div className="p-4 pb-2">
+            <h3 className="flex items-center gap-2 font-medium">
+              <History className="w-5 h-5 text-[#C41E3A]" />
+              排盘记录
+            </h3>
+            <p className="text-sm text-gray-500 mt-1">查看八字排盘历史记录</p>
+          </div>
+          <Card.Body className="px-4 pb-4">
+            <Cell
+              title="八字排盘历史"
+              label={`共 ${history.length} 条记录`}
+              onClick={() => navigate("/history")}
+              isLink
+              icon={<History className="w-5 h-5 text-[#C41E3A]" />}
+            />
+          </Card.Body>
+        </Card>
+
         {/* Cache Management */}
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
@@ -45,7 +69,7 @@ export function SettingsPage() {
           visible={dialogVisible}
           title={
             <div className="flex items-center gap-2 justify-center">
-              <AlertTriangle className="w-5 h-5 text-[#C41E3A]" />
+              <AlertTriangle className="w-4 h-4 text-[#C41E3A]" />
               <span>确认清除数据</span>
             </div>
           }

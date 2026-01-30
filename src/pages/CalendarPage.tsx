@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Header } from "../components/Header";
 import { Card, Tag } from "react-vant";
 import lunisolar from "lunisolar";
 import { Calendar, Sparkles, Sun, Moon, Clock, Compass, Star, Shield, Timer } from "lucide-react";
@@ -275,7 +274,6 @@ export function CalendarPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <Header title="万年历" subtitle="公历农历转换查询" />
       <main className="flex-1 p-4 pb-24 overflow-y-auto">
         {/* Monthly Calendar Grid Card */}
         <Card style={{ marginBottom: 24 }}>

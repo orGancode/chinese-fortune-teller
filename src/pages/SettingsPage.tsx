@@ -1,8 +1,7 @@
-import { Header } from "../components/Header";
 import { Card, Button, Dialog, Cell } from "react-vant";
 import { useSettingsStore } from "../store/settingsStore";
 import { useHistoryStore } from "../store/historyStore";
-import { Trash2, Github, Info, AlertTriangle, Shield, ExternalLink, Database, Code, History } from "lucide-react";
+import { Trash2, Info, AlertTriangle, Shield, Database, History } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -19,7 +18,6 @@ export function SettingsPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <Header title="设置" subtitle="应用设置" />
       <main className="flex-1 p-4 pb-24 overflow-y-auto">
         {/* History Management */}
         <Card style={{ marginBottom: 24 }}>

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Header } from "../components/Header";
 import { Card } from "react-vant";
 import { CalendarGrid } from "../components/CalendarGrid";
 import lunisolar from "lunisolar";
@@ -133,7 +132,6 @@ export function SolarTermsPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <Header title="节气" subtitle="二十四节气时间表" />
       <main className="flex-1 p-4 pb-24 overflow-y-auto">
         {/* Calendar Grid */}
         <Card style={{ marginBottom: 24 }}>

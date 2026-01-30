@@ -1,35 +1,46 @@
-import { Home, CalendarDays, Sun, Settings } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Tabbar } from "react-vant";
+import { HomeO, CalendarO, SettingO } from "@react-vant/icons";
+import { Sun } from "lucide-react";
 
 const navItems = [
-  { path: "/", label: "排盘", icon: Home },
-  { path: "/calendar", label: "万年历", icon: CalendarDays },
-  { path: "/solar-terms", label: "节气", icon: Sun },
-  { path: "/settings", label: "设置", icon: Settings },
+  { path: "/", label: "排盘", icon: <HomeO /> },
+  { path: "/calendar", label: "万年历", icon: <CalendarO /> },
+  { path: "/solar-terms", label: "节气", icon: <Sun size={24} /> },
+  { path: "/settings", label: "设置", icon: <SettingO /> },
 ];
 
 export function BottomNav() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const index = navItems.findIndex((item) => 
+      item.path === location.pathname || 
+      (item.path !== "/" && location.pathname.startsWith(item.path))
+    );
+    if (index !== -1) {
+      setActive(index);
+    }
+  }, [location.pathname]);
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
-      <div className="flex justify-around items-center h-16 max-w-lg mx-auto">
-        {navItems.map(({ path, label, icon: Icon }) => (
-          <NavLink
-            key={path}
-            to={path}
-            end={path === "/"}
-            className={({ isActive }) =>
-              `flex flex-col items-center justify-center w-full h-full transition-colors ${
-                isActive
-                  ? "text-[#e74c3c]"
-                  : "text-gray-400 hover:text-gray-600"
-              }`
-            }
-          >
-            <Icon className="w-5 h-5 mb-1" />
-            <span className="text-xs font-medium">{label}</span>
-          </NavLink>
-        ))}
-      </div>
-    </nav>
+    <Tabbar
+      value={active}
+      onChange={(name: string | number) => {
+        const index = Number(name);
+        setActive(index);
+        navigate(navItems[index].path);
+      }}
+      activeColor="#e74c3c"
+      fixed={true}
+      safeAreaInsetBottom={true}
+    >
+      {navItems.map((item) => (
+        <Tabbar.Item key={item.path} icon={item.icon}>{item.label}</Tabbar.Item>
+      ))}
+    </Tabbar>
   );
 }

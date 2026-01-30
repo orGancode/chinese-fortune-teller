@@ -1,23 +1,16 @@
 import { Header } from "../components/Header";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card";
-import { Button } from "../components/ui/button";
+import { Card, Button, Dialog } from "react-vant";
 import { useSettingsStore } from "../store/settingsStore";
 import { Trash2, Github, Info, AlertTriangle, Shield, ExternalLink, Database, Code } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../components/ui/dialog";
+import { useState } from "react";
 
 export function SettingsPage() {
   const { version, clearAllData } = useSettingsStore();
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   const handleClearCache = () => {
     clearAllData();
+    setDialogVisible(false);
   };
 
   return (
@@ -25,109 +18,78 @@ export function SettingsPage() {
       <Header title="设置" subtitle="应用设置" />
       <main className="flex-1 p-4 pb-24 overflow-y-auto">
         {/* Cache Management */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Database className="w-5 h-5 text-[#e74c3c]" />
+        <Card style={{ marginBottom: 24 }}>
+          <div className="p-4 pb-2">
+            <h3 className="flex items-center gap-2 font-medium">
+              <Database className="w-5 h-5 text-[#8B4513]" />
               数据管理
-            </CardTitle>
-            <CardDescription>管理本地存储的数据</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="destructive" className="w-full">
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  清除所有缓存数据
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle className="flex items-center gap-2">
-                    <AlertTriangle className="w-5 h-5 text-red-500" />
-                    确认清除数据
-                  </DialogTitle>
-                  <DialogDescription>
-                    此操作将删除所有本地存储的数据，包括历史记录和应用设置。此操作不可撤销。
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogFooter className="gap-3">
-                  <Button variant="outline">取消</Button>
-                  <Button variant="destructive" onClick={handleClearCache}>
-                    确认清除
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            </h3>
+            <p className="text-sm text-gray-500 mt-1">管理本地存储的数据</p>
+          </div>
+          <Card.Body className="px-4 pb-4">
+            <Button 
+              style={{ width: "100%", backgroundColor: "#ff4d4f", borderColor: "#ff4d4f" }}
+              onClick={() => setDialogVisible(true)}
+              icon={<Trash2 className="w-4 h-4 mr-2" />}
+            >
+              清除所有缓存数据
+            </Button>
             <p className="text-xs text-gray-500 mt-3">
               清除缓存将删除所有历史记录和设置，应用将恢复到初始状态
             </p>
-          </CardContent>
+          </Card.Body>
         </Card>
 
+        {/* Confirmation Dialog */}
+        <Dialog
+          visible={dialogVisible}
+          title={
+            <div className="flex items-center gap-2 justify-center">
+              <AlertTriangle className="w-5 h-5 text-[#C41E3A]" />
+              <span>确认清除数据</span>
+            </div>
+          }
+          message="此操作将删除所有本地存储的数据，包括历史记录和应用设置。此操作不可撤销。"
+          showCancelButton
+          confirmButtonText="确认清除"
+          cancelButtonText="取消"
+          confirmButtonColor="#ff4d4f"
+          onConfirm={handleClearCache}
+          onCancel={() => setDialogVisible(false)}
+          onClose={() => setDialogVisible(false)}
+        />
+
         {/* App Information */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Info className="w-5 h-5 text-blue-500" />
+        <Card style={{ marginBottom: 24 }}>
+          <div className="p-4 pb-2">
+            <h3 className="flex items-center gap-2 font-medium">
+              <Info className="w-5 h-5 text-[#DAA520]" />
               应用信息
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </h3>
+          </div>
+          <Card.Body className="px-4 pb-4">
             <div className="space-y-4">
-              <div className="flex items-center justify-between py-2 border-b border-gray-100">
+              <div className="flex items-center justify-between py-2 border-b border-[#D4C5B5]/50">
                 <span className="text-gray-600">版本号</span>
                 <span className="font-medium text-gray-800">v{version}</span>
               </div>
-              <div className="flex items-center justify-between py-2 border-b border-gray-100">
+              <div className="flex items-center justify-between py-2">
                 <span className="text-gray-600">应用名称</span>
                 <span className="font-medium text-gray-800">八字排盘命理分析</span>
               </div>
-              <div className="flex items-center justify-between py-2">
-                <span className="text-gray-600">技术栈</span>
-                <span className="font-medium text-gray-800">React + TypeScript + Tailwind</span>
-              </div>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Source Code */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Code className="w-5 h-5 text-purple-500" />
-              开源项目
-            </CardTitle>
-            <CardDescription>查看源代码或提交问题</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <a
-              href="https://github.com/yourusername/chinese-fortune-teller"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group"
-            >
-              <div className="flex items-center gap-3">
-                <Github className="w-6 h-6 text-gray-700" />
-                <div>
-                  <div className="font-medium text-gray-800">GitHub 仓库</div>
-                  <div className="text-sm text-gray-500">查看源代码和文档</div>
-                </div>
-              </div>
-              <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-gray-600" />
-            </a>
-          </CardContent>
+          </Card.Body>
         </Card>
 
         {/* Disclaimer */}
-        <Card className="mb-6 border-amber-200 bg-amber-50/50">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-amber-700">
+        <Card style={{ marginBottom: 24 }}>
+          <div className="p-4 pb-2">
+            <h3 className="flex items-center gap-2 font-medium text-amber-700">
               <Shield className="w-5 h-5" />
               免责声明
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </h3>
+          </div>
+          <Card.Body className="px-4 pb-4">
             <div className="text-sm text-gray-600 space-y-3">
               <p>
                 <strong className="text-amber-700">1. 娱乐参考：</strong>
@@ -146,7 +108,7 @@ export function SettingsPage() {
                 本应用所有数据均存储在本地，不会上传至任何服务器，请放心使用。
               </p>
             </div>
-          </CardContent>
+          </Card.Body>
         </Card>
 
         {/* Copyright */}

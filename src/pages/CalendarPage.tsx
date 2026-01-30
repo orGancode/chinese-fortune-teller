@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Header } from "../components/Header";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card";
+import { Card, DatetimePicker, Field } from "react-vant";
 import lunisolar from "lunisolar";
 import { Calendar, Sparkles, Sun, Moon, Clock } from "lucide-react";
 
@@ -111,12 +111,6 @@ export function CalendarPage() {
     setWeekNumber(getWeekNumber(selectedDate));
   }, [selectedDate]);
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const date = new Date(e.target.value);
-    if (!isNaN(date.getTime())) {
-      setSelectedDate(date);
-    }
-  };
 
   // 格式化日期为input需要的格式
   const formatDateForInput = (date: Date): string => {
@@ -131,35 +125,52 @@ export function CalendarPage() {
       <Header title="万年历" subtitle="公历农历转换查询" />
       <main className="flex-1 p-4 pb-24 overflow-y-auto">
         {/* Date Picker Card */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-[#e74c3c]" />
+        <Card style={{ marginBottom: 24 }}>
+          <div className="p-4 pb-2">
+            <h3 className="flex items-center gap-2 text-lg font-medium">
+              <Calendar className="w-5 h-5 text-[#C41E3A]" />
               选择日期
-            </CardTitle>
-            <CardDescription>点击选择要查询的日期</CardDescription>
-          </CardHeader>
-          <CardContent>
+            </h3>
+          </div>
+          <Card.Body className="px-4 pb-4">
             <div className="space-y-2">
-              <input
-                type="date"
-                value={formatDateForInput(selectedDate)}
-                onChange={handleDateChange}
-                className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e74c3c] focus:border-transparent text-lg"
-              />
+              <DatetimePicker
+                popup={{
+                  round: true,
+                }}
+                title='选择年月日'
+                type='date'
+                minDate={new Date(2020, 0, 1)}
+                maxDate={new Date(2025, 10, 1)}
+                value={selectedDate}
+                onChange={setSelectedDate}
+              >
+                {(val: Date, _: any, actions: any) => {
+                  return (
+                    <Field
+                      readOnly
+                      clickable
+                      label='选择年月日'
+                      value={val.toLocaleDateString()}
+                      placeholder='点击选择要查询的日期'
+                      onClick={() => actions.open()}
+                    />
+                  )
+                }}
+              </DatetimePicker>
             </div>
-          </CardContent>
+          </Card.Body>
         </Card>
 
         {/* Gregorian Date Display */}
-        <Card className="mb-4 border-l-4 border-l-[#e74c3c]">
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Sun className="w-5 h-5 text-[#e74c3c]" />
+        <Card style={{ marginBottom: 16, borderLeft: "4px solid #C41E3A" }}>
+          <div className="p-4 pb-2">
+            <h3 className="flex items-center gap-2 text-lg font-medium">
+              <Sun className="w-5 h-5 text-[#C41E3A]" />
               公历日期
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </h3>
+          </div>
+          <Card.Body className="px-4 pb-4">
             <div className="space-y-3">
               <div className="text-2xl font-bold text-gray-800">
                 {formatGregorianDate(selectedDate)}
@@ -172,18 +183,18 @@ export function CalendarPage() {
                 <span>第 {weekNumber} 周</span>
               </div>
             </div>
-          </CardContent>
+          </Card.Body>
         </Card>
 
         {/* Lunar Date Display */}
-        <Card className="mb-4 border-l-4 border-l-amber-500">
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Moon className="w-5 h-5 text-amber-500" />
+        <Card style={{ marginBottom: 16, borderLeft: "4px solid #DAA520" }}>
+          <div className="p-4 pb-2">
+            <h3 className="flex items-center gap-2 text-lg font-medium">
+              <Moon className="w-5 h-5 text-[#DAA520]" />
               农历日期
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </h3>
+          </div>
+          <Card.Body className="px-4 pb-4">
             {lunarInfo && (
               <div className="space-y-3">
                 <div className="text-2xl font-bold text-gray-800">
@@ -192,104 +203,104 @@ export function CalendarPage() {
                 <div className="flex items-center gap-4 text-sm text-gray-600">
                   <span>干支：{yearGanZhi}年</span>
                   {lunarInfo.isLeap && (
-                    <span className="px-2 py-1 bg-amber-100 text-amber-700 rounded-full text-xs">
+                    <span className="px-2 py-1 bg-[#DAA520]/10 text-[#8B4513] rounded-full text-xs">
                       闰月
                     </span>
                   )}
                 </div>
               </div>
             )}
-          </CardContent>
+          </Card.Body>
         </Card>
 
         {/* Additional Info Grid */}
         <div className="grid grid-cols-2 gap-4 mb-4">
           {/* Zodiac */}
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#e74c3c]" />
+            <div className="p-4 pb-2">
+              <h3 className="text-base flex items-center gap-2 font-medium">
+                <Sparkles className="w-4 h-4 text-[#DAA520]" />
                 生肖
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-[#e74c3c]">
+              </h3>
+            </div>
+            <Card.Body className="px-4 pb-4">
+              <div className="text-3xl font-bold text-[#C41E3A]">
                 {zodiac}年
               </div>
-            </CardContent>
+            </Card.Body>
           </Card>
 
           {/* Week Number */}
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Clock className="w-4 h-4 text-blue-500" />
+            <div className="p-4 pb-2">
+              <h3 className="text-base flex items-center gap-2 font-medium">
+                <Clock className="w-4 h-4 text-[#8B4513]" />
                 周数
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-blue-600">
+              </h3>
+            </div>
+            <Card.Body className="px-4 pb-4">
+              <div className="text-3xl font-bold text-[#8B4513]">
                 第 {weekNumber} 周
               </div>
-            </CardContent>
+            </Card.Body>
           </Card>
         </div>
 
         {/* Solar Term */}
         {solarTerm && (
-          <Card className="mb-4 border-l-4 border-l-green-500">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Sun className="w-5 h-5 text-green-500" />
+          <Card style={{ marginBottom: 16, borderLeft: "4px solid #8B4513" }}>
+            <div className="p-4 pb-2">
+              <h3 className="flex items-center gap-2 text-lg font-medium">
+                <Sun className="w-5 h-5 text-[#8B4513]" />
                 今日节气
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">
+              </h3>
+            </div>
+            <Card.Body className="px-4 pb-4">
+              <div className="text-2xl font-bold text-[#8B4513]">
                 {solarTerm}
               </div>
               <p className="text-sm text-gray-500 mt-2">
                 二十四节气之一，是传统农耕文化的重要组成部分
               </p>
-            </CardContent>
+            </Card.Body>
           </Card>
         )}
 
         {/* Summary Card */}
-        <Card className="bg-gradient-to-br from-[#e74c3c]/5 to-amber-50">
-          <CardHeader>
-            <CardTitle>日期概览</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <Card style={{ background: "linear-gradient(to bottom right, rgba(196, 30, 58, 0.05), rgba(218, 165, 32, 0.1))" }}>
+          <div className="p-4 pb-2">
+            <h3 className="font-medium">日期概览</h3>
+          </div>
+          <Card.Body className="px-4 pb-4">
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between py-2 border-b border-gray-100">
+              <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
                 <span className="text-gray-500">公历</span>
                 <span className="font-medium">{formatGregorianDate(selectedDate)}</span>
               </div>
-              <div className="flex justify-between py-2 border-b border-gray-100">
+              <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
                 <span className="text-gray-500">农历</span>
                 <span className="font-medium">{lunarInfo?.fullStr}</span>
               </div>
-              <div className="flex justify-between py-2 border-b border-gray-100">
+              <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
                 <span className="text-gray-500">星期</span>
                 <span className="font-medium">{weekday}</span>
               </div>
-              <div className="flex justify-between py-2 border-b border-gray-100">
+              <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
                 <span className="text-gray-500">生肖</span>
                 <span className="font-medium">{zodiac}</span>
               </div>
-              <div className="flex justify-between py-2 border-b border-gray-100">
+              <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
                 <span className="text-gray-500">干支</span>
                 <span className="font-medium">{yearGanZhi}年</span>
               </div>
               {solarTerm && (
                 <div className="flex justify-between py-2">
                   <span className="text-gray-500">节气</span>
-                  <span className="font-medium text-green-600">{solarTerm}</span>
+                  <span className="font-medium text-[#C41E3A]">{solarTerm}</span>
                 </div>
               )}
             </div>
-          </CardContent>
+          </Card.Body>
         </Card>
       </main>
     </div>

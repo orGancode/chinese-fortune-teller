@@ -20,7 +20,7 @@
 - **框架**: React 18 + TypeScript
 - **构建工具**: Vite
 - **样式**: TailwindCSS
-- **组件库**: shadcn/ui (基于 Radix UI)
+- **组件库**: React-Vant (移动端组件库)
 - **状态管理**: Zustand + persist 中间件
 - **路由**: React Router v6
 - **农历库**: lunisolar
@@ -58,7 +58,7 @@ npm run preview
 ```
 src/
 ├── components/
-│   ├── ui/               # shadcn/ui 基础组件
+│   ├── ui/               # React-Vant 基础组件封装
 │   ├── Header.tsx        # 页面头部组件
 │   └── BottomNav.tsx     # 底部导航栏
 ├── pages/

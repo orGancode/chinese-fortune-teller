@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Header } from "../components/Header";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card";
+import { Card } from "react-vant";
 import lunisolar from "lunisolar";
 import { Sun, Calendar, ArrowRight, Clock, Leaf, Snowflake, Flame, type LucideIcon } from "lucide-react";
 
@@ -108,34 +108,34 @@ export function SolarTermsPage() {
       <Header title="节气" subtitle="二十四节气时间表" />
       <main className="flex-1 p-4 pb-24 overflow-y-auto">
         {/* Date Selector */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-[#e74c3c]" />
+        <Card style={{ marginBottom: 24 }}>
+          <div className="p-4 pb-2">
+            <h3 className="flex items-center gap-2 font-medium">
+              <Calendar className="w-5 h-5 text-[#C41E3A]" />
               选择日期
-            </CardTitle>
-            <CardDescription>查看任意日期的节气信息</CardDescription>
-          </CardHeader>
-          <CardContent>
+            </h3>
+            <p className="text-sm text-gray-500 mt-1">查看任意日期的节气信息</p>
+          </div>
+          <Card.Body className="px-4 pb-4">
             <input
               type="date"
               value={currentDate.toISOString().split('T')[0]}
               onChange={handleDateChange}
-              className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e74c3c] focus:border-transparent text-lg"
+              className="w-full h-12 px-4 rounded-lg border border-[#D4C5B5] focus:outline-none focus:ring-2 focus:ring-[#8B4513] focus:border-transparent text-lg bg-[#FAF8F5]"
             />
-          </CardContent>
+          </Card.Body>
         </Card>
 
         {/* Current Solar Term */}
         {currentTerm ? (
-          <Card className={`mb-6 ${seasonConfig.bgColor} ${seasonConfig.borderColor} border-2`}>
-            <CardHeader>
-              <CardTitle className={`flex items-center gap-2 ${seasonConfig.color}`}>
+          <Card style={{ marginBottom: 24, backgroundColor: "#f0fdf4", border: "2px solid #bbf7d0" }}>
+            <div className="p-4 pb-2">
+              <h3 className={`flex items-center gap-2 font-medium ${seasonConfig.color}`}>
                 <Sun className="w-6 h-6" />
                 当前节气
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+              </h3>
+            </div>
+            <Card.Body className="px-4 pb-4">
               <div className="text-center py-4">
                 <div className={`text-5xl font-bold ${seasonConfig.color} mb-2`}>
                   {currentTerm}
@@ -144,34 +144,34 @@ export function SolarTermsPage() {
                   {SOLAR_TERMS_DATA.find(t => t.name === currentTerm)?.description}
                 </p>
               </div>
-            </CardContent>
+            </Card.Body>
           </Card>
         ) : (
-          <Card className="mb-6 bg-gray-50 border-gray-200 border-2">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-gray-600">
+          <Card style={{ marginBottom: 24, backgroundColor: "#f9fafb", border: "2px solid #e5e7eb" }}>
+            <div className="p-4 pb-2">
+              <h3 className="flex items-center gap-2 font-medium text-gray-600">
                 <Clock className="w-6 h-6" />
                 当前非节气日
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+              </h3>
+            </div>
+            <Card.Body className="px-4 pb-4">
               <p className="text-gray-500 text-center">
                 今天不是二十四节气之一，距离下一个节气还有一段时间
               </p>
-            </CardContent>
+            </Card.Body>
           </Card>
         )}
 
         {/* Next Solar Term */}
         {nextTerm && (
-          <Card className="mb-6 border-l-4 border-l-[#e74c3c]">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <ArrowRight className="w-5 h-5 text-[#e74c3c]" />
+          <Card style={{ marginBottom: 24, borderLeft: "4px solid #C41E3A" }}>
+            <div className="p-4 pb-2">
+              <h3 className="flex items-center gap-2 text-lg font-medium">
+                <ArrowRight className="w-5 h-5 text-[#C41E3A]" />
                 下一个节气
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+              </h3>
+            </div>
+            <Card.Body className="px-4 pb-4">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-2xl font-bold text-gray-800">
@@ -185,41 +185,41 @@ export function SolarTermsPage() {
                   </p>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl font-bold text-[#e74c3c]">
+                  <div className="text-3xl font-bold text-[#C41E3A]">
                     {nextTerm.daysUntil}
                   </div>
                   <p className="text-sm text-gray-500">天后</p>
                 </div>
               </div>
-            </CardContent>
+            </Card.Body>
           </Card>
         )}
 
         {/* Current Season Info */}
-        <Card className={`mb-6 ${seasonConfig.bgColor}`}>
-          <CardHeader>
-            <CardTitle className={`flex items-center gap-2 ${seasonConfig.color}`}>
+        <Card style={{ marginBottom: 24, backgroundColor: seasonConfig.bgColor.replace('bg-', '').replace('50', '100') === 'green' ? '#f0fdf4' : seasonConfig.bgColor.replace('bg-', '').replace('50', '100') === 'red' ? '#fef2f2' : seasonConfig.bgColor.replace('bg-', '').replace('50', '100') === 'amber' ? '#fffbeb' : '#eff6ff' }}>
+          <div className="p-4 pb-2">
+            <h3 className={`flex items-center gap-2 font-medium ${seasonConfig.color}`}>
               <SeasonIcon className="w-5 h-5" />
               当前季节：{seasonConfig.label}季
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </h3>
+          </div>
+          <Card.Body className="px-4 pb-4">
             <p className="text-gray-600">
               {currentSeason === "spring" && "春季是万物复苏的季节，五行属木，主生发。"}
               {currentSeason === "summer" && "夏季是万物生长的季节，五行属火，主繁茂。"}
               {currentSeason === "autumn" && "秋季是收获的季节，五行属金，主收敛。"}
               {currentSeason === "winter" && "冬季是收藏的季节，五行属水，主闭藏。"}
             </p>
-          </CardContent>
+          </Card.Body>
         </Card>
 
         {/* All Solar Terms */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>二十四节气一览</CardTitle>
-            <CardDescription>全年节气时间表</CardDescription>
-          </CardHeader>
-          <CardContent>
+        <Card style={{ marginBottom: 24 }}>
+          <div className="p-4 pb-2">
+            <h3 className="font-medium">二十四节气一览</h3>
+            <p className="text-sm text-gray-500 mt-1">全年节气时间表</p>
+          </div>
+          <Card.Body className="px-4 pb-4">
             <div className="grid grid-cols-2 gap-3">
               {SOLAR_TERMS_DATA.map((term) => {
                 const isCurrent = term.name === currentTerm;
@@ -251,15 +251,15 @@ export function SolarTermsPage() {
                 );
               })}
             </div>
-          </CardContent>
+          </Card.Body>
         </Card>
 
         {/* Season Legend */}
         <Card>
-          <CardHeader>
-            <CardTitle className="text-base">季节图例</CardTitle>
-          </CardHeader>
-          <CardContent>
+          <div className="p-4 pb-2">
+            <h3 className="font-medium text-base">季节图例</h3>
+          </div>
+          <Card.Body className="px-4 pb-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 rounded bg-green-100 border border-green-200"></div>
@@ -278,7 +278,7 @@ export function SolarTermsPage() {
                 <span className="text-sm text-gray-600">冬季（立冬-大寒）</span>
               </div>
             </div>
-          </CardContent>
+          </Card.Body>
         </Card>
       </main>
     </div>

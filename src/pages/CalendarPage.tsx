@@ -74,6 +74,24 @@ function getLunarDate(date: Date) {
   };
 }
 
+// 传统节日列表
+const TRADITIONAL_FESTIVALS: Record<string, string> = {
+  '1-1': '春节',
+  '1-15': '元宵节',
+  '2-2': '龙抬头',
+  '3-3': '上巳节',
+  '5-5': '端午节',
+  '7-7': '七夕',
+  '7-15': '中元节',
+  '8-15': '中秋节',
+  '9-9': '重阳节',
+  '10-1': '寒衣节',
+  '12-8': '腊八节',
+  '12-23': '小年',
+  '12-24': '小年',
+  '12-30': '除夕',
+};
+
 // 获取农历日期的简短显示（用于日历格子）
 function getLunarDayShort(date: Date): string {
   const lsr = lunisolar(date);
@@ -88,6 +106,36 @@ function getLunarDayShort(date: Date): string {
   }
   
   return LUNAR_DAYS[day - 1];
+}
+
+// 获取传统节日
+function getTraditionalFestival(date: Date): string | null {
+  const lsr = lunisolar(date);
+  const lunar = lsr.lunar;
+  const month = lunar.month;
+  const day = lunar.day;
+  
+  // 检查是否是传统节日（非闰月）
+  if (!lunar.isLeap) {
+    const key = `${month}-${day}`;
+    if (TRADITIONAL_FESTIVALS[key]) {
+      return TRADITIONAL_FESTIVALS[key];
+    }
+    
+    // 除夕特殊处理：腊月最后一天（可能是29或30）
+    if (month === 12) {
+      // 获取腊月总天数
+      const nextDay = new Date(date);
+      nextDay.setDate(date.getDate() + 1);
+      const nextLunar = lunisolar(nextDay).lunar;
+      // 如果明天是正月初一，那今天就是除夕
+      if (nextLunar.month === 1 && nextLunar.day === 1) {
+        return '除夕';
+      }
+    }
+  }
+  
+  return null;
 }
 
 // 判断是否是同一天
@@ -283,6 +331,7 @@ export function CalendarPage() {
       isToday: boolean;
       isSelected: boolean;
       lunarDay: string;
+      festival: string | null;
     }[] = [];
     
     // 上个月的日期
@@ -296,6 +345,7 @@ export function CalendarPage() {
         isToday: isToday(date),
         isSelected: isSameDay(date, selectedDate),
         lunarDay: getLunarDayShort(date),
+        festival: getTraditionalFestival(date),
       });
     }
     
@@ -309,6 +359,7 @@ export function CalendarPage() {
         isToday: isToday(date),
         isSelected: isSameDay(date, selectedDate),
         lunarDay: getLunarDayShort(date),
+        festival: getTraditionalFestival(date),
       });
     }
     
@@ -324,6 +375,7 @@ export function CalendarPage() {
           isToday: isToday(date),
           isSelected: isSameDay(date, selectedDate),
           lunarDay: getLunarDayShort(date),
+          festival: getTraditionalFestival(date),
         });
       }
     }
@@ -381,26 +433,21 @@ export function CalendarPage() {
                 <div className="text-lg font-bold text-gray-800">
                   {formatYearMonth(currentMonth.getFullYear(), currentMonth.getMonth())}
                 </div>
-                <div className="text-xs text-gray-500">
-                  {getLunarDate(currentMonth).yearStr} {getLunarDate(currentMonth).monthStr}
-                </div>
               </div>
-              <button
-                onClick={goToNextMonth}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <ChevronRight className="w-5 h-5 text-gray-600" />
-              </button>
-            </div>
-
-            {/* Today Button */}
-            <div className="flex justify-center mb-3">
-              <button
-                onClick={goToToday}
-                className="px-4 py-1.5 text-sm bg-[#C41E3A]/10 text-[#C41E3A] rounded-full hover:bg-[#C41E3A]/20 transition-colors"
-              >
-                回到今天
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={goToToday}
+                  className="px-3 py-1.5 text-sm bg-[#C41E3A]/10 text-[#C41E3A] rounded-full hover:bg-[#C41E3A]/20 transition-colors"
+                >
+                  回到今天
+                </button>
+                <button
+                  onClick={goToNextMonth}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <ChevronRight className="w-5 h-5 text-gray-600" />
+                </button>
+              </div>
             </div>
 
             {/* Weekday Headers */}
@@ -431,22 +478,27 @@ export function CalendarPage() {
                       ? 'bg-[#C41E3A] text-white shadow-md' 
                       : day.isToday 
                         ? 'bg-[#DAA520]/20 border-2 border-[#DAA520]'
-                        : 'hover:bg-gray-100'
+                        : day.festival 
+                          ? 'bg-red-50 border border-red-200'
+                          : 'hover:bg-gray-100'
                     }
                   `}
                 >
                   <span className={`text-sm font-medium ${
-                    day.isSelected ? 'text-white' : day.isToday ? 'text-[#DAA520]' : 'text-gray-800'
+                    day.isSelected ? 'text-white' : day.isToday ? 'text-[#DAA520]' : day.festival ? 'text-[#C41E3A]' : 'text-gray-800'
                   }`}>
                     {day.dayOfMonth}
                   </span>
-                  <span className={`text-[10px] mt-0.5 ${
-                    day.isSelected ? 'text-white/80' : 'text-gray-500'
+                  <span className={`text-[10px] mt-0.5 truncate w-full text-center ${
+                    day.isSelected ? 'text-white/80' : day.festival ? 'text-[#C41E3A] font-medium' : 'text-gray-500'
                   }`}>
-                    {day.lunarDay}
+                    {day.festival || day.lunarDay}
                   </span>
                   {day.isToday && !day.isSelected && (
                     <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#DAA520] rounded-full" />
+                  )}
+                  {day.festival && !day.isSelected && (
+                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-[#C41E3A] rounded-full" />
                   )}
                 </button>
               ))}

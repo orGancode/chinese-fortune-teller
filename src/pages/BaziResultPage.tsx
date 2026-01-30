@@ -73,7 +73,7 @@ export function BaziResultPage() {
           <Card style={{ marginBottom: 12 }}>
             <Card.Body className="text-center py-12">
               <p className="text-gray-600 mb-4">暂无排盘结果</p>
-              <Button onClick={() => navigate("/")}>返回排盘</Button>
+              <Button onClick={() => navigate("/paipan")}>返回排盘</Button>
             </Card.Body>
           </Card>
         </main>
@@ -86,7 +86,7 @@ export function BaziResultPage() {
   };
 
   const handleRecalculate = () => {
-    navigate("/");
+    navigate("/paipan");
   };
 
   const dayMaster = currentBazi.day.charAt(0);

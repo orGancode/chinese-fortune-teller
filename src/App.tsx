@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import { BottomNav } from "./components/BottomNav";
+import { HomePage } from "./pages/HomePage";
 import { PaipanPage } from "./pages/PaipanPage";
 import { BaziResultPage } from "./pages/BaziResultPage";
 import { CalendarPage } from "./pages/CalendarPage";
@@ -22,7 +23,8 @@ function App() {
       <Routes>
         {/* 带底部导航的主路由 */}
         <Route path="/" element={<Layout />}>
-          <Route index element={<PaipanPage />} />
+          <Route index element={<HomePage />} />
+          <Route path="paipan" element={<PaipanPage />} />
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="solar-terms" element={<SolarTermsPage />} />
           <Route path="settings" element={<SettingsPage />} />

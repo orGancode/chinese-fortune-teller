@@ -68,7 +68,7 @@ export function HistoryPage() {
               <Empty description="暂无排盘记录">
                 <Button 
                   style={{ marginTop: 16 }} 
-                  onClick={() => navigate("/")}
+                  onClick={() => navigate("/paipan")}
                 >
                   去排盘
                 </Button>

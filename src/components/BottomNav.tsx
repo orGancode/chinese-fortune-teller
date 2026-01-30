@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Tabbar } from "react-vant";
-import { HomeO, CalendarO, SettingO } from "@react-vant/icons";
-import { Sun } from "lucide-react";
+import { HomeO, CalendarO, SettingO, WapHomeO } from "@react-vant/icons";
+import { Sun, Sparkles } from "lucide-react";
 
 const navItems = [
-  { path: "/", label: "排盘", icon: <HomeO /> },
-  { path: "/calendar", label: "万年历", icon: <CalendarO /> },
-  { path: "/solar-terms", label: "节气", icon: <Sun size={24} /> },
-  { path: "/settings", label: "设置", icon: <SettingO /> },
+  { path: "/", label: "首页", icon: <HomeO />, activeIcon: <WapHomeO />, isPrimary: true },
+  { path: "/paipan", label: "排盘", icon: <Sparkles size={22} />, isPrimary: false },
+  { path: "/calendar", label: "万年历", icon: <CalendarO />, isPrimary: false },
+  { path: "/solar-terms", label: "节气", icon: <Sun size={22} />, isPrimary: false },
+  { path: "/settings", label: "设置", icon: <SettingO />, isPrimary: false },
 ];
 
 export function BottomNav() {
@@ -34,12 +35,26 @@ export function BottomNav() {
         setActive(index);
         navigate(navItems[index].path);
       }}
-      activeColor="#e74c3c"
+      activeColor="#C41E3A"
+      inactiveColor="#999999"
       fixed={true}
       safeAreaInsetBottom={true}
+      style={{ 
+        boxShadow: "0 -2px 10px rgba(0,0,0,0.05)",
+        borderTop: "1px solid #f0f0f0"
+      }}
     >
-      {navItems.map((item) => (
-        <Tabbar.Item key={item.path} icon={item.icon}>{item.label}</Tabbar.Item>
+      {navItems.map((item, index) => (
+        <Tabbar.Item 
+          key={item.path} 
+          icon={item.icon}
+          style={item.isPrimary && active === index ? {
+            color: "#C41E3A",
+            fontWeight: 600
+          } : undefined}
+        >
+          {item.label}
+        </Tabbar.Item>
       ))}
     </Tabbar>
   );

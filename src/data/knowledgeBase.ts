@@ -289,3 +289,6 @@ export function getGeju(bazi: { year: string; month: string; day: string; hour: 
   
   return '普通格';
 }
+
+// 导出扩展知识库
+export * from './knowledgeBaseExtended';

@@ -162,7 +162,7 @@ export function HomePage() {
       </div>
 
       {/* 宜忌卡片 - 悬浮在横幅下方 */}
-      <div className="relative z-20 px-4 -mt-8">
+      <div className="relative z-20 px-4 -mt-6">
         <Card 
           style={{ 
             marginBottom: 16,

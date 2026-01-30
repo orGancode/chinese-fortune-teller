@@ -405,11 +405,8 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
         }}
       />
       <div className="mt-2 text-center">
-        <div className="text-base font-bold" style={{ color: "#C41E3A" }}>
-          {currentShiChen.name}时
-        </div>
-        <div className="text-xs text-gray-500">
-          {currentShiChen.zodiac} · {currentShiChen.time}
+        <div className="text-base font-bold" style={{ color: "#f7bec7" }}>
+          {currentShiChen.name}时 · {currentShiChen.zodiac} · {currentShiChen.time}
         </div>
       </div>
     </div>

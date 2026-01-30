@@ -1,4 +1,4 @@
-import { Card, Button } from "@/components/ui";
+import { Card, Button } from "react-vant";
 import { useBaziStore } from "../store/baziStore";
 import { baziCalculator } from "../utils/baziCalculator";
 import {
@@ -379,21 +379,86 @@ export function BaziResultPage() {
             </h3>
           </div>
           <Card.Body className="p-4">
-            <div className="flex justify-around py-4">
-              {Object.entries(wuxingCount).map(([element, count]) => (
-                <div key={element} className="text-center">
-                  <div 
-                    className="w-12 h-12 rounded-full flex items-center justify-center mb-2"
-                    style={{ 
-                      backgroundColor: WUXING_COLORS[element],
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.15)"
-                    }}
-                  >
-                    <span className="text-white font-bold text-lg">{element}</span>
+            {/* 可视化条形图 */}
+            <div className="space-y-4 mb-6">
+              {Object.entries(wuxingCount)
+                .sort(([,a], [,b]) => b - a)
+                .map(([element, count]) => {
+                  const maxCount = Math.max(...Object.values(wuxingCount));
+                  const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
+                  const totalCount = Object.values(wuxingCount).reduce((a, b) => a + b, 0);
+                  const actualPercentage = totalCount > 0 ? ((count / totalCount) * 100).toFixed(1) : '0.0';
+                  
+                  return (
+                    <div key={element} className="space-y-1">
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-2">
+                          <div 
+                            className="w-6 h-6 rounded-full flex items-center justify-center text-white font-bold text-xs"
+                            style={{ backgroundColor: WUXING_COLORS[element] }}
+                          >
+                            {element}
+                          </div>
+                          <span style={{ color: COLORS.text }} className="font-medium">{element}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold" style={{ color: WUXING_COLORS[element] }}>
+                            {count}个
+                          </span>
+                          <span className="text-xs text-gray-500">({actualPercentage}%)</span>
+                        </div>
+                      </div>
+                      <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full rounded-full transition-all duration-500 ease-out"
+                          style={{ 
+                            width: `${percentage}%`,
+                            backgroundColor: WUXING_COLORS[element],
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                          }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+            
+            {/* 圆形统计 */}
+            <div className="border-t border-gray-100 pt-4">
+              <div className="flex justify-around py-2">
+                {Object.entries(wuxingCount).map(([element, count]) => (
+                  <div key={element} className="text-center">
+                    <div 
+                      className="w-12 h-12 rounded-full flex items-center justify-center mb-2"
+                      style={{ 
+                        backgroundColor: WUXING_COLORS[element],
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.15)"
+                      }}
+                    >
+                      <span className="text-white font-bold text-lg">{element}</span>
+                    </div>
+                    <span className="text-sm font-medium" style={{ color: COLORS.text }}>{count}个</span>
                   </div>
-                  <span className="text-sm font-medium" style={{ color: COLORS.text }}>{count}个</span>
+                ))}
+              </div>
+            </div>
+            
+            {/* 五行相生相克提示 */}
+            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+              <div className="text-xs text-gray-600 space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-[#4CAF50]">● 木</span>
+                  <span>→</span>
+                  <span className="text-[#F44336]">● 火</span>
+                  <span>→</span>
+                  <span className="text-[#8B4513]">● 土</span>
+                  <span>→</span>
+                  <span className="text-[#FFD700]">● 金</span>
+                  <span>→</span>
+                  <span className="text-[#2196F3]">● 水</span>
+                  <span className="ml-2 text-gray-500">(相生)</span>
                 </div>
-              ))}
+              </div>
             </div>
           </Card.Body>
         </Card>

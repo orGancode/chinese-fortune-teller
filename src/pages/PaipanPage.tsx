@@ -119,7 +119,7 @@ export function PaipanPage() {
         </div>
       </div>
 
-      <main className="flex-1 p-4 pb-6 overflow-y-auto -mt-2 relative z-10">
+      <main className="flex-1 p-4 pb-6 overflow-y-auto -mt-2 relative z-0">
         <Card 
           style={{ 
             border: `1px solid ${COLORS.cardBorder}`,

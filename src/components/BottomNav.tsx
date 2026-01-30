@@ -41,7 +41,8 @@ export function BottomNav() {
       safeAreaInsetBottom={true}
       style={{ 
         boxShadow: "0 -2px 10px rgba(0,0,0,0.05)",
-        borderTop: "1px solid #f0f0f0"
+        borderTop: "1px solid #f0f0f0",
+        zIndex: 100
       }}
     >
       {navItems.map((item, index) => (

@@ -1,0 +1,585 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --accent-color: #e74c3c;
+    --bg-color: #f5f6fa;
+    --card-bg: #ffffff;
+    --text-color: #2c3e50;
+    --text-secondary: #7f8c8d;
+    --border-color: #ecf0f1;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --info-color: #3498db;
+    --element-wood: #27ae60;
+    --element-fire: #e74c3c;
+    --element-earth: #f39c12;
+    --element-metal: #95a5a6;
+    --element-water: #3498db;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+.app-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 16px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 头部 */
+.header {
+    text-align: center;
+    padding: 40px 0 30px;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: 4px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+/* 卡片样式 */
+.card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+/* 表单样式 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.radio-label input {
+    margin-right: 8px;
+    width: 20px;
+    height: 20px;
+    accent-color: var(--accent-color);
+}
+
+/* 按钮样式 */
+.btn {
+    width: 100%;
+    padding: 16px 24px;
+    font-size: 17px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* 加载动画 */
+.loading {
+    text-align: center;
+    padding: 40px;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--border-color);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 隐藏类 */
+.hidden {
+    display: none !important;
+}
+
+/* 基本信息网格 */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.info-item {
+    text-align: center;
+    padding: 12px;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+}
+
+.info-label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.info-value {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* 排盘表格 */
+.paipan-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.paipan-table th,
+.paipan-table td {
+    padding: 14px 8px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.paipan-table th {
+    background-color: var(--bg-color);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.row-label {
+    background-color: var(--bg-color);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.tiangan-row td {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.dizhi-row td {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.canggan-row td {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.shishen-row td {
+    font-size: 14px;
+}
+
+.day-master {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--accent-color);
+    border-radius: 4px;
+}
+
+/* 日主信息 */
+.day-master-info {
+    text-align: center;
+}
+
+.day-master-card {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 32px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.day-master-name {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.day-master-element {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.day-master-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* 五行分析 */
+.wuxing-chart {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 24px;
+}
+
+.wuxing-item {
+    text-align: center;
+    flex: 1;
+}
+
+.wuxing-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    margin: 0 auto 8px;
+}
+
+.wuxing-wood { background-color: var(--element-wood); }
+.wuxing-fire { background-color: var(--element-fire); }
+.wuxing-earth { background-color: var(--element-earth); }
+.wuxing-metal { background-color: var(--element-metal); }
+.wuxing-water { background-color: var(--element-water); }
+
+.wuxing-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.wuxing-count {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.wuxing-summary {
+    background-color: var(--bg-color);
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+/* 十神分析 */
+.shishen-analysis {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.shishen-item {
+    background-color: var(--bg-color);
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.shishen-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 4px;
+}
+
+.shishen-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* 格局分析 */
+.geju-analysis {
+    text-align: center;
+}
+
+.geju-item {
+    margin-bottom: 16px;
+}
+
+.geju-label {
+    display: block;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.geju-value {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent-color);
+    padding: 8px 24px;
+    background-color: rgba(231, 76, 60, 0.1);
+    border-radius: 8px;
+}
+
+.geju-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    text-align: left;
+}
+
+/* 纳音 */
+.nayin-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.nayin-item {
+    background-color: var(--bg-color);
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.nayin-pillar {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.nayin-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* 大运表格 */
+.dayun-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.dayun-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 400px;
+}
+
+.dayun-table th,
+.dayun-table td {
+    padding: 12px 8px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.dayun-table th {
+    background-color: var(--bg-color);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.dayun-table td {
+    font-size: 13px;
+}
+
+.dayun-current {
+    background-color: rgba(231, 76, 60, 0.1);
+}
+
+/* 流年 */
+.liunian-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.liunian-item {
+    background-color: var(--bg-color);
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.liunian-year {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.liunian-bazi {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 4px;
+}
+
+.liunian-shishen {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* 页脚 */
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    margin-top: auto;
+}
+
+.footer p {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+    .app-container {
+        padding: 0 12px;
+    }
+    
+    .header {
+        padding: 30px 0 20px;
+    }
+    
+    .logo {
+        font-size: 28px;
+    }
+    
+    .card {
+        padding: 20px;
+        border-radius: 12px;
+    }
+    
+    .paipan-table {
+        font-size: 13px;
+    }
+    
+    .paipan-table th,
+    .paipan-table td {
+        padding: 10px 4px;
+    }
+    
+    .tiangan-row td,
+    .dizhi-row td {
+        font-size: 16px;
+    }
+    
+    .wuxing-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+    
+    .day-master-name {
+        font-size: 36px;
+    }
+    
+    .day-master-card {
+        padding: 20px 24px;
+    }
+    
+    .liunian-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .shishen-analysis {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 天干地支颜色 */
+.stem-jia, .stem-yi { color: var(--element-wood); }
+.stem-bing, .stem-ding { color: var(--element-fire); }
+.stem-wu, .stem-ji { color: var(--element-earth); }
+.stem-geng, .stem-xin { color: var(--element-metal); }
+.stem-ren, .stem-gui { color: var(--element-water); }
+
+.branch-zi, .branch-hai { color: var(--element-water); }
+.branch-chou, .branch-chen, .branch-wei, .branch-xu { color: var(--element-earth); }
+.branch-yin, .branch-mao { color: var(--element-wood); }
+.branch-si, .branch-wu { color: var(--element-fire); }
+.branch-shen, .branch-you { color: var(--element-metal); }

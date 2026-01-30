@@ -240,14 +240,29 @@ export function SolarTermsPage() {
           </Card.Body>
         </Card>
 
-        {/* All Solar Terms */}
+        {/* All Solar Terms - Compact Layout */}
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
-            <h3 className="font-medium">二十四节气一览</h3>
-            <p className="text-sm text-gray-500 mt-1">全年节气时间表</p>
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium">二十四节气一览</h3>
+              <div className="flex items-center gap-3 text-xs">
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-green-500"></span>春
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-red-500"></span>夏
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-amber-500"></span>秋
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-blue-500"></span>冬
+                </span>
+              </div>
+            </div>
           </div>
           <Card.Body className="px-4 pb-4">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-6 gap-2">
               {SOLAR_TERMS_DATA.map((term) => {
                 const isCurrent = term.name === currentTerm;
                 const termSeason = SEASON_CONFIG[term.season];
@@ -255,55 +270,21 @@ export function SolarTermsPage() {
                 return (
                   <div
                     key={term.name}
-                    className={`p-3 rounded-lg border transition-all ${
+                    className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg border transition-all ${
                       isCurrent
-                        ? `${termSeason.bgColor} ${termSeason.borderColor} border-2 shadow-md`
-                        : "bg-white border-gray-200 hover:border-gray-300"
+                        ? `${termSeason.bgColor} ${termSeason.borderColor} border-2 shadow-sm`
+                        : "bg-gray-50 border-gray-200 hover:bg-gray-100"
                     }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className={`font-medium ${isCurrent ? termSeason.color : "text-gray-700"}`}>
-                        {term.name}
-                      </span>
-                      <span className="text-xs text-gray-400">
-                        {formatDate(term.month, term.day)}
-                      </span>
-                    </div>
-                    {isCurrent && (
-                      <div className={`text-xs mt-1 ${termSeason.color}`}>
-                        当前节气
-                      </div>
-                    )}
+                    <span className={`text-xs font-medium ${isCurrent ? termSeason.color : "text-gray-700"}`}>
+                      {term.name}
+                    </span>
+                    <span className="text-[10px] text-gray-400 mt-0.5">
+                      {term.month}/{term.day}
+                    </span>
                   </div>
                 );
               })}
-            </div>
-          </Card.Body>
-        </Card>
-
-        {/* Season Legend */}
-        <Card>
-          <div className="p-4 pb-2">
-            <h3 className="font-medium text-base">季节图例</h3>
-          </div>
-          <Card.Body className="px-4 pb-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded bg-green-100 border border-green-200"></div>
-                <span className="text-sm text-gray-600">春季（立春-谷雨）</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded bg-red-100 border border-red-200"></div>
-                <span className="text-sm text-gray-600">夏季（立夏-大暑）</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded bg-amber-100 border border-amber-200"></div>
-                <span className="text-sm text-gray-600">秋季（立秋-霜降）</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded bg-blue-100 border border-blue-200"></div>
-                <span className="text-sm text-gray-600">冬季（立冬-大寒）</span>
-              </div>
             </div>
           </Card.Body>
         </Card>

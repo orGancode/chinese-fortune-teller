@@ -414,11 +414,17 @@ export function CalendarPage() {
       <main className="flex-1 p-4 pb-24 overflow-y-auto">
         {/* Monthly Calendar Grid Card */}
         <Card style={{ marginBottom: 24 }}>
-          <div className="p-4 pb-2">
+          <div className="p-4 pb-2 flex items-center justify-between">
             <h3 className="flex items-center gap-2 text-lg font-medium">
               <Calendar className="w-5 h-5 text-[#C41E3A]" />
               选择日期
             </h3>
+            <button
+              onClick={goToToday}
+              className="px-3 py-1.5 text-sm bg-[#C41E3A]/10 text-[#C41E3A] rounded-full hover:bg-[#C41E3A]/20 transition-colors"
+            >
+              回到今天
+            </button>
           </div>
           <Card.Body className="px-4 pb-4">
             {/* Month Navigation Header */}
@@ -434,20 +440,12 @@ export function CalendarPage() {
                   {formatYearMonth(currentMonth.getFullYear(), currentMonth.getMonth())}
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={goToToday}
-                  className="px-3 py-1.5 text-sm bg-[#C41E3A]/10 text-[#C41E3A] rounded-full hover:bg-[#C41E3A]/20 transition-colors"
-                >
-                  回到今天
-                </button>
-                <button
-                  onClick={goToNextMonth}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                >
-                  <ChevronRight className="w-5 h-5 text-gray-600" />
-                </button>
-              </div>
+              <button
+                onClick={goToNextMonth}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <ChevronRight className="w-5 h-5 text-gray-600" />
+              </button>
             </div>
 
             {/* Weekday Headers */}

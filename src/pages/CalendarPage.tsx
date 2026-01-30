@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Header } from "../components/Header";
 import { Card, Tag } from "react-vant";
 import lunisolar from "lunisolar";
-import { Calendar, Sparkles, Sun, Moon, Clock, Compass, Star, Shield, Timer, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, Sparkles, Sun, Moon, Clock, Compass, Star, Shield, Timer } from "lucide-react";
+import { CalendarGrid } from "../components/CalendarGrid";
 import {
   JIANCHU,
   XIUS,
@@ -16,9 +17,6 @@ import {
 
 // 星期映射
 const WEEKDAYS = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
-
-// 日历星期标题
-const CALENDAR_WEEKDAYS = ["日", "一", "二", "三", "四", "五", "六"];
 
 // 生肖映射
 const ZODIAC_ANIMALS = ["鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"];
@@ -41,16 +39,6 @@ const LUNAR_DAYS = [
   "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十",
   "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"
 ];
-
-// 获取某月的天数
-function getDaysInMonth(year: number, month: number): number {
-  return new Date(year, month + 1, 0).getDate();
-}
-
-// 获取某月第一天是星期几 (0 = 周日)
-function getFirstDayOfMonth(year: number, month: number): number {
-  return new Date(year, month, 1).getDay();
-}
 
 // 计算农历年月日
 function getLunarDate(date: Date) {
@@ -92,22 +80,6 @@ const TRADITIONAL_FESTIVALS: Record<string, string> = {
   '12-30': '除夕',
 };
 
-// 获取农历日期的简短显示（用于日历格子）
-function getLunarDayShort(date: Date): string {
-  const lsr = lunisolar(date);
-  const lunar = lsr.lunar;
-  const day = lunar.day;
-  const month = lunar.month;
-  const isLeap = lunar.isLeap;
-  
-  // 如果是初一，显示月份
-  if (day === 1) {
-    return (isLeap ? "闰" : "") + LUNAR_MONTHS[month - 1];
-  }
-  
-  return LUNAR_DAYS[day - 1];
-}
-
 // 获取传统节日
 function getTraditionalFestival(date: Date): string | null {
   const lsr = lunisolar(date);
@@ -136,18 +108,6 @@ function getTraditionalFestival(date: Date): string | null {
   }
   
   return null;
-}
-
-// 判断是否是同一天
-function isSameDay(date1: Date, date2: Date): boolean {
-  return date1.getFullYear() === date2.getFullYear() &&
-         date1.getMonth() === date2.getMonth() &&
-         date1.getDate() === date2.getDate();
-}
-
-// 判断是否是今天
-function isToday(date: Date): boolean {
-  return isSameDay(date, new Date());
 }
 
 // 获取生肖
@@ -219,11 +179,6 @@ function formatGregorianDate(date: Date): string {
   return `${year}年${month}月${day}日`;
 }
 
-// 格式化年月显示
-function formatYearMonth(year: number, month: number): string {
-  return `${year}年${month + 1}月`;
-}
-
 // 获取冲煞信息
 function getChongSha(dayZhi: string): { chong: string; sha: string; direction: string } {
   const zhiOrder = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
@@ -252,7 +207,6 @@ function getChongSha(dayZhi: string): { chong: string; sha: string; direction: s
 
 export function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [lunarInfo, setLunarInfo] = useState<ReturnType<typeof getLunarDate> | null>(null);
   const [zodiac, setZodiac] = useState<string>("");
   const [yearGanZhi, setYearGanZhi] = useState<string>("");
@@ -301,93 +255,6 @@ export function CalendarPage() {
     setChongSha(cs);
   }, [selectedDate]);
 
-  // 月份导航
-  const goToPreviousMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
-  };
-
-  const goToNextMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
-  };
-
-  const goToToday = () => {
-    const today = new Date();
-    setCurrentMonth(today);
-    setSelectedDate(today);
-  };
-
-  // 生成日历格子数据
-  const generateCalendarDays = () => {
-    const year = currentMonth.getFullYear();
-    const month = currentMonth.getMonth();
-    
-    const daysInMonth = getDaysInMonth(year, month);
-    const firstDayOfMonth = getFirstDayOfMonth(year, month);
-    
-    const days: {
-      date: Date;
-      dayOfMonth: number;
-      isCurrentMonth: boolean;
-      isToday: boolean;
-      isSelected: boolean;
-      lunarDay: string;
-      festival: string | null;
-    }[] = [];
-    
-    // 上个月的日期
-    const prevMonthDays = getDaysInMonth(year, month - 1);
-    for (let i = firstDayOfMonth - 1; i >= 0; i--) {
-      const date = new Date(year, month - 1, prevMonthDays - i);
-      days.push({
-        date,
-        dayOfMonth: prevMonthDays - i,
-        isCurrentMonth: false,
-        isToday: isToday(date),
-        isSelected: isSameDay(date, selectedDate),
-        lunarDay: getLunarDayShort(date),
-        festival: getTraditionalFestival(date),
-      });
-    }
-    
-    // 当前月的日期
-    for (let i = 1; i <= daysInMonth; i++) {
-      const date = new Date(year, month, i);
-      days.push({
-        date,
-        dayOfMonth: i,
-        isCurrentMonth: true,
-        isToday: isToday(date),
-        isSelected: isSameDay(date, selectedDate),
-        lunarDay: getLunarDayShort(date),
-        festival: getTraditionalFestival(date),
-      });
-    }
-    
-    // 下个月的日期（填充到 7 的倍数）
-    const remainingCells = 7 - (days.length % 7);
-    if (remainingCells < 7) {
-      for (let i = 1; i <= remainingCells; i++) {
-        const date = new Date(year, month + 1, i);
-        days.push({
-          date,
-          dayOfMonth: i,
-          isCurrentMonth: false,
-          isToday: isToday(date),
-          isSelected: isSameDay(date, selectedDate),
-          lunarDay: getLunarDayShort(date),
-          festival: getTraditionalFestival(date),
-        });
-      }
-    }
-    
-    return days;
-  };
-
-  // 点击日期
-  const handleDateClick = (date: Date) => {
-    setSelectedDate(date);
-  };
-
   // 获取吉凶颜色
   const getNatureColor = (nature: string) => {
     switch (nature) {
@@ -406,8 +273,6 @@ export function CalendarPage() {
     }
   };
 
-  const calendarDays = generateCalendarDays();
-
   return (
     <div className="flex flex-col h-full">
       <Header title="万年历" subtitle="公历农历转换查询" />
@@ -419,88 +284,15 @@ export function CalendarPage() {
               <Calendar className="w-5 h-5 text-[#C41E3A]" />
               选择日期
             </h3>
-            <button
-              onClick={goToToday}
-              className="px-3 py-1.5 text-sm bg-[#C41E3A]/10 text-[#C41E3A] rounded-full hover:bg-[#C41E3A]/20 transition-colors"
-            >
-              回到今天
-            </button>
           </div>
           <Card.Body className="px-4 pb-4">
-            {/* Month Navigation Header */}
-            <div className="flex items-center justify-between mb-4">
-              <button
-                onClick={goToPreviousMonth}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <ChevronLeft className="w-5 h-5 text-gray-600" />
-              </button>
-              <div className="text-center">
-                <div className="text-lg font-bold text-gray-800">
-                  {formatYearMonth(currentMonth.getFullYear(), currentMonth.getMonth())}
-                </div>
-              </div>
-              <button
-                onClick={goToNextMonth}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <ChevronRight className="w-5 h-5 text-gray-600" />
-              </button>
-            </div>
-
-            {/* Weekday Headers */}
-            <div className="grid grid-cols-7 gap-1 mb-2">
-              {CALENDAR_WEEKDAYS.map((day, index) => (
-                <div
-                  key={index}
-                  className={`text-center py-2 text-sm font-medium ${
-                    index === 0 || index === 6 ? 'text-[#C41E3A]' : 'text-gray-600'
-                  }`}
-                >
-                  {day}
-                </div>
-              ))}
-            </div>
-
-            {/* Calendar Grid */}
-            <div className="grid grid-cols-7 gap-1">
-              {calendarDays.map((day, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleDateClick(day.date)}
-                  className={`
-                    relative aspect-square p-1 rounded-lg transition-all
-                    flex flex-col items-center justify-center
-                    ${day.isCurrentMonth ? 'opacity-100' : 'opacity-40'}
-                    ${day.isSelected 
-                      ? 'bg-[#C41E3A] text-white shadow-md' 
-                      : day.isToday 
-                        ? 'bg-[#DAA520]/20 border-2 border-[#DAA520]'
-                        : day.festival 
-                          ? 'bg-red-50 border border-red-200'
-                          : 'hover:bg-gray-100'
-                    }
-                  `}
-                >
-                  <span className={`text-sm font-medium ${
-                    day.isSelected ? 'text-white' : day.isToday ? 'text-[#DAA520]' : day.festival ? 'text-[#C41E3A]' : 'text-gray-800'
-                  }`}>
-                    {day.dayOfMonth}
-                  </span>
-                  <span className={`text-[10px] mt-0.5 truncate w-full text-center ${
-                    day.isSelected ? 'text-white/80' : day.festival ? 'text-[#C41E3A] font-medium' : 'text-gray-500'
-                  }`}>
-                    {day.festival || day.lunarDay}
-                  </span>
-                  {day.isToday && !day.isSelected && (
-                    <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#DAA520] rounded-full" />
-                  )}
-                  {day.festival && !day.isSelected && (
-                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-[#C41E3A] rounded-full" />
-                  )}
-                </button>
-              ))}
-            </div>
+            <CalendarGrid
+              selectedDate={selectedDate}
+              onDateSelect={setSelectedDate}
+              getDayLabel={getTraditionalFestival}
+              showTodayButton={true}
+              onGoToToday={() => setSelectedDate(new Date())}
+            />
           </Card.Body>
         </Card>
 

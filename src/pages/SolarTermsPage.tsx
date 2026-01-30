@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Header } from "../components/Header";
 import { Card } from "react-vant";
+import { CalendarGrid } from "../components/CalendarGrid";
 import lunisolar from "lunisolar";
-import { Sun, Calendar, ArrowRight, Clock, Leaf, Snowflake, Flame, type LucideIcon } from "lucide-react";
+import { Sun, ArrowRight, Clock, Leaf, Snowflake, Flame, type LucideIcon } from "lucide-react";
 
 // 二十四节气数据（公历日期）
 const SOLAR_TERMS_DATA = [
@@ -41,8 +42,17 @@ const SEASON_CONFIG: Record<string, { color: string; bgColor: string; borderColo
 
 // 获取当前节气
 function getCurrentSolarTerm(date: Date): string | null {
-  const lsr = lunisolar(date);
-  return lsr.solarTerm || null;
+  try {
+    const lsr = lunisolar(date);
+    const term = lsr.solarTerm;
+    if (term) {
+      return typeof term === "string" ? term : String(term);
+    }
+    return null;
+  } catch (error) {
+    console.error("Error getting current solar term:", error);
+    return null;
+  }
 }
 
 // 获取下一个节气信息
@@ -75,6 +85,22 @@ function getCurrentSeason(date: Date): keyof typeof SEASON_CONFIG {
   return "winter";
 }
 
+// 获取日期的节气标签（用于日历显示）
+function getSolarTermLabel(date: Date): string | null {
+  try {
+    const lsr = lunisolar(date);
+    const term = lsr.solarTerm;
+    // solarTerm 可能是对象，需要转换为字符串
+    if (term) {
+      return typeof term === "string" ? term : String(term);
+    }
+    return null;
+  } catch (error) {
+    console.error("Error getting solar term:", error);
+    return null;
+  }
+}
+
 // 格式化日期
 function formatDate(month: number, day: number): string {
   return `${month}月${day}日`;
@@ -93,11 +119,13 @@ export function SolarTermsPage() {
     setCurrentSeason(getCurrentSeason(currentDate));
   }, [currentDate]);
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const date = new Date(e.target.value);
-    if (!isNaN(date.getTime())) {
-      setCurrentDate(date);
-    }
+  const handleDateSelect = (date: Date) => {
+    setCurrentDate(date);
+  };
+
+  const handleGoToToday = () => {
+    const today = new Date();
+    setCurrentDate(today);
   };
 
   const seasonConfig = SEASON_CONFIG[currentSeason];
@@ -107,21 +135,20 @@ export function SolarTermsPage() {
     <div className="flex flex-col h-full">
       <Header title="节气" subtitle="二十四节气时间表" />
       <main className="flex-1 p-4 pb-24 overflow-y-auto">
-        {/* Date Selector */}
+        {/* Calendar Grid */}
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
-            <h3 className="flex items-center gap-2 font-medium">
-              <Calendar className="w-5 h-5 text-[#C41E3A]" />
-              选择日期
-            </h3>
-            <p className="text-sm text-gray-500 mt-1">查看任意日期的节气信息</p>
+            <h3 className="font-medium">选择日期</h3>
+            <p className="text-sm text-gray-500 mt-1">点击日历查看任意日期的节气信息</p>
           </div>
           <Card.Body className="px-4 pb-4">
-            <input
-              type="date"
-              value={currentDate.toISOString().split('T')[0]}
-              onChange={handleDateChange}
-              className="w-full h-12 px-4 rounded-lg border border-[#D4C5B5] focus:outline-none focus:ring-2 focus:ring-[#8B4513] focus:border-transparent text-lg bg-[#FAF8F5]"
+            <CalendarGrid
+              selectedDate={currentDate}
+              onDateSelect={handleDateSelect}
+              getDayLabel={getSolarTermLabel}
+              showTodayButton={true}
+              onGoToToday={handleGoToToday}
+              showTodayIndicator={false}
             />
           </Card.Body>
         </Card>

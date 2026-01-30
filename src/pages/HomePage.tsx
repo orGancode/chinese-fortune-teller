@@ -7,18 +7,18 @@ import lunisolar from "lunisolar";
 import { 
   Sparkles, 
   Calendar, 
-  Clock, 
   Sun, 
   History, 
   ChevronRight,
   User,
-  Star,
   Compass,
   BookOpen,
   Scroll,
-  CircleDot
+  CircleDot,
+  Star,
+  Settings
 } from "lucide-react";
-import { Logo } from "../components/Logo";
+import { ShiChenDialCanvas } from "../components/ShiChenDialCanvas";
 
 // 中国传统色彩
 const COLORS = {
@@ -96,93 +96,126 @@ export function HomePage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: COLORS.paper }}>
-      {/* 顶部装饰区域 */}
+      {/* 顶部横幅区域 - 渐变背景 */}
       <div 
         className="relative overflow-hidden"
         style={{ 
-          background: `linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.primaryLight} 100%)`,
-          minHeight: "200px"
+          background: `linear-gradient(160deg, ${COLORS.primary} 0%, #8B0000 50%, ${COLORS.primary} 100%)`,
+          paddingBottom: "20px"
         }}
       >
-        {/* 装饰图案 */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-4 right-4 w-32 h-32 rounded-full border-2 border-white" />
-          <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full border border-white" />
-          <div className="absolute top-1/2 left-1/4 w-16 h-16 rounded-full border border-white" />
+        {/* 装饰云纹图案 */}
+        <div className="absolute inset-0 opacity-5">
+          <svg className="w-full h-full" viewBox="0 0 400 200" preserveAspectRatio="none">
+            <path d="M0,100 Q100,50 200,100 T400,100" fill="none" stroke="white" strokeWidth="2"/>
+            <path d="M0,120 Q100,70 200,120 T400,120" fill="none" stroke="white" strokeWidth="1.5"/>
+            <path d="M0,80 Q100,30 200,80 T400,80" fill="none" stroke="white" strokeWidth="1"/>
+          </svg>
         </div>
-        
-        {/* Logo和标题 */}
-        <div className="relative z-10 px-6 pt-8 pb-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-white" />
+
+        {/* 头部信息栏 */}
+        <div className="relative z-10 px-4 pt-3 pb-2 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
+              <Star className="w-4 h-4 text-white" />
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-white">八字命理</h1>
-              <p className="text-sm text-white/80">传承中华传统智慧</p>
-            </div>
+            <span className="text-white/90 text-sm font-medium">八字命理</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-white/80 text-xs">{todayGanZhi}</span>
+            <button 
+              onClick={() => navigate("/settings")}
+              className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+            >
+              <Settings className="w-4 h-4 text-white" />
+            </button>
+          </div>
+        </div>
+
+        {/* 中央时辰表盘区域 */}
+        <div className="relative z-10 flex flex-col items-center pt-2 pb-4">
+          {/* 表盘容器 */}
+          <div 
+            className="relative"
+            style={{
+              filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.3))",
+            }}
+          >
+            <ShiChenDialCanvas size={220} />
           </div>
           
-          {/* 今日信息卡片 */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm text-gray-600">{todayGanZhi}</span>
-              {currentJieQi && (
-                <span 
-                  className="px-2 py-1 rounded-full text-xs font-medium"
-                  style={{ backgroundColor: `${COLORS.gold}20`, color: COLORS.gold }}
-                >
-                  {currentJieQi}
-                </span>
-              )}
+          {/* 当前节气标签 */}
+          {currentJieQi && (
+            <div 
+              className="mt-3 px-4 py-1.5 rounded-full text-sm font-medium"
+              style={{ 
+                backgroundColor: `${COLORS.gold}25`, 
+                color: COLORS.goldLight,
+                border: `1px solid ${COLORS.gold}40`,
+                backdropFilter: "blur(4px)"
+              }}
+            >
+              今日节气 · {currentJieQi}
             </div>
-            
-            {/* 宜忌 */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <div className="flex items-center gap-1 text-xs text-green-600 font-medium">
-                  <CircleDot className="w-3 h-3" />
-                  <span>宜</span>
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {todayYiJi.yi.slice(0, 3).map((item, i) => (
-                    <span 
-                      key={i}
-                      className="text-xs px-2 py-0.5 rounded-full bg-green-50 text-green-700"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-1">
-                <div className="flex items-center gap-1 text-xs text-red-600 font-medium">
-                  <CircleDot className="w-3 h-3" />
-                  <span>忌</span>
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {todayYiJi.ji.slice(0, 3).map((item, i) => (
-                    <span 
-                      key={i}
-                      className="text-xs px-2 py-0.5 rounded-full bg-red-50 text-red-700"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
 
+      {/* 宜忌卡片 - 悬浮在横幅下方 */}
+      <div className="relative z-20 px-4 -mt-8">
+        <Card 
+          style={{ 
+            marginBottom: 16,
+            boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+            borderRadius: "16px",
+          }}
+        >
+          <Card.Body className="p-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <div className="flex items-center gap-1.5 text-sm text-green-700 font-bold">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                  <span>今日宜</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {todayYiJi.yi.slice(0, 3).map((item, i) => (
+                    <span 
+                      key={i}
+                      className="text-xs px-2 py-1 rounded-md bg-green-50 text-green-700 border border-green-100"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center gap-1.5 text-sm text-red-700 font-bold">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                  <span>今日忌</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {todayYiJi.ji.slice(0, 3).map((item, i) => (
+                    <span 
+                      key={i}
+                      className="text-xs px-2 py-1 rounded-md bg-red-50 text-red-700 border border-red-100"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Card.Body>
+        </Card>
+      </div>
+
       {/* 主要内容区域 */}
-      <main className="px-4 py-6 pb-24 -mt-2">
+      <main className="px-4 py-4 pb-24">
         {/* 快捷功能入口 */}
         <div className="mb-6">
           <h2 className="text-base font-bold mb-4 flex items-center gap-2" style={{ color: COLORS.ink }}>
             <Compass className="w-5 h-5" style={{ color: COLORS.primary }} />
-            快捷功能
+            功能服务
           </h2>
           
           <div className="grid grid-cols-4 gap-3">
@@ -301,22 +334,22 @@ export function HomePage() {
         )}
 
         {/* 功能说明卡片 */}
-        <Card style={{ backgroundColor: `${COLORS.primary}08` }}>
+        <Card style={{ backgroundColor: `${COLORS.primary}05`, border: `1px solid ${COLORS.primary}15` }}>
           <Card.Body className="p-4">
             <div className="flex items-start gap-3">
               <div 
                 className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: `${COLORS.primary}15` }}
+                style={{ backgroundColor: `${COLORS.primary}12` }}
               >
                 <Scroll className="w-5 h-5" style={{ color: COLORS.primary }} />
               </div>
               <div>
                 <h3 className="font-bold text-sm mb-1" style={{ color: COLORS.ink }}>
-                  关于八字排盘
+                  关于八字命理
                 </h3>
                 <p className="text-xs text-gray-600 leading-relaxed">
                   八字命理是中国传统命理学的重要组成部分，通过分析出生年月日时的天干地支，
-                  推算个人命格、五行喜忌、大运流年等信息。本应用提供专业的八字排盘和命理分析功能。
+                  推算个人命格、五行喜忌、大运流年等信息。
                 </p>
               </div>
             </div>

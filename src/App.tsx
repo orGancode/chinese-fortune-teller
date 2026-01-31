@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import { BottomNav } from "./components/BottomNav";
+import { ThemeProvider } from "./components/ThemeProvider";
 import { HomePage } from "./pages/HomePage";
 import { PaipanPage } from "./pages/PaipanPage";
 import { BaziResultPage } from "./pages/BaziResultPage";
@@ -10,7 +11,7 @@ import { HistoryPage } from "./pages/HistoryPage";
 
 function Layout() {
   return (
-    <div className="min-h-screen bg-[#FAF8F5] pb-24">
+    <div className="min-h-screen bg-[var(--color-bg)] pb-24">
       <Outlet />
       <BottomNav />
     </div>
@@ -19,21 +20,23 @@ function Layout() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* 带底部导航的主路由 */}
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route path="paipan" element={<PaipanPage />} />
-          <Route path="calendar" element={<CalendarPage />} />
-          <Route path="solar-terms" element={<SolarTermsPage />} />
-          <Route path="settings" element={<SettingsPage />} />
-        </Route>
-        {/* 二级页面（不带底部导航） */}
-        <Route path="result" element={<BaziResultPage />} />
-        <Route path="history" element={<HistoryPage />} />
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* 带底部导航的主路由 */}
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />
+            <Route path="paipan" element={<PaipanPage />} />
+            <Route path="calendar" element={<CalendarPage />} />
+            <Route path="solar-terms" element={<SolarTermsPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+          </Route>
+          {/* 二级页面（不带底部导航） */}
+          <Route path="result" element={<BaziResultPage />} />
+          <Route path="history" element={<HistoryPage />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

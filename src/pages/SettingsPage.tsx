@@ -1,12 +1,12 @@
 import { Card, Button, Dialog, Cell } from "react-vant";
 import { useSettingsStore } from "../store/settingsStore";
 import { useHistoryStore } from "../store/historyStore";
-import { Trash2, Info, AlertTriangle, Shield, Database, History } from "lucide-react";
+import { Trash2, Info, AlertTriangle, Shield, Database, History, Sun, Moon, Monitor } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function SettingsPage() {
-  const { version, clearAllData } = useSettingsStore();
+  const { version, clearAllData, theme, setTheme } = useSettingsStore();
   const { history } = useHistoryStore();
   const [dialogVisible, setDialogVisible] = useState(false);
   const navigate = useNavigate();
@@ -35,6 +35,60 @@ export function SettingsPage() {
               onClick={() => navigate("/history")}
               isLink
             />
+          </Card.Body>
+        </Card>
+
+        {/* Theme Settings */}
+        <Card style={{ marginBottom: 24 }}>
+          <div className="p-4 pb-2">
+            <h3 className="flex items-center gap-2 font-medium">
+              {theme === 'dark' ? (
+                <Moon className="w-5 h-5 text-[#6B8E9F]" />
+              ) : theme === 'light' ? (
+                <Sun className="w-5 h-5 text-[#DAA520]" />
+              ) : (
+                <Monitor className="w-5 h-5 text-[#8B4513]" />
+              )}
+              主题设置
+            </h3>
+            <p className="text-sm text-gray-500 mt-1">切换应用的显示主题</p>
+          </div>
+          <Card.Body className="px-4 pb-4">
+            <div className="flex gap-2">
+              <button
+                onClick={() => setTheme('light')}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border transition-all ${
+                  theme === 'light'
+                    ? 'bg-[#C41E3A] text-white border-[#C41E3A]'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-[#C41E3A]'
+                }`}
+              >
+                <Sun size={18} />
+                <span className="text-sm font-medium">浅色</span>
+              </button>
+              <button
+                onClick={() => setTheme('dark')}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border transition-all ${
+                  theme === 'dark'
+                    ? 'bg-[#C41E3A] text-white border-[#C41E3A]'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-[#C41E3A]'
+                }`}
+              >
+                <Moon size={18} />
+                <span className="text-sm font-medium">深色</span>
+              </button>
+              <button
+                onClick={() => setTheme('system')}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border transition-all ${
+                  theme === 'system'
+                    ? 'bg-[#C41E3A] text-white border-[#C41E3A]'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-[#C41E3A]'
+                }`}
+              >
+                <Monitor size={18} />
+                <span className="text-sm font-medium">跟随系统</span>
+              </button>
+            </div>
           </Card.Body>
         </Card>
 

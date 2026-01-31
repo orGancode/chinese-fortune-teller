@@ -1,16 +1,28 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+type Theme = 'light' | 'dark' | 'system';
+
 interface SettingsState {
-  // 可以在这里添加更多设置选项
+  theme: Theme;
   version: string;
+  setTheme: (theme: Theme) => void;
+  toggleTheme: () => void;
   clearAllData: () => void;
 }
 
 export const useSettingsStore = create<SettingsState>()(
   persist(
-    (_set) => ({
+    (set) => ({
       version: '1.0.0',
+      theme: 'system',
+      setTheme: (theme: Theme) => set({ theme }),
+      toggleTheme: () => set((state) => {
+        const themes: Theme[] = ['light', 'dark', 'system'];
+        const currentIndex = themes.indexOf(state.theme);
+        const nextIndex = (currentIndex + 1) % themes.length;
+        return { theme: themes[nextIndex] };
+      }),
       clearAllData: () => {
         // 清除所有 localStorage 数据
         localStorage.removeItem('bazi-history-storage');

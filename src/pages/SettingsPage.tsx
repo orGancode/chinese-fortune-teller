@@ -1,9 +1,25 @@
 import { Card, Button, Dialog, Cell } from "react-vant";
-import { useSettingsStore } from "../store/settingsStore";
+import { useSettingsStore, type ThemeType } from "../store/settingsStore";
 import { useHistoryStore } from "../store/historyStore";
-import { Trash2, Info, AlertTriangle, Shield, Database, History, Sun, Moon, Monitor } from "lucide-react";
-import { useState } from "react";
+import { 
+  Trash2, Info, AlertTriangle, Shield, Database, History,
+  Sun, Moon, Monitor 
+} from "lucide-react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { ThemeCard, THEME_OPTIONS } from "../components/theme";
+
+const themeIcons: Record<ThemeType, typeof Sun> = {
+  light: Sun,
+  dark: Moon,
+  system: Monitor,
+};
+
+const themeColors: Record<ThemeType, string> = {
+  light: "#DAA520",
+  dark: "#6B8E9F",
+  system: "#8B4513",
+};
 
 export function SettingsPage() {
   const { version, clearAllData, theme, setTheme } = useSettingsStore();
@@ -16,10 +32,16 @@ export function SettingsPage() {
     setDialogVisible(false);
   };
 
+  const currentThemeDesc = useMemo(() => {
+    return THEME_OPTIONS.find(t => t.id === theme)?.description || "";
+  }, [theme]);
+
+  const ThemeIcon = themeIcons[theme];
+
   return (
     <div className="flex flex-col h-full">
       <main className="flex-1 p-4 pb-24 overflow-y-auto">
-        {/* History Management */}
+        {/* 排盘记录 */}
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
             <h3 className="flex items-center gap-2 font-medium">
@@ -38,61 +60,40 @@ export function SettingsPage() {
           </Card.Body>
         </Card>
 
-        {/* Theme Settings */}
+        {/* 主题设置 */}
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
             <h3 className="flex items-center gap-2 font-medium">
-              {theme === 'dark' ? (
-                <Moon className="w-5 h-5 text-[#6B8E9F]" />
-              ) : theme === 'light' ? (
-                <Sun className="w-5 h-5 text-[#DAA520]" />
-              ) : (
-                <Monitor className="w-5 h-5 text-[#8B4513]" />
-              )}
+              <ThemeIcon 
+                className="w-5 h-5" 
+                style={{ color: themeColors[theme] }}
+              />
               主题设置
             </h3>
-            <p className="text-sm text-[var(--color-text-muted)] mt-1">切换应用的显示主题</p>
+            <p className="text-sm text-[var(--color-text-muted)] mt-1">选择最契合心境的显示主题</p>
           </div>
           <Card.Body className="px-4 pb-4">
-            <div className="flex gap-2">
-              <button
-                onClick={() => setTheme('light')}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border transition-all ${
-                  theme === 'light'
-                    ? 'bg-[#C41E3A] text-white border-[#C41E3A]'
-                    : 'bg-[var(--color-card)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-[#C41E3A]'
-                }`}
-              >
-                <Sun size={18} />
-                <span className="text-sm font-medium">浅色</span>
-              </button>
-              <button
-                onClick={() => setTheme('dark')}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border transition-all ${
-                  theme === 'dark'
-                    ? 'bg-[#C41E3A] text-white border-[#C41E3A]'
-                    : 'bg-[var(--color-card)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-[#C41E3A]'
-                }`}
-              >
-                <Moon size={18} />
-                <span className="text-sm font-medium">深色</span>
-              </button>
-              <button
-                onClick={() => setTheme('system')}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border transition-all ${
-                  theme === 'system'
-                    ? 'bg-[#C41E3A] text-white border-[#C41E3A]'
-                    : 'bg-[var(--color-card)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-[#C41E3A]'
-                }`}
-              >
-                <Monitor size={18} />
-                <span className="text-sm font-medium">跟随系统</span>
-              </button>
+            <div className="grid grid-cols-3 gap-3">
+              {THEME_OPTIONS.map(option => (
+                <ThemeCard
+                  key={option.id}
+                  option={option}
+                  isActive={theme === option.id}
+                  onClick={() => setTheme(option.id)}
+                />
+              ))}
+            </div>
+            
+            {/* 当前主题说明 */}
+            <div className="mt-4 p-3 rounded-lg bg-[var(--color-background)] border border-[var(--color-border)]">
+              <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
+                {currentThemeDesc}
+              </p>
             </div>
           </Card.Body>
         </Card>
 
-        {/* Cache Management */}
+        {/* 数据管理 */}
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
             <h3 className="flex items-center gap-2 font-medium">
@@ -115,7 +116,7 @@ export function SettingsPage() {
           </Card.Body>
         </Card>
 
-        {/* Confirmation Dialog */}
+        {/* 确认对话框 */}
         <Dialog
           visible={dialogVisible}
           title={
@@ -134,7 +135,7 @@ export function SettingsPage() {
           onClose={() => setDialogVisible(false)}
         />
 
-        {/* App Information */}
+        {/* 应用信息 */}
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
             <h3 className="flex items-center gap-2 font-medium">
@@ -156,7 +157,7 @@ export function SettingsPage() {
           </Card.Body>
         </Card>
 
-        {/* Disclaimer */}
+        {/* 免责声明 */}
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
             <h3 className="flex items-center gap-2 font-medium text-amber-700">
@@ -166,27 +167,22 @@ export function SettingsPage() {
           </div>
           <Card.Body className="px-4 pb-4">
             <div className="text-sm text-[var(--color-text-muted)] space-y-3">
-              <p>
-                <strong className="text-amber-700">1. 娱乐参考：</strong>
-                本应用提供的八字排盘和命理分析仅供娱乐和参考，不构成任何形式的专业建议。
-              </p>
-              <p>
-                <strong className="text-amber-700">2. 非科学依据：</strong>
-                命理学属于传统文化范畴，其分析结果不具有科学依据，请勿作为人生重大决策的唯一参考。
-              </p>
-              <p>
-                <strong className="text-amber-700">3. 个人责任：</strong>
-                用户基于本应用内容做出的任何决定，均由用户自行承担后果。
-              </p>
-              <p>
-                <strong className="text-amber-700">4. 隐私保护：</strong>
-                本应用所有数据均存储在本地，不会上传至任何服务器，请放心使用。
-              </p>
+              {[
+                { label: "娱乐参考", text: "本应用提供的八字排盘和命理分析仅供娱乐和参考，不构成任何形式的专业建议。" },
+                { label: "非科学依据", text: "命理学属于传统文化范畴，其分析结果不具有科学依据，请勿作为人生重大决策的唯一参考。" },
+                { label: "个人责任", text: "用户基于本应用内容做出的任何决定，均由用户自行承担后果。" },
+                { label: "隐私保护", text: "本应用所有数据均存储在本地，不会上传至任何服务器，请放心使用。" },
+              ].map((item, index) => (
+                <p key={index}>
+                  <strong className="text-amber-700">{index + 1}. {item.label}：</strong>
+                  {item.text}
+                </p>
+              ))}
             </div>
           </Card.Body>
         </Card>
 
-        {/* Copyright */}
+        {/* 版权信息 */}
         <div className="text-center text-sm text-[var(--color-text-muted)] py-4">
           <p>© 2024 Chinese Fortune Teller</p>
           <p className="mt-1">传承中华传统文化</p>

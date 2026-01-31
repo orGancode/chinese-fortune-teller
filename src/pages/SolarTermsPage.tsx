@@ -136,8 +136,8 @@ export function SolarTermsPage() {
         {/* Calendar Grid */}
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
-            <h3 className="font-medium">选择日期</h3>
-            <p className="text-sm text-gray-500 mt-1">点击日历查看任意日期的节气信息</p>
+            <h3 className="font-medium text-[var(--color-text)]">选择日期</h3>
+            <p className="text-sm text-[var(--color-text-muted)] mt-1">点击日历查看任意日期的节气信息</p>
           </div>
           <Card.Body className="px-4 pb-4">
             <CalendarGrid
@@ -153,7 +153,7 @@ export function SolarTermsPage() {
 
         {/* Current Solar Term */}
         {currentTerm ? (
-          <Card style={{ marginBottom: 24, backgroundColor: "#f0fdf4", border: "2px solid #bbf7d0" }}>
+          <Card style={{ marginBottom: 24, backgroundColor: "var(--color-bg-elevated)", border: "2px solid var(--color-border-strong)" }}>
             <div className="p-4 pb-2">
               <h3 className={`flex items-center gap-2 font-medium ${seasonConfig.color}`}>
                 <Sun className="w-6 h-6" />
@@ -165,22 +165,22 @@ export function SolarTermsPage() {
                 <div className={`text-5xl font-bold ${seasonConfig.color} mb-2`}>
                   {currentTerm}
                 </div>
-                <p className="text-gray-600">
+                <p className="text-[var(--color-text-secondary)]">
                   {SOLAR_TERMS_DATA.find(t => t.name === currentTerm)?.description}
                 </p>
               </div>
             </Card.Body>
           </Card>
         ) : (
-          <Card style={{ marginBottom: 24, backgroundColor: "#f9fafb", border: "2px solid #e5e7eb" }}>
+          <Card style={{ marginBottom: 24, backgroundColor: "var(--color-bg-elevated)", border: "2px solid var(--color-border)" }}>
             <div className="p-4 pb-2">
-              <h3 className="flex items-center gap-2 font-medium text-gray-600">
+              <h3 className="flex items-center gap-2 font-medium text-[var(--color-text-secondary)]">
                 <Clock className="w-6 h-6" />
                 当前非节气日
               </h3>
             </div>
             <Card.Body className="px-4 pb-4">
-              <p className="text-gray-500 text-center">
+              <p className="text-[var(--color-text-muted)] text-center">
                 今天不是二十四节气之一，距离下一个节气还有一段时间
               </p>
             </Card.Body>
@@ -199,21 +199,21 @@ export function SolarTermsPage() {
             <Card.Body className="px-4 pb-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-2xl font-bold text-gray-800">
+                  <div className="text-2xl font-bold text-[var(--color-text)]">
                     {nextTerm.term.name}
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-[var(--color-text-muted)] mt-1">
                     {formatDate(nextTerm.term.month, nextTerm.term.day)}
                   </p>
-                  <p className="text-sm text-gray-600 mt-2">
+                  <p className="text-sm text-[var(--color-text-secondary)] mt-2">
                     {nextTerm.term.description}
                   </p>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl font-bold text-[#C41E3A]">
+                  <div className="text-3xl font-bold text-[var(--color-primary)]">
                     {nextTerm.daysUntil}
                   </div>
-                  <p className="text-sm text-gray-500">天后</p>
+                  <p className="text-sm text-[var(--color-text-muted)]">天后</p>
                 </div>
               </div>
             </Card.Body>
@@ -221,7 +221,7 @@ export function SolarTermsPage() {
         )}
 
         {/* Current Season Info */}
-        <Card style={{ marginBottom: 24, backgroundColor: seasonConfig.bgColor.replace('bg-', '').replace('50', '100') === 'green' ? '#f0fdf4' : seasonConfig.bgColor.replace('bg-', '').replace('50', '100') === 'red' ? '#fef2f2' : seasonConfig.bgColor.replace('bg-', '').replace('50', '100') === 'amber' ? '#fffbeb' : '#eff6ff' }}>
+        <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
             <h3 className={`flex items-center gap-2 font-medium ${seasonConfig.color}`}>
               <SeasonIcon className="w-5 h-5" />
@@ -229,7 +229,7 @@ export function SolarTermsPage() {
             </h3>
           </div>
           <Card.Body className="px-4 pb-4">
-            <p className="text-gray-600">
+            <p className="text-[var(--color-text-secondary)]">
               {currentSeason === "spring" && "春季是万物复苏的季节，五行属木，主生发。"}
               {currentSeason === "summer" && "夏季是万物生长的季节，五行属火，主繁茂。"}
               {currentSeason === "autumn" && "秋季是收获的季节，五行属金，主收敛。"}
@@ -242,8 +242,8 @@ export function SolarTermsPage() {
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
             <div className="flex items-center justify-between">
-              <h3 className="font-medium">二十四节气一览</h3>
-              <div className="flex items-center gap-3 text-xs">
+              <h3 className="font-medium text-[var(--color-text)]">二十四节气一览</h3>
+              <div className="flex items-center gap-3 text-xs text-[var(--color-text-secondary)]">
                 <span className="flex items-center gap-1">
                   <span className="w-2 h-2 rounded-full bg-green-500"></span>春
                 </span>
@@ -271,13 +271,13 @@ export function SolarTermsPage() {
                     className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg border transition-all ${
                       isCurrent
                         ? `${termSeason.bgColor} ${termSeason.borderColor} border-2 shadow-sm`
-                        : "bg-gray-50 border-gray-200 hover:bg-gray-100"
+                        : "bg-[var(--color-bg-elevated)] border-[var(--color-border)]"
                     }`}
                   >
-                    <span className={`text-xs font-medium ${isCurrent ? termSeason.color : "text-gray-700"}`}>
+                    <span className={`text-xs font-medium ${isCurrent ? termSeason.color : "text-[var(--color-text)]"}`}>
                       {term.name}
                     </span>
-                    <span className="text-[10px] text-gray-400 mt-0.5">
+                    <span className="text-[10px] text-[var(--color-text-muted)] mt-0.5">
                       {term.month}/{term.day}
                     </span>
                   </div>

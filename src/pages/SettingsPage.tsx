@@ -44,19 +44,25 @@ export function SettingsPage() {
         {/* 排盘记录 */}
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
-            <h3 className="flex items-center gap-2 font-medium">
-              <History className="w-5 h-5 text-[#C41E3A]" />
+            <h3 className="flex items-center gap-2 font-medium text-[var(--color-text)]">
+              <History className="w-5 h-5 text-[var(--color-primary)]" />
               排盘记录
             </h3>
             <p className="text-sm text-[var(--color-text-muted)] mt-1">查看八字排盘历史记录</p>
           </div>
           <Card.Body className="px-4 pb-4">
-            <Cell
-              title="八字排盘历史"
-              label={`共 ${history.length} 条记录`}
+            <div 
+              className="flex items-center justify-between py-3 px-4 rounded-lg cursor-pointer transition-colors border border-[var(--color-border)]"
               onClick={() => navigate("/history")}
-              isLink
-            />
+            >
+              <div className="flex flex-col">
+                <span className="text-[var(--color-text)] font-medium">八字排盘历史</span>
+                <span className="text-sm text-[var(--color-text-muted)]">共 {history.length} 条记录</span>
+              </div>
+              <svg className="w-5 h-5 text-[var(--color-text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
           </Card.Body>
         </Card>
 
@@ -85,7 +91,7 @@ export function SettingsPage() {
             </div>
             
             {/* 当前主题说明 */}
-            <div className="mt-4 p-3 rounded-lg bg-[var(--color-background)] border border-[var(--color-border)]">
+            <div className="mt-4 p-3 rounded-lg bg-[var(--color-bg-elevated)] border border-[var(--color-border)]">
               <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
                 {currentThemeDesc}
               </p>
@@ -96,15 +102,15 @@ export function SettingsPage() {
         {/* 数据管理 */}
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
-            <h3 className="flex items-center gap-2 font-medium">
-              <Database className="w-5 h-5 text-[#8B4513]" />
+            <h3 className="flex items-center gap-2 font-medium text-[var(--color-text)]">
+              <Database className="w-5 h-5 text-[var(--color-gold)]" />
               数据管理
             </h3>
             <p className="text-sm text-[var(--color-text-muted)] mt-1">管理本地存储的数据</p>
           </div>
           <Card.Body className="px-4 pb-4">
             <Button 
-              style={{ width: "100%", backgroundColor: "#ff4d4f", borderColor: "#ff4d4f" }}
+              className="w-full !bg-[var(--color-error)] !border-[var(--color-error)]"
               onClick={() => setDialogVisible(true)}
               icon={<Trash2 className="w-4 h-4 mr-2" />}
             >
@@ -120,8 +126,8 @@ export function SettingsPage() {
         <Dialog
           visible={dialogVisible}
           title={
-            <div className="flex items-center gap-2 justify-center">
-              <AlertTriangle className="w-4 h-4 text-[#C41E3A]" />
+            <div className="flex items-center gap-2 justify-center text-[var(--color-text)]">
+              <AlertTriangle className="w-4 h-4 text-[var(--color-error)]" />
               <span>确认清除数据</span>
             </div>
           }
@@ -129,7 +135,7 @@ export function SettingsPage() {
           showCancelButton
           confirmButtonText="确认清除"
           cancelButtonText="取消"
-          confirmButtonColor="#ff4d4f"
+          confirmButtonColor="var(--color-error)"
           onConfirm={handleClearCache}
           onCancel={() => setDialogVisible(false)}
           onClose={() => setDialogVisible(false)}
@@ -138,8 +144,8 @@ export function SettingsPage() {
         {/* 应用信息 */}
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
-            <h3 className="flex items-center gap-2 font-medium">
-              <Info className="w-5 h-5 text-[#DAA520]" />
+            <h3 className="flex items-center gap-2 font-medium text-[var(--color-text)]">
+              <Info className="w-5 h-5 text-[var(--color-gold)]" />
               应用信息
             </h3>
           </div>
@@ -160,7 +166,7 @@ export function SettingsPage() {
         {/* 免责声明 */}
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2">
-            <h3 className="flex items-center gap-2 font-medium text-amber-700">
+            <h3 className="flex items-center gap-2 font-medium text-[var(--color-warning)]">
               <Shield className="w-5 h-5" />
               免责声明
             </h3>
@@ -174,7 +180,7 @@ export function SettingsPage() {
                 { label: "隐私保护", text: "本应用所有数据均存储在本地，不会上传至任何服务器，请放心使用。" },
               ].map((item, index) => (
                 <p key={index}>
-                  <strong className="text-amber-700">{index + 1}. {item.label}：</strong>
+                  <strong className="text-[var(--color-warning)]">{index + 1}. {item.label}：</strong>
                   {item.text}
                 </p>
               ))}

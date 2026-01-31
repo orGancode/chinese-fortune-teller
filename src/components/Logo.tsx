@@ -20,13 +20,13 @@ export function Logo({ size = "md", showText = true, animated = true, showSlogan
   return (
     <div className={`flex items-center ${config.container}`}>
       <div
-        className={`relative group cursor-pointer ${
+        className={`relative cursor-pointer ${
           animated ? "animate-float" : ""
         }`}
         style={{ color: "var(--color-accent)" }}
       >
         <div
-          className="relative rounded-xl flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110"
+          className="relative rounded-xl flex items-center justify-center shadow-lg"
           style={{
             width: config.icon + 10,
             height: config.icon + 10,
@@ -37,7 +37,6 @@ export function Logo({ size = "md", showText = true, animated = true, showSlogan
             size={config.icon}
             color="white"
             strokeWidth={2}
-            className="transition-transform duration-500 group-hover:rotate-180"
           />
           <div className="absolute -top-1 -right-1">
             <Star
@@ -56,7 +55,7 @@ export function Logo({ size = "md", showText = true, animated = true, showSlogan
             }}
           />
         )}
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
       </div>
 
       {showText && (
@@ -68,7 +67,7 @@ export function Logo({ size = "md", showText = true, animated = true, showSlogan
           </span>
           {showSlogan && size !== "sm" && (
             <span
-              className="text-xs opacity-50 -mt-0.5 transition-opacity duration-300 hover:opacity-80"
+              className="text-xs opacity-50 -mt-0.5 transition-opacity duration-300"
               style={{ color: "var(--color-text-muted)" }}
             >
               传统智慧 · 现代演绎
@@ -83,11 +82,11 @@ export function Logo({ size = "md", showText = true, animated = true, showSlogan
 export function LogoIcon({ size = 32 }: { size?: number }) {
   return (
     <div
-      className="relative group cursor-pointer animate-float"
+      className="relative cursor-pointer animate-float"
       style={{ color: "var(--color-accent)" }}
     >
       <div
-        className="relative rounded-xl flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110"
+        className="relative rounded-xl flex items-center justify-center shadow-lg"
         style={{
           width: size + 10,
           height: size + 10,
@@ -98,7 +97,6 @@ export function LogoIcon({ size = 32 }: { size?: number }) {
           size={size}
           color="white"
           strokeWidth={2}
-          className="transition-transform duration-500 group-hover:rotate-180"
         />
         <div className="absolute -top-1 -right-1 opacity-80">
           <Star
@@ -109,7 +107,7 @@ export function LogoIcon({ size = 32 }: { size?: number }) {
           />
         </div>
       </div>
-      <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
     </div>
   );
 }

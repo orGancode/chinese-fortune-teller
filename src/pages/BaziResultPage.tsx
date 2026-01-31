@@ -24,21 +24,21 @@ import { Header } from "../components/Header";
 
 // 传统中式配色
 const COLORS = {
-  primary: "#8B4513",
-  primaryLight: "#A0522D",
-  accent: "#C41E3A",
-  accentLight: "#DC143C",
-  gold: "#DAA520",
+  primary: "var(--color-primary)",
+  primaryLight: "var(--color-primary-light)",
+  accent: "var(--color-accent)",
+  accentLight: "var(--color-accent-light)",
+  gold: "var(--color-gold)",
   background: "var(--color-bg)",
   cardBg: "var(--color-card)",
   text: "var(--color-text)",
   textMuted: "var(--color-text-muted)",
   border: "var(--color-border)",
-  wood: "#4CAF50",
-  fire: "#F44336",
-  earth: "#8B4513",
-  metal: "#FFD700",
-  water: "#2196F3",
+  wood: "var(--color-wood)",
+  fire: "var(--color-fire)",
+  earth: "var(--color-earth)",
+  metal: "var(--color-metal)",
+  water: "var(--color-water)",
 };
 
 // 五行对应的颜色
@@ -61,7 +61,7 @@ export function BaziResultPage() {
         <main className="flex-1 flex items-center justify-center p-4">
           <Card style={{ marginBottom: 12 }}>
             <Card.Body className="text-center py-12">
-              <p className="text-gray-600 mb-4">暂无排盘结果</p>
+              <p className="text-[var(--color-text-secondary)] mb-4">暂无排盘结果</p>
               <Button onClick={() => navigate("/paipan")}>返回排盘</Button>
             </Card.Body>
           </Card>
@@ -176,7 +176,7 @@ export function BaziResultPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr style={{ backgroundColor: "#F5F0E8" }}>
+                  <tr style={{ backgroundColor: "var(--color-bg-elevated)" }}>
                     <th className="p-3 text-center font-medium" style={{ color: COLORS.textMuted }}></th>
                     <th className="p-3 text-center font-medium" style={{ color: COLORS.text }}>年柱</th>
                     <th className="p-3 text-center font-medium" style={{ color: COLORS.text }}>月柱</th>
@@ -186,7 +186,7 @@ export function BaziResultPage() {
                 </thead>
                 <tbody>
                   <tr style={{ borderBottom: `1px solid ${COLORS.border}` }}>
-                    <td className="p-3 font-medium" style={{ color: COLORS.textMuted, backgroundColor: "#FAFAF8" }}>天干</td>
+                    <td className="p-3 font-medium" style={{ color: COLORS.textMuted, backgroundColor: "var(--color-bg)" }}>天干</td>
                     {pillars.map((pillar) => {
                       const ganZhi = currentBazi[pillar];
                       const gan = ganZhi.charAt(0);
@@ -197,7 +197,7 @@ export function BaziResultPage() {
                           className="p-3 text-center text-lg font-bold"
                           style={{ 
                             color: isDayMaster ? COLORS.accent : COLORS.text,
-                            backgroundColor: isDayMaster ? "#FFF5F5" : "transparent"
+                            backgroundColor: isDayMaster ? "var(--color-primary-soft)" : "transparent"
                           }}
                         >
                           {gan}
@@ -206,7 +206,7 @@ export function BaziResultPage() {
                     })}
                   </tr>
                   <tr>
-                    <td className="p-3 font-medium" style={{ color: COLORS.textMuted, backgroundColor: "#FAFAF8" }}>地支</td>
+                    <td className="p-3 font-medium" style={{ color: COLORS.textMuted, backgroundColor: "var(--color-bg)" }}>地支</td>
                     {pillars.map((pillar) => {
                       const ganZhi = currentBazi[pillar];
                       const zhi = ganZhi.charAt(1);
@@ -383,10 +383,10 @@ export function BaziResultPage() {
                           <span className="font-bold" style={{ color: WUXING_COLORS[element] }}>
                             {count}个
                           </span>
-                          <span className="text-xs text-gray-500">({actualPercentage}%)</span>
+                          <span className="text-xs text-[var(--color-text-muted)]">({actualPercentage}%)</span>
                         </div>
                       </div>
-                      <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-3 bg-[var(--color-border)] rounded-full overflow-hidden">
                         <div 
                           className="h-full rounded-full transition-all duration-500 ease-out"
                           style={{ 
@@ -422,8 +422,8 @@ export function BaziResultPage() {
             </div>
             
             {/* 五行相生相克提示 */}
-            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-              <div className="text-xs text-gray-600 space-y-1">
+            <div className="mt-4 p-3 bg-[var(--color-bg-elevated)] rounded-lg">
+              <div className="text-xs text-[var(--color-text-secondary)] space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="text-[#4CAF50]">● 木</span>
                   <span>→</span>
@@ -434,7 +434,7 @@ export function BaziResultPage() {
                   <span className="text-[#FFD700]">● 金</span>
                   <span>→</span>
                   <span className="text-[#2196F3]">● 水</span>
-                  <span className="ml-2 text-gray-500">(相生)</span>
+                  <span className="ml-2 text-[var(--color-text-muted)]">(相生)</span>
                 </div>
               </div>
             </div>
@@ -468,7 +468,7 @@ export function BaziResultPage() {
                   <div 
                     key={pillar}
                     className="p-3 rounded-lg"
-                    style={{ backgroundColor: "#F5F0E8" }}
+                    style={{ backgroundColor: "var(--color-bg-elevated)" }}
                   >
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium" style={{ color: COLORS.text }}>
@@ -539,8 +539,8 @@ export function BaziResultPage() {
                       key={shenShaName}
                       className="p-3 rounded-lg"
                       style={{ 
-                        backgroundColor: shenShaInfo?.type === '吉' ? '#E8F5E9' : 
-                                        shenShaInfo?.type === '凶' ? '#FFEBEE' : '#FFF3E0',
+                        backgroundColor: shenShaInfo?.type === '吉' ? 'var(--color-success)/10' : 
+                                        shenShaInfo?.type === '凶' ? 'var(--color-error)/10' : 'var(--color-warning)/10',
                         borderLeft: `3px solid ${shenShaInfo?.type === '吉' ? '#4CAF50' : 
                                                  shenShaInfo?.type === '凶' ? '#F44336' : '#FF9800'}`
                       }}
@@ -606,7 +606,7 @@ export function BaziResultPage() {
                   <div 
                     key={pillar}
                     className="flex items-center justify-between py-2 px-3 rounded-lg"
-                    style={{ backgroundColor: "#F5F0E8" }}
+                    style={{ backgroundColor: "var(--color-bg-elevated)" }}
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-sm font-medium" style={{ color: COLORS.text }}>
@@ -689,7 +689,7 @@ export function BaziResultPage() {
                             key={index}
                             className="px-2 py-1 rounded text-xs"
                             style={{ 
-                              backgroundColor: '#E8F5E9',
+                              backgroundColor: 'var(--color-success)/10',
                               color: '#4CAF50'
                             }}
                           >
@@ -709,7 +709,7 @@ export function BaziResultPage() {
                             key={index}
                             className="px-2 py-1 rounded text-xs"
                             style={{ 
-                              backgroundColor: '#FFEBEE',
+                              backgroundColor: 'var(--color-error)/10',
                               color: '#F44336'
                             }}
                           >
@@ -848,7 +848,7 @@ export function BaziResultPage() {
                   <div 
                     key={pillar}
                     className="p-3 rounded-lg"
-                    style={{ backgroundColor: "#F5F0E8" }}
+                    style={{ backgroundColor: "var(--color-bg-elevated)" }}
                   >
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium" style={{ color: COLORS.text }}>
@@ -873,7 +873,7 @@ export function BaziResultPage() {
                           key={index}
                           className="px-1.5 py-0.5 rounded text-xs"
                           style={{ 
-                            backgroundColor: '#E8F5E9',
+                            backgroundColor: 'var(--color-success)/10',
                             color: '#4CAF50'
                           }}
                         >
@@ -911,7 +911,7 @@ export function BaziResultPage() {
                 <div 
                   key={dy.order}
                   className="flex items-center justify-between py-2 px-3 rounded-lg"
-                  style={{ backgroundColor: "#F5F0E8" }}
+                  style={{ backgroundColor: "var(--color-bg-elevated)" }}
                 >
                   <span className="text-sm font-medium" style={{ color: COLORS.text }}>
                     第{dy.order}运
@@ -954,7 +954,7 @@ export function BaziResultPage() {
                     key={ln.year}
                     className="text-center py-3 px-2 rounded-lg"
                     style={{ 
-                      backgroundColor: isCurrent ? "#FFF5F5" : "#F5F0E8",
+                      backgroundColor: isCurrent ? "var(--color-primary-soft)" : "var(--color-bg-elevated)",
                       border: isCurrent ? `1px solid ${COLORS.accent}` : "none"
                     }}
                   >

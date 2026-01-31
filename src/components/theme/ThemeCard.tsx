@@ -21,10 +21,10 @@ export function ThemeCard({ option, isActive, onClick }: ThemeCardProps) {
   return (
     <button
       onClick={onClick}
-      className={`group relative overflow-hidden rounded-xl border-2 transition-all duration-500 ease-out ${
+      className={`relative overflow-hidden rounded-xl border-2 transition-all duration-500 ease-out ${
         isActive
           ? `shadow-lg scale-[1.02]`
-          : "hover:shadow-md"
+          : ""
       }`}
       style={{
         borderColor: isActive ? option.accentColor : "var(--color-border)",
@@ -35,13 +35,7 @@ export function ThemeCard({ option, isActive, onClick }: ThemeCardProps) {
       <div className="relative h-28">
         {isSystem ? <SystemPreview /> : <StandardPreview option={option} Icon={Icon} />}
         
-        {/* 悬停光效 */}
-        <div 
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-          style={{
-            background: `linear-gradient(to top right, transparent, transparent, ${option.accentColor}15)`
-          }}
-        />
+
       </div>
 
       {/* 标签区域 */}
@@ -94,7 +88,7 @@ function StandardPreview({ option, Icon }: { option: ThemeOption; Icon: LucideIc
       <div className="absolute inset-0 p-3 flex flex-col justify-between">
         <div className="flex items-center gap-1.5">
           <div 
-            className="w-6 h-6 rounded-full flex items-center justify-center"
+            className="w-8 h-6 rounded-full flex items-center justify-center"
             style={{ backgroundColor: option.accentColor }}
           >
             <Icon size={12} className="text-white" />
@@ -145,7 +139,7 @@ function SystemPreview() {
       {/* 预览内容 */}
       <div className="absolute inset-0 p-3 flex flex-col justify-between">
         <div className="flex items-center gap-1.5">
-          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#DAA520] to-[#6B8E9F] flex items-center justify-center shadow-md">
+          <div className="w-8 h-6 rounded-full bg-gradient-to-br from-[#DAA520] to-[#6B8E9F] flex items-center justify-center shadow-md">
             <Monitor size={12} className="text-white" />
           </div>
           <div className="h-2 w-12 rounded-full bg-[#8B4513]/20" />

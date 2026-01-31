@@ -35,7 +35,7 @@ export function HistoryPage() {
       message: "确定要删除这条排盘记录吗？",
       confirmButtonText: "删除",
       cancelButtonText: "取消",
-      confirmButtonColor: "#ff4d4f",
+      confirmButtonColor: "var(--color-error)",
     }).then(() => {
       deleteHistoryItem(id);
     }).catch(() => {
@@ -50,7 +50,7 @@ export function HistoryPage() {
       message: "确定要清空所有排盘历史记录吗？此操作不可恢复。",
       confirmButtonText: "清空",
       cancelButtonText: "取消",
-      confirmButtonColor: "#ff4d4f",
+      confirmButtonColor: "var(--color-error)",
     }).then(() => {
       clearHistory();
     }).catch(() => {
@@ -78,17 +78,16 @@ export function HistoryPage() {
         ) : (
           <>
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <History className="w-4 h-4" />
+              <div className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
+                <History className="w-4 h-4 text-[var(--color-text-muted)]" />
                 <span>共 {history.length} 条记录</span>
               </div>
-              <Button 
-                size="small" 
-                style={{ color: "#ff4d4f" }}
+              <button 
+                className="px-3 py-1.5 text-sm rounded border transition-colors text-[var(--color-text-secondary)] border-[var(--color-border)]"
                 onClick={handleClearAll}
               >
                 清空记录
-              </Button>
+              </button>
             </div>
 
             <div className="space-y-3">
@@ -104,38 +103,37 @@ export function HistoryPage() {
                     >
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <div className="flex items-center gap-1 text-sm">
-                            <User className="w-4 h-4 text-[#C41E3A]" />
+                          <div className="flex items-center gap-1 text-sm text-[var(--color-text)]">
+                            <User className="w-4 h-4 text-[var(--color-primary)]" />
                             <span className="font-medium">
                               {getGenderText(item.input.gender)}命
                             </span>
                           </div>
-                          <div className="text-xs text-gray-400">
+                          <div className="text-xs text-[var(--color-text-muted)]">
                             {item.input.birthDate} {item.input.birthTime}
                           </div>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <span className="font-medium text-[#8B4513]">
+                        <div className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
+                          <span className="font-medium text-[var(--color-gold)]">
                             {item.result.year} {item.result.month} {item.result.day} {item.result.hour}
                           </span>
                         </div>
-                        <div className="flex items-center gap-1 text-xs text-gray-400 mt-2">
+                        <div className="flex items-center gap-1 text-xs text-[var(--color-text-muted)] mt-2">
                           <Clock className="w-3 h-3" />
                           <span>{formatDateTime(item.timestamp)}</span>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Button
-                          size="small"
-                          style={{ color: "#ff4d4f" }}
+                        <button
+                          className="px-3 py-1.5 text-sm rounded border transition-colors text-[var(--color-text-muted)] border-[var(--color-border)]"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleDelete(item.id);
                           }}
                         >
                           删除
-                        </Button>
-                        <ChevronRight className="w-5 h-5 text-gray-400" />
+                        </button>
+                        <ChevronRight className="w-5 h-5 text-[var(--color-text-muted)]" />
                       </div>
                     </div>
                   </Card.Body>

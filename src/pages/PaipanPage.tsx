@@ -15,12 +15,12 @@ import { Loader2, Calendar, Clock, MapPin, User, Sparkles, ArrowRight } from "lu
 import { Logo } from "../components/Logo";
 
 const COLORS = {
-  primary: "#C41E3A",
-  primaryLight: "#E85A71",
-  accent: "#C41E3A",
-  accentLight: "#E85A71",
-  gold: "#D4AF37",
-  goldLight: "#F4D03F",
+  primary: "var(--color-primary)",
+  primaryLight: "var(--color-primary-light)",
+  accent: "var(--color-accent)",
+  accentLight: "var(--color-accent-light)",
+  gold: "var(--color-gold)",
+  goldLight: "var(--color-gold-light)",
   background: "var(--color-bg)",
   cardBg: "var(--color-card)",
   cardBorder: "var(--color-border)",
@@ -172,7 +172,7 @@ export function PaipanPage() {
                     padding: "12px 16px",
                     transition: 'all 0.3s ease',
                   }}
-                  className="hover:border-[var(--color-accent)] transition-colors"
+                  className="transition-colors"
                 />
                 <DatetimePicker
                   popup={{

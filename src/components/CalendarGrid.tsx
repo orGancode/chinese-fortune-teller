@@ -193,18 +193,18 @@ export function CalendarGrid({
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={goToPreviousMonth}
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          className="p-2 rounded-full transition-colors"
         >
-          <ChevronLeft className="w-5 h-5 text-gray-600" />
+          <ChevronLeft className="w-5 h-5 text-[var(--color-text-muted)]" />
         </button>
         <div className="flex items-center gap-2">
-          <div className="text-lg font-bold text-gray-800">
+          <div className="text-lg font-bold text-[var(--color-text)]">
             {formatYearMonth(currentMonth.getFullYear(), currentMonth.getMonth())}
           </div>
           {showTodayButton && (
             <button
               onClick={goToToday}
-              className="px-2 py-0.5 text-xs bg-[#C41E3A]/10 text-[#C41E3A] rounded hover:bg-[#C41E3A]/20 transition-colors"
+              className="px-2 py-0.5 text-xs bg-[var(--color-primary-soft)] text-[var(--color-primary)] rounded transition-colors"
             >
               今天
             </button>
@@ -212,9 +212,9 @@ export function CalendarGrid({
         </div>
         <button
           onClick={goToNextMonth}
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          className="p-2 rounded-full transition-colors"
         >
-          <ChevronRight className="w-5 h-5 text-gray-600" />
+          <ChevronRight className="w-5 h-5 text-[var(--color-text-muted)]" />
         </button>
       </div>
 
@@ -224,7 +224,7 @@ export function CalendarGrid({
           <div
             key={index}
             className={`text-center py-2 text-sm font-medium ${
-              index === 0 || index === 6 ? 'text-[#C41E3A]' : 'text-gray-600'
+              index === 0 || index === 6 ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-secondary)]'
             }`}
           >
             {day}
@@ -243,27 +243,37 @@ export function CalendarGrid({
               flex flex-col items-center justify-center
               ${day.isCurrentMonth ? 'opacity-100' : 'opacity-40'}
               ${day.isSelected 
-                ? 'bg-[#C41E3A] text-white shadow-md' 
+                ? 'bg-[var(--color-primary)] text-white shadow-md' 
                 : day.isToday 
-                  ? 'bg-[#DAA520]/20 border border-[#DAA520]'
+                  ? 'bg-[var(--color-gold)]/20 border border-[var(--color-gold)]'
                   : day.customLabel 
-                    ? 'bg-blue-50'
-                    : 'hover:bg-gray-100'
+                    ? 'bg-[var(--color-primary-soft)]'
+                    : ''
               }
             `}
           >
             <span className={`text-sm font-medium ${
-              day.isSelected ? 'text-white' : day.isToday ? 'text-[#DAA520]' : day.customLabel ? 'text-blue-600' : 'text-gray-800'
+              day.isSelected 
+                ? 'text-white' 
+                : day.isToday 
+                  ? 'text-[var(--color-gold)]' 
+                  : day.customLabel 
+                    ? 'text-[var(--color-primary)]' 
+                    : 'text-[var(--color-text)]'
             }`}>
               {day.dayOfMonth}
             </span>
             <span className={`text-[10px] mt-0.5 truncate w-full text-center ${
-              day.isSelected ? 'text-white/80' : day.customLabel ? 'text-blue-600 font-medium' : 'text-gray-500'
+              day.isSelected 
+                ? 'text-white/80' 
+                : day.customLabel 
+                  ? 'text-[var(--color-primary)] font-medium' 
+                  : 'text-[var(--color-text-muted)]'
             }`}>
               {day.customLabel || day.lunarDay}
             </span>
             {showTodayIndicator && day.isToday && !day.isSelected && (
-              <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#DAA520] rounded-full" />
+              <span className="absolute -top-1 -right-1 w-2 h-2 bg-[var(--color-gold)] rounded-full" />
             )}
           </button>
         ))}

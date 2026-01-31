@@ -1,12 +1,12 @@
 import React from 'react';
 
 export const cardStyles = {
-  container: `bg-[var(--color-card)] rounded-2xl border border-[var(--color-border)] shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1`,
+  container: `bg-[var(--color-card)] rounded-2xl border border-[var(--color-border)] shadow-lg overflow-hidden transition-all duration-300`,
 };
 
-export function Card({ children, className = '', style = {}, hoverEffect = true }: { children: React.ReactNode; className?: string; style?: React.CSSProperties; hoverEffect?: boolean }) {
+export function Card({ children, className = '', style = {} }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
-    <div className={`bg-[var(--color-card)] rounded-2xl border border-[var(--color-border)] shadow-lg overflow-hidden transition-all duration-300 ${hoverEffect ? 'hover:shadow-xl hover:-translate-y-1' : ''} ${className}`} style={style}>
+    <div className={`bg-[var(--color-card)] rounded-2xl border border-[var(--color-border)] shadow-lg overflow-hidden transition-all duration-300 ${className}`} style={style}>
       {children}
     </div>
   );

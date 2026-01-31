@@ -1,9 +1,30 @@
+/*
+ * ============================================
+ * 墨韵东方 - 暗色主题配色设计规范
+ * Designed for: Chinese Fortune Teller
+ * Aesthetic: 东方水墨 · 深邃静谧
+ * ============================================
+ * 
+ * 设计理念：
+ * - 背景：使用深邃蓝灰色替代纯黑，营造层次感
+ * - 文字：三级对比度（高/中/低），确保可读性
+ * - 强调：朱砂红转为酒红，更适合暗色环境
+ * - 辅助：石青、墨绿、赭石等传统色彩
+ * - 交互：精细的悬停、激活、禁用状态
+ */
+
+/* ============================================
+   基础 Tailwind 指令
+   ============================================ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* React-Vant 基础样式变量 */
+/* ============================================
+   浅色主题（宣纸雅白）
+   ============================================ */
 :root {
+  /* React-Vant 基础变量 */
   --rv-primary-color: #C41E3A;
   --rv-success-color: #07c160;
   --rv-danger-color: #ff4d4f;
@@ -28,31 +49,181 @@
   --rv-border-radius-lg: 16px;
   --rv-border-radius-max: 999px;
 
-  --color-accent: #C41E3A;
-  --color-accent-light: #E85A71;
+  /* ============================================
+     项目自定义变量 - 浅色主题
+     ============================================ */
+  
+  /* 主色调：朱砂 */
+  --color-primary: #C41E3A;
+  --color-primary-light: #E85A71;
+  --color-primary-dark: #A01830;
+  --color-primary-soft: rgba(196, 30, 58, 0.1);
+  
+  /* 辅助色：金、木、水、火、土 */
   --color-gold: #D4AF37;
   --color-gold-light: #F4D03F;
-  --color-text: #1a1a1a;
-  --color-text-muted: #666666;
+  --color-wood: #4A7C59;
+  --color-water: #3B6B8C;
+  --color-fire: #C75B39;
+  --color-earth: #8B7355;
+  
+  /* ============================================
+     宜忌专用配色 - 传统黄历风格
+     宜：绿色（生机、吉利）
+     忌：红色（警示、禁止）
+     ============================================ */
+  --color-yi: #2D8B6F;                    /* 宜：翡翠绿 */
+  --color-yi-light: #4A9B7F;              /* 宜：浅色 */
+  --color-yi-soft: rgba(45, 139, 111, 0.12);  /* 宜：背景 */
+  --color-ji: #C41E3A;                    /* 忌：朱砂红 */
+  --color-ji-light: #E85A71;              /* 忌：浅色 */
+  --color-ji-soft: rgba(196, 30, 58, 0.12);   /* 忌：背景 */
+  
+  /* 文字色系 */
+  --color-text-primary: #1a1a1a;       /* 主要文字：标题、正文 */
+  --color-text-secondary: #4a4a4a;     /* 次要文字：描述、说明 */
+  --color-text-tertiary: #8a8a8a;      /* 辅助文字：提示、占位 */
+  --color-text-muted: #999999;         /* 禁用、弱化文字 */
+  --color-text-link: #C41E3A;          /* 链接文字 */
+  
+  /* 背景色系 - 向后兼容 */
   --color-bg: #FAFAFA;
+  --color-bg-elevated: #FFFFFF;
+  --color-bg-sunken: #F5F5F5;
+  --color-bg-hover: rgba(0, 0, 0, 0.04);
+  --color-bg-active: rgba(196, 30, 58, 0.08);
+  
+  /* 卡片与容器 - 向后兼容 */
   --color-card: #FFFFFF;
+  --color-card-hover: #FAFAFA;
+  
+  /* 边框与分隔线 - 向后兼容 */
   --color-border: #E8E8E8;
+  --color-border-light: #F0F0F0;
+  --color-border-strong: #D0D0D0;
+  --color-divider: rgba(0, 0, 0, 0.06);
+  
+  /* 阴影系统 - 向后兼容 */
   --color-shadow: rgba(0, 0, 0, 0.08);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.16);
+  --shadow-glow: 0 0 20px rgba(196, 30, 58, 0.2);
+  
+  /* 状态色 */
+  --color-success: #07c160;
+  --color-warning: #faad14;
+  --color-error: #ff4d4f;
+  --color-error-soft: #ff7875;
+  --color-info: #1989fa;
+  
+  /* 图标色 */
+  --color-icon-primary: #4a4a4a;
+  --color-icon-secondary: #8a8a8a;
+  --color-icon-tertiary: #B0B0B0;
+  
+  /* 特殊效果 */
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.5);
 }
 
+/* ============================================
+   暗色主题（墨韵玄青）
+   ============================================ */
 [data-theme="dark"] {
-  --rv-text-color: #f5f5f5;
-  --rv-background-color: #121212;
-  --rv-background-color-light: #1e1e1e;
+  /* React-Vant 暗色覆盖 */
+  --rv-primary-color: #B83A4B;
+  --rv-success-color: #3db778;
+  --rv-danger-color: #ff6b6b;
+  --rv-warning-color: #ffc107;
+  --rv-text-color: #E8E8E8;
+  --rv-active-color: #1C2128;
+  --rv-background-color: #0D1117;
+  --rv-background-color-light: #161B22;
   --rv-text-link-color: #E85A71;
-  --color-text: #f5f5f5;
-  --color-text-muted: #a0a0a0;
-  --color-bg: #121212;
-  --color-card: #1e1e1e;
-  --color-border: #333333;
+
+  /* ============================================
+     项目自定义变量 - 暗色主题
+     ============================================ */
+  
+  /* 主色调：酒红（朱砂暗色版） */
+  --color-primary: #B83A4B;
+  --color-primary-light: #E85A71;
+  --color-primary-dark: #8B2C3A;
+  --color-primary-soft: rgba(184, 58, 75, 0.15);
+  
+  /* 辅助色：暗色版本 */
+  --color-gold: #C9A227;
+  --color-gold-light: #E8C547;
+  --color-wood: #5A8F6E;
+  --color-water: #5A8FA8;
+  --color-fire: #D4704A;
+  --color-earth: #A08060;
+  
+  /* ============================================
+     宜忌专用配色 - 暗色主题适配
+     ============================================ */
+  --color-yi: #5A9B7F;                    /* 宜：亮翡翠绿（暗色更醒目） */
+  --color-yi-light: #6AAB8F;              /* 宜：浅色 */
+  --color-yi-soft: rgba(90, 155, 127, 0.18);  /* 宜：背景 */
+  --color-ji: #D85A6B;                    /* 忌：亮酒红（暗色柔和警示） */
+  --color-ji-light: #E87A8B;              /* 忌：浅色 */
+  --color-ji-soft: rgba(216, 90, 107, 0.18);   /* 忌：背景 */
+  
+  /* 文字色系 - WCAG AA 对比度标准 (向后兼容旧变量名) */
+  --color-text: #E8E8E8;              /* 主要文字：高对比 14.5:1 */
+  --color-text-primary: #E8E8E8;
+  --color-text-secondary: #B0B0B0;    /* 次要文字：中对比 7.2:1 */
+  --color-text-tertiary: #808080;     /* 辅助文字：低对比 4.5:1 */
+  --color-text-muted: #808080;        /* 向后兼容：使用辅助色 */
+  --color-text-link: #E85A71;         /* 链接文字：酒红高亮 */
+  
+  /* 背景色系 - 层次递进 */
+  --color-bg: #0D1117;                /* 页面背景：深邃蓝灰 */
+  --color-bg-elevated: #161B22;       /* 提升背景：卡片、浮层 */
+  --color-bg-sunken: #0A0C10;         /* 下沉背景：输入框内嵌区域 */
+  --color-bg-hover: rgba(255, 255, 255, 0.05);
+  --color-bg-active: rgba(184, 58, 75, 0.15);
+  
+  /* 卡片与容器 */
+  --color-card: #161B22;
+  --color-card-hover: #1C2128;
+  
+  /* 边框与分隔线 */
+  --color-border: #30363D;
+  --color-border-light: #21262D;
+  --color-border-strong: #484F58;
+  --color-divider: rgba(255, 255, 255, 0.06);
+  
+  /* 阴影系统 - 暗色主题 */
   --color-shadow: rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 20px rgba(184, 58, 75, 0.25);
+  
+  /* 状态色 - 适应暗色（柔和版本） */
+  --color-success: #3db778;
+  --color-warning: #ffc107;
+  --color-error: #C45C5C;
+  --color-error-soft: #D47373;
+  --color-info: #4dabf7;
+  
+  /* 图标色 */
+  --color-icon-primary: #B0B0B0;
+  --color-icon-secondary: #808080;
+  --color-icon-tertiary: #606060;
+  
+  /* 特殊效果 - 暗色玻璃拟态 */
+  --glass-bg: rgba(22, 27, 34, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.1);
 }
 
+/* ============================================
+   基础样式
+   ============================================ */
 @layer base {
   * {
     box-sizing: border-box;
@@ -65,18 +236,21 @@
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     background-color: var(--color-bg);
-    color: var(--color-text);
+    color: var(--color-text-primary);
     margin: 0;
     padding: 0;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
-/* Custom scrollbar */
+/* ============================================
+   自定义滚动条
+   ============================================ */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -85,45 +259,34 @@
 
 ::-webkit-scrollbar-thumb {
   background: #c1c1c1;
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: #444444;
+  background: #3B3B3B;
 }
 
-/* Animations */
+
+/* ============================================
+   动画定义
+   ============================================ */
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
 @keyframes pulse-soft {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 @keyframes slide-up {
@@ -138,12 +301,8 @@
 }
 
 @keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes scale-in {
@@ -158,60 +317,43 @@
 }
 
 @keyframes bounce-subtle {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-pulse-soft {
-  animation: pulse-soft 2s ease-in-out infinite;
-}
-
+.animate-spin { animation: spin 1s linear infinite; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
 .animate-shimmer {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
+.animate-slide-up { animation: slide-up 0.4s ease-out forwards; }
+.animate-fade-in { animation: fade-in 0.3s ease-out forwards; }
+.animate-scale-in { animation: scale-in 0.2s ease-out forwards; }
+.animate-bounce-subtle { animation: bounce-subtle 2s ease-in-out infinite; }
 
-.animate-slide-up {
-  animation: slide-up 0.4s ease-out forwards;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.3s ease-out forwards;
-}
-
-.animate-scale-in {
-  animation: scale-in 0.2s ease-out forwards;
-}
-
-.animate-bounce-subtle {
-  animation: bounce-subtle 2s ease-in-out infinite;
-}
-
-/* Staggered animation delays */
+/* 错落动画延迟 */
 .stagger-1 { animation-delay: 0.1s; }
 .stagger-2 { animation-delay: 0.2s; }
 .stagger-3 { animation-delay: 0.3s; }
 .stagger-4 { animation-delay: 0.4s; }
 
-/* React-Vant 样式覆盖 */
+/* ============================================
+   React-Vant 组件样式覆盖
+   ============================================ */
+
+/* 主按钮 */
 .rv-button--primary {
-  background: linear-gradient(135deg, var(--color-accent) 0%, #A01830 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   border: none;
   box-shadow: 0 4px 12px rgba(196, 30, 58, 0.3);
   transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .rv-button--primary {
+  box-shadow: 0 4px 12px rgba(184, 58, 75, 0.25);
 }
 
 .rv-button--primary:active {
@@ -219,31 +361,30 @@
   box-shadow: 0 2px 8px rgba(196, 30, 58, 0.3);
 }
 
+/* 导航栏 */
 .rv-nav-bar {
   background: var(--color-card);
-  color: var(--color-text);
-  box-shadow: 0 1px 3px var(--color-shadow);
+  color: var(--color-text-primary);
+  box-shadow: 0 1px 3px var(--shadow-sm);
 }
 
+/* 卡片 */
 .rv-card {
   border-radius: var(--rv-border-radius-lg);
-  box-shadow: 0 4px 20px var(--color-shadow);
+  box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border);
   background: var(--color-card);
   transition: all 0.3s ease;
 }
 
-.rv-card:hover {
-  box-shadow: 0 8px 30px var(--color-shadow);
-  transform: translateY(-2px);
-}
-
+/* 标签页 */
 .rv-tabs__nav {
   background: var(--color-card);
 }
 
+/* 底部导航 */
 .rv-tabbar-item--active {
-  color: var(--color-accent) !important;
+  color: var(--color-primary) !important;
 }
 
 .rv-tabbar-item__icon {
@@ -254,7 +395,9 @@
   transform: scale(0.95);
 }
 
-/* Page transitions */
+/* ============================================
+   页面过渡动画
+   ============================================ */
 .page-enter {
   opacity: 0;
   transform: translateX(20px);
@@ -276,34 +419,36 @@
   transition: all 0.3s ease;
 }
 
-/* Safe area for bottom navigation */
+/* ============================================
+   安全区域
+   ============================================ */
 .pb-safe {
   padding-bottom: calc(16px + env(safe-area-inset-bottom));
 }
 
-/* Glassmorphism effect */
+/* ============================================
+   玻璃拟态效果
+   ============================================ */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--glass-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
 }
 
-[data-theme="dark"] .glass {
-  background: rgba(30, 30, 30, 0.7);
-}
-
-/* Gradient text */
+/* ============================================
+   渐变文字
+   ============================================ */
 .gradient-text {
-  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-gold) 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-gold) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 /* ============================================
-   Modern Tabbar Styles
+   现代底部导航样式
    ============================================ */
-
 .modern-tabbar {
   position: fixed;
   bottom: 0;
@@ -320,21 +465,11 @@
   left: 0;
   right: 0;
   height: calc(100% - 10px);
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--glass-bg);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 
-    0 -4px 30px rgba(0, 0, 0, 0.08),
-    0 -1px 0 rgba(0, 0, 0, 0.05);
-}
-
-[data-theme="dark"] .modern-tabbar-bg {
-  background: rgba(30, 30, 30, 0.9);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
-    0 -4px 30px rgba(0, 0, 0, 0.3),
-    0 -1px 0 rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
 }
 
 .modern-tabbar-content {
@@ -361,7 +496,7 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  color: #9ca3af;
+  color: var(--color-icon-secondary);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -370,7 +505,7 @@
 }
 
 .modern-tabbar-item.active {
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .tabbar-icon {
@@ -386,17 +521,23 @@
   filter: drop-shadow(0 4px 8px rgba(196, 30, 58, 0.3));
 }
 
+[data-theme="dark"] .tabbar-icon.active {
+  filter: drop-shadow(0 4px 8px rgba(184, 58, 75, 0.25));
+}
+
 .tabbar-label {
   font-size: 11px;
   font-weight: 500;
   transition: all 0.3s ease;
   white-space: nowrap;
-  opacity: 0.7;
+  opacity: 0.8;
+  color: var(--color-text-tertiary);
 }
 
 .tabbar-label.active {
   font-weight: 600;
   opacity: 1;
+  color: var(--color-primary);
   transform: scale(1.05);
 }
 
@@ -405,7 +546,7 @@
   bottom: 6px;
   width: 20px;
   height: 3px;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
   border-radius: 3px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   animation: indicator-pulse 2s ease-in-out infinite;
@@ -422,7 +563,7 @@
   }
 }
 
-/* Center Button Styles */
+/* 中心按钮 */
 .center-item {
   position: relative;
   height: 48px;
@@ -447,7 +588,7 @@
   justify-content: center;
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, var(--color-accent) 0%, #A01830 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   border-radius: 50%;
   box-shadow: 
     0 8px 24px rgba(196, 30, 58, 0.4),
@@ -456,6 +597,13 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+}
+
+[data-theme="dark"] .center-button-inner {
+  box-shadow: 
+    0 8px 24px rgba(184, 58, 75, 0.35),
+    0 4px 12px rgba(184, 58, 75, 0.25),
+    inset 0 2px 0 rgba(255, 255, 255, 0.15);
 }
 
 .center-button-inner::before {
@@ -499,7 +647,7 @@
 .center-label {
   font-size: 11px;
   font-weight: 600;
-  color: var(--color-accent);
+  color: var(--color-primary);
   margin-top: 10px;
   transition: all 0.3s ease;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
@@ -507,35 +655,16 @@
 
 [data-theme="dark"] .center-label {
   text-shadow: none;
-  color: #E85A71;
+  color: var(--color-primary-light);
 }
 
 .safe-area-spacer {
   height: env(safe-area-inset-bottom);
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
 }
 
-[data-theme="dark"] .safe-area-spacer {
-  background: rgba(30, 30, 30, 0.9);
-}
-
-/* Tabbar hover effects for desktop */
-@media (hover: hover) {
-  .modern-tabbar-item:hover:not(.active) {
-    color: #6b7280;
-  }
-  
-  .center-button-inner:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-      0 12px 28px rgba(196, 30, 58, 0.45),
-      0 6px 16px rgba(196, 30, 58, 0.35),
-      inset 0 2px 0 rgba(255, 255, 255, 0.2);
-  }
-}
-
-/* Ripple effect */
+/* 涟漪效果 */
 .modern-tabbar-item::after {
   content: '';
   position: absolute;
@@ -548,6 +677,10 @@
   transition: all 0.4s ease;
 }
 
+[data-theme="dark"] .modern-tabbar-item::after {
+  background: radial-gradient(circle, rgba(184, 58, 75, 0.2) 0%, transparent 70%);
+}
+
 .modern-tabbar-item:active::after {
   opacity: 1;
   transform: scale(1.5);
@@ -555,9 +688,8 @@
 }
 
 /* ============================================
-   Modern Header Styles
+   现代头部样式
    ============================================ */
-
 .modern-header {
   position: relative;
   z-index: 100;
@@ -572,9 +704,7 @@
   right: 0;
   bottom: 0;
   background: linear-gradient(135deg, #C41E3A 0%, #8B4513 50%, #A0522D 100%);
-  box-shadow: 
-    0 4px 20px rgba(196, 30, 58, 0.25),
-    0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
 }
 
 .modern-header-bg::before {
@@ -598,10 +728,8 @@
 }
 
 [data-theme="dark"] .modern-header-bg {
-  background: linear-gradient(135deg, #8B1A2D 0%, #5C2D1D 50%, #4A2512 100%);
-  box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.4),
-    0 2px 8px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #5A1A2A 0%, #3D2418 50%, #2D1A12 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .modern-header-content {
@@ -630,10 +758,6 @@
   flex-shrink: 0;
 }
 
-.header-back-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: translateX(-2px);
-}
 
 .header-back-btn:active {
   transform: scale(0.92);
@@ -641,13 +765,10 @@
 }
 
 [data-theme="dark"] .header-back-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
-[data-theme="dark"] .header-back-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
 
 .header-title-wrapper {
   display: flex;
@@ -687,10 +808,10 @@
 }
 
 [data-theme="dark"] .header-safe-area {
-  background: linear-gradient(135deg, #8B1A2D 0%, #5C2D1D 50%, #4A2512 100%);
+  background: linear-gradient(135deg, #5A1A2A 0%, #3D2418 50%, #2D1A12 100%);
 }
 
-/* Header animation */
+/* 头部入场动画 */
 @keyframes header-slide-in {
   from {
     opacity: 0;
@@ -706,7 +827,7 @@
   animation: header-slide-in 0.3s ease-out;
 }
 
-/* Tablet and desktop adjustments */
+/* 平板和桌面端适配 */
 @media (min-width: 768px) {
   .modern-header-content {
     max-width: 768px;
@@ -714,3 +835,18 @@
     width: 100%;
   }
 }
+
+/* ============================================
+   工具类 - 文本颜色快捷方式
+   ============================================ */
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-tertiary { color: var(--color-text-tertiary); }
+.text-muted { color: var(--color-text-muted); }
+.text-link { color: var(--color-text-link); }
+.text-accent { color: var(--color-primary); }
+
+/* 图标颜色快捷方式 */
+.icon-primary { color: var(--color-icon-primary); }
+.icon-secondary { color: var(--color-icon-secondary); }
+.icon-tertiary { color: var(--color-icon-tertiary); }

@@ -147,12 +147,6 @@ body {
     color: white;
 }
 
-.btn-primary:hover {
-    background-color: #c0392b;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
-}
-
 .btn-primary:active {
     transform: translateY(0);
 }

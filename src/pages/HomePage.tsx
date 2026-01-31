@@ -95,7 +95,7 @@ export function HomePage() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: COLORS.paper }}>
+    <div className="min-h-screen bg-[var(--color-bg)]">
       {/* 顶部横幅区域 - 渐变背景 */}
       <div 
         className="relative overflow-hidden"
@@ -181,7 +181,7 @@ export function HomePage() {
                   {todayYiJi.yi.slice(0, 3).map((item, i) => (
                     <span 
                       key={i}
-                      className="text-xs px-2 py-1 rounded-md bg-green-50 text-green-700 border border-green-100"
+                      className="text-xs px-2 py-1 rounded-md bg-green-100/50 text-green-700 border border-green-200/50 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800/50"
                     >
                       {item}
                     </span>
@@ -197,7 +197,7 @@ export function HomePage() {
                   {todayYiJi.ji.slice(0, 3).map((item, i) => (
                     <span 
                       key={i}
-                      className="text-xs px-2 py-1 rounded-md bg-red-50 text-red-700 border border-red-100"
+                      className="text-xs px-2 py-1 rounded-md bg-red-100/50 text-red-700 border border-red-200/50 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800/50"
                     >
                       {item}
                     </span>
@@ -221,7 +221,7 @@ export function HomePage() {
           <div className="grid grid-cols-4 gap-3">
             <button 
               onClick={() => navigate("/paipan")}
-              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white shadow-sm hover:shadow-md transition-all active:scale-95"
+              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm hover:shadow-md transition-all active:scale-95"
             >
               <div 
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -229,12 +229,12 @@ export function HomePage() {
               >
                 <Sparkles className="w-6 h-6" style={{ color: COLORS.primary }} />
               </div>
-              <span className="text-xs font-medium text-gray-700">八字排盘</span>
+              <span className="text-xs font-medium text-[var(--color-text)]">八字排盘</span>
             </button>
             
             <button 
               onClick={() => navigate("/calendar")}
-              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white shadow-sm hover:shadow-md transition-all active:scale-95"
+              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm hover:shadow-md transition-all active:scale-95"
             >
               <div 
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -242,12 +242,12 @@ export function HomePage() {
               >
                 <Calendar className="w-6 h-6" style={{ color: COLORS.gold }} />
               </div>
-              <span className="text-xs font-medium text-gray-700">万年历</span>
+              <span className="text-xs font-medium text-[var(--color-text)]">万年历</span>
             </button>
             
             <button 
               onClick={() => navigate("/solar-terms")}
-              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white shadow-sm hover:shadow-md transition-all active:scale-95"
+              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm hover:shadow-md transition-all active:scale-95"
             >
               <div 
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -255,12 +255,12 @@ export function HomePage() {
               >
                 <Sun className="w-6 h-6" style={{ color: COLORS.jade }} />
               </div>
-              <span className="text-xs font-medium text-gray-700">节气</span>
+              <span className="text-xs font-medium text-[var(--color-text)]">节气</span>
             </button>
             
             <button 
               onClick={() => navigate("/history")}
-              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white shadow-sm hover:shadow-md transition-all active:scale-95"
+              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm hover:shadow-md transition-all active:scale-95"
             >
               <div 
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -268,7 +268,7 @@ export function HomePage() {
               >
                 <History className="w-6 h-6" style={{ color: COLORS.amber }} />
               </div>
-              <span className="text-xs font-medium text-gray-700">历史</span>
+              <span className="text-xs font-medium text-[var(--color-text)]">历史</span>
             </button>
           </div>
         </div>
@@ -283,7 +283,7 @@ export function HomePage() {
               </h2>
               <button 
                 onClick={() => navigate("/history")}
-                className="text-xs flex items-center gap-1 text-gray-500 hover:text-gray-700"
+                className="text-xs flex items-center gap-1 text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
               >
                 查看全部
                 <ChevronRight className="w-3 h-3" />
@@ -311,20 +311,20 @@ export function HomePage() {
                           >
                             {getGenderText(item.input.gender)}
                           </span>
-                          <span className="text-xs text-gray-400">
+                          <span className="text-xs text-[var(--color-text-muted)]">
                             {formatDateTime(item.timestamp)}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium" style={{ color: COLORS.ink }}>
+                          <span className="text-sm font-medium text-[var(--color-text)]">
                             {item.result.year} · {item.result.month} · {item.result.day} · {item.result.hour}
                           </span>
                         </div>
-                        <div className="text-xs text-gray-500 mt-1">
+                        <div className="text-xs text-[var(--color-text-muted)] mt-1">
                           {item.input.birthDate} {item.input.birthTime}
                         </div>
                       </div>
-                      <ChevronRight className="w-5 h-5 text-gray-400" />
+                      <ChevronRight className="w-5 h-5 text-[var(--color-text-muted)]" />
                     </div>
                   </Card.Body>
                 </Card>
@@ -334,7 +334,7 @@ export function HomePage() {
         )}
 
         {/* 功能说明卡片 */}
-        <Card style={{ backgroundColor: `${COLORS.primary}05`, border: `1px solid ${COLORS.primary}15` }}>
+        <Card className="bg-[var(--color-card)] border border-[var(--color-border)]">
           <Card.Body className="p-4">
             <div className="flex items-start gap-3">
               <div 
@@ -344,10 +344,10 @@ export function HomePage() {
                 <Scroll className="w-5 h-5" style={{ color: COLORS.primary }} />
               </div>
               <div>
-                <h3 className="font-bold text-sm mb-1" style={{ color: COLORS.ink }}>
+                <h3 className="font-bold text-sm mb-1 text-[var(--color-text)]">
                   关于八字命理
                 </h3>
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
                   八字命理是中国传统命理学的重要组成部分，通过分析出生年月日时的天干地支，
                   推算个人命格、五行喜忌、大运流年等信息。
                 </p>

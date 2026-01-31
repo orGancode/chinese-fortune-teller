@@ -255,18 +255,18 @@ export function CalendarPage() {
   // 获取吉凶颜色
   const getNatureColor = (nature: string) => {
     switch (nature) {
-      case '吉': return '#C41E3A';
-      case '凶': return '#333333';
-      default: return '#8B4513';
+      case '吉': return 'var(--color-primary)';
+      case '凶': return 'var(--color-text-secondary)';
+      default: return 'var(--color-gold)';
     }
   };
 
   // 获取吉凶背景色
   const getNatureBgColor = (nature: string) => {
     switch (nature) {
-      case '吉': return 'bg-[#C41E3A]/10 dark:bg-[#C41E3A]/20';
-      case '凶': return 'bg-gray-200 dark:bg-gray-700';
-      default: return 'bg-[#DAA520]/10 dark:bg-[#DAA520]/20';
+      case '吉': return 'bg-[var(--color-primary-soft)]';
+      case '凶': return 'bg-[var(--color-border)]';
+      default: return 'bg-[var(--color-gold)]/10';
     }
   };
 
@@ -277,7 +277,7 @@ export function CalendarPage() {
         <Card style={{ marginBottom: 24 }}>
           <div className="p-4 pb-2 flex items-center justify-between">
             <h3 className="flex items-center gap-2 text-lg font-medium">
-              <Calendar className="w-5 h-5 text-[#C41E3A]" />
+              <Calendar className="w-5 h-5 text-[var(--color-primary)]" />
               选择日期
             </h3>
           </div>
@@ -293,25 +293,25 @@ export function CalendarPage() {
         </Card>
 
         {/* Lunar Date Display */}
-        <Card style={{ marginBottom: 16, borderLeft: "4px solid #DAA520" }}>
+        <Card style={{ marginBottom: 16, borderLeft: "4px solid var(--color-gold)" }}>
           <div className="p-4 pb-2">
             <h3 className="flex items-center gap-2 text-lg font-medium">
-              <Moon className="w-5 h-5 text-[#DAA520]" />
+              <Moon className="w-5 h-5 text-[var(--color-gold)]" />
               农历日期
             </h3>
           </div>
           <Card.Body className="px-4 pb-4">
             {lunarInfo && (
               <div className="space-y-3">
-                <div className="text-2xl font-bold text-gray-800">
+                <div className="text-2xl font-bold text-[var(--color-text)]">
                   {lunarInfo.fullStr}
                 </div>
-                <div className="flex items-center gap-4 text-sm text-gray-600">
+                <div className="flex items-center gap-4 text-sm text-[var(--color-text-secondary)]">
                   <span>年柱：{yearGanZhi}</span>
                   <span>月柱：{monthGanZhi}</span>
                   <span>日柱：{dayGanZhi}</span>
                   {lunarInfo.isLeap && (
-                    <span className="px-2 py-1 bg-[#DAA520]/10 text-[#8B4513] rounded-full text-xs">
+                    <span className="px-2 py-1 bg-[var(--color-gold)]/10 text-[var(--color-gold)] rounded-full text-xs">
                       闰月
                     </span>
                   )}
@@ -327,12 +327,12 @@ export function CalendarPage() {
           <Card>
             <div className="p-4 pb-2">
               <h3 className="text-base flex items-center gap-2 font-medium">
-                <Sparkles className="w-4 h-4 text-[#DAA520]" />
+                <Sparkles className="w-4 h-4 text-[var(--color-gold)]" />
                 生肖
               </h3>
             </div>
             <Card.Body className="px-4 pb-4">
-              <div className="text-3xl font-bold text-[#C41E3A]">
+              <div className="text-3xl font-bold text-[var(--color-primary)]">
                 {zodiac}年
               </div>
             </Card.Body>
@@ -342,12 +342,12 @@ export function CalendarPage() {
           <Card>
             <div className="p-4 pb-2">
               <h3 className="text-base flex items-center gap-2 font-medium">
-                <Clock className="w-4 h-4 text-[#8B4513]" />
+                <Clock className="w-4 h-4 text-[var(--color-primary)]" />
                 周数
               </h3>
             </div>
             <Card.Body className="px-4 pb-4">
-              <div className="text-3xl font-bold text-[#8B4513]">
+              <div className="text-3xl font-bold text-[var(--color-primary)]">
                 第 {weekNumber} 周
               </div>
             </Card.Body>
@@ -356,18 +356,18 @@ export function CalendarPage() {
 
         {/* Solar Term */}
         {solarTerm && (
-          <Card style={{ marginBottom: 16, borderLeft: "4px solid #8B4513" }}>
+          <Card style={{ marginBottom: 16, borderLeft: "4px solid var(--color-primary)" }}>
             <div className="p-4 pb-2">
               <h3 className="flex items-center gap-2 text-lg font-medium">
-                <Sun className="w-5 h-5 text-[#8B4513]" />
+                <Sun className="w-5 h-5 text-[var(--color-primary)]" />
                 今日节气
               </h3>
             </div>
             <Card.Body className="px-4 pb-4">
-              <div className="text-2xl font-bold text-[#8B4513]">
+              <div className="text-2xl font-bold text-[var(--color-primary)]">
                 {solarTerm}
               </div>
-              <p className="text-sm text-gray-500 mt-2">
+              <p className="text-sm text-[var(--color-text-muted)] mt-2">
                 二十四节气之一，是传统农耕文化的重要组成部分
               </p>
             </Card.Body>
@@ -377,10 +377,10 @@ export function CalendarPage() {
         {/* ==================== 黄历区域 ==================== */}
         
         {/* 每日宜忌 */}
-        <Card style={{ marginBottom: 16, borderLeft: "4px solid #C41E3A" }}>
+        <Card style={{ marginBottom: 16, borderLeft: "4px solid var(--color-primary)" }}>
           <div className="p-4 pb-2">
             <h3 className="flex items-center gap-2 text-lg font-medium">
-              <Star className="w-5 h-5 text-[#C41E3A]" />
+              <Star className="w-5 h-5 text-[var(--color-primary)]" />
               每日宜忌
             </h3>
           </div>
@@ -388,35 +388,41 @@ export function CalendarPage() {
             <div className="space-y-4">
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-[#C41E3A] font-bold">宜</span>
-                  <div className="flex-1 h-px bg-[#C41E3A]/20"></div>
+                  <span className="text-[var(--color-yi)] font-medium">宜</span>
+                  <div className="flex-1 h-px bg-[var(--color-yi)]/20"></div>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {yiJi.yi.length > 0 ? (
                     yiJi.yi.map((item, index) => (
-                      <Tag key={index} color="#C41E3A" plain>
+                      <span 
+                        key={index} 
+                        className="text-xs px-2 py-1 rounded-md bg-[var(--color-yi-soft)] text-[var(--color-yi)]"
+                      >
                         {item}
-                      </Tag>
+                      </span>
                     ))
                   ) : (
-                    <span className="text-gray-400 text-sm">暂无宜事</span>
+                    <span className="text-[var(--color-text-muted)] text-sm">暂无宜事</span>
                   )}
                 </div>
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-gray-700 font-bold">忌</span>
-                  <div className="flex-1 h-px bg-gray-300"></div>
+                  <span className="text-[var(--color-ji)] font-medium">忌</span>
+                  <div className="flex-1 h-px bg-[var(--color-ji)]/20"></div>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {yiJi.ji.length > 0 ? (
                     yiJi.ji.map((item, index) => (
-                      <Tag key={index} color="#333333" plain>
+                      <span 
+                        key={index} 
+                        className="text-xs px-2 py-1 rounded-md bg-[var(--color-ji-soft)] text-[var(--color-ji)]"
+                      >
                         {item}
-                      </Tag>
+                      </span>
                     ))
                   ) : (
-                    <span className="text-gray-400 text-sm">暂无忌事</span>
+                    <span className="text-[var(--color-text-muted)] text-sm">暂无忌事</span>
                   )}
                 </div>
               </div>
@@ -442,7 +448,7 @@ export function CalendarPage() {
                   {jianChu}
                 </div>
                 <div className="flex-1">
-                  <div className="text-lg font-bold text-gray-800">
+                  <div className="text-lg font-bold text-[var(--color-text)]">
                     {jianChu}日 - {JIANCHU[jianChu].meaning}
                   </div>
                   <Tag 
@@ -453,7 +459,7 @@ export function CalendarPage() {
                   </Tag>
                 </div>
               </div>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                 {JIANCHU[jianChu].desc}
               </p>
             </Card.Body>
@@ -478,10 +484,10 @@ export function CalendarPage() {
                   {xiu}
                 </div>
                 <div className="flex-1">
-                  <div className="text-lg font-bold text-gray-800">
+                  <div className="text-lg font-bold text-[var(--color-text)]">
                     {xiu}宿 ({XIUS[xiu].animal})
                   </div>
-                  <div className="text-sm text-gray-600">
+                  <div className="text-sm text-[var(--color-text-secondary)]">
                     {XIUS[xiu].direction}
                   </div>
                   <Tag 
@@ -493,10 +499,10 @@ export function CalendarPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <p className="text-sm text-[#C41E3A] font-medium">
+                <p className="text-sm text-[var(--color-primary)] font-medium">
                   {XIUS[xiu].fortune}
                 </p>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                   {XIUS[xiu].desc}
                 </p>
               </div>
@@ -506,10 +512,10 @@ export function CalendarPage() {
 
         {/* 彭祖百忌 */}
         {pengZu.length > 0 && (
-          <Card style={{ marginBottom: 16, borderLeft: "4px solid #8B4513" }}>
+          <Card style={{ marginBottom: 16, borderLeft: "4px solid var(--color-primary)" }}>
             <div className="p-4 pb-2">
               <h3 className="flex items-center gap-2 text-lg font-medium">
-                <Timer className="w-5 h-5 text-[#8B4513]" />
+                <Timer className="w-5 h-5 text-[var(--color-primary)]" />
                 彭祖百忌
               </h3>
             </div>
@@ -518,11 +524,11 @@ export function CalendarPage() {
                 {pengZu.map((item, index) => {
                   const [title, desc] = item.split('，');
                   return (
-                    <div key={index} className="p-3 bg-[#8B4513]/5 rounded-lg">
-                      <div className="text-sm font-bold text-[#8B4513] mb-1">
+                    <div key={index} className="p-3 bg-[var(--color-primary)]/5 rounded-lg">
+                      <div className="text-sm font-bold text-[var(--color-primary)] mb-1">
                         {title}
                       </div>
-                      <div className="text-sm text-gray-600">
+                      <div className="text-sm text-[var(--color-text-secondary)]">
                         {desc}
                       </div>
                     </div>
@@ -534,54 +540,54 @@ export function CalendarPage() {
         )}
 
         {/* 冲煞方位 */}
-        <Card style={{ marginBottom: 16, borderLeft: "4px solid #666666" }}>
+        <Card style={{ marginBottom: 16, borderLeft: "4px solid var(--color-border-strong)" }}>
           <div className="p-4 pb-2">
             <h3 className="flex items-center gap-2 text-lg font-medium">
-              <Compass className="w-5 h-5 text-gray-600" />
+              <Compass className="w-5 h-5 text-[var(--color-text-secondary)]" />
               冲煞方位
             </h3>
           </div>
           <Card.Body className="px-4 pb-4">
             <div className="grid grid-cols-3 gap-4">
-              <div className="text-center p-3 bg-red-50 rounded-lg">
-                <div className="text-sm text-gray-600 mb-1">冲</div>
-                <div className="text-xl font-bold text-[#C41E3A]">
+              <div className="text-center p-3 bg-[var(--color-bg-elevated)] rounded-lg">
+                <div className="text-sm text-[var(--color-text-secondary)] mb-1">冲</div>
+                <div className="text-xl font-bold text-[var(--color-primary)]">
                   {chongSha.chong}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-[var(--color-text-muted)] mt-1">
                   煞{zodiac && ZODIAC_ANIMALS[DIZHI.indexOf(chongSha.chong) || 0]}
                 </div>
               </div>
-              <div className="text-center p-3 bg-gray-100 rounded-lg">
-                <div className="text-sm text-gray-600 mb-1">煞方</div>
-                <div className="text-xl font-bold text-gray-700">
+              <div className="text-center p-3 bg-[var(--color-bg-elevated)] rounded-lg">
+                <div className="text-sm text-[var(--color-text-secondary)] mb-1">煞方</div>
+                <div className="text-xl font-bold text-[var(--color-text)]">
                   {chongSha.sha}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-[var(--color-text-muted)] mt-1">
                   忌向此
                 </div>
               </div>
               <div className="text-center p-3 bg-yellow-50 rounded-lg">
-                <div className="text-sm text-gray-600 mb-1">财神方</div>
+                <div className="text-sm text-[var(--color-text-secondary)] mb-1">财神方</div>
                 <div className="text-xl font-bold text-[#DAA520]">
                   {chongSha.direction}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-[var(--color-text-muted)] mt-1">
                   吉方
                 </div>
               </div>
             </div>
-            <p className="text-xs text-gray-500 mt-3">
+            <p className="text-xs text-[var(--color-text-muted)] mt-3">
               今日与{chongSha.chong}相冲，{chongSha.chong}年出生的人需谨慎行事
             </p>
           </Card.Body>
         </Card>
 
         {/* 时辰吉凶 */}
-        <Card style={{ marginBottom: 16, borderLeft: "4px solid #C41E3A" }}>
+        <Card style={{ marginBottom: 16, borderLeft: "4px solid var(--color-primary)" }}>
           <div className="p-4 pb-2">
             <h3 className="flex items-center gap-2 text-lg font-medium">
-              <Clock className="w-5 h-5 text-[#C41E3A]" />
+              <Clock className="w-5 h-5 text-[var(--color-primary)]" />
               时辰吉凶
             </h3>
           </div>
@@ -592,25 +598,25 @@ export function CalendarPage() {
                   key={index} 
                   className={`p-3 rounded-lg border ${
                     shiChen.yi.length > shiChen.ji.length 
-                      ? 'border-[#C41E3A]/30 bg-[#C41E3A]/5' 
+                      ? 'border-[var(--color-primary)]/30 bg-[var(--color-primary)]/5' 
                       : shiChen.ji.length > shiChen.yi.length 
-                        ? 'border-gray-300 bg-gray-50' 
+                        ? 'border-[var(--color-border-strong)] bg-[var(--color-bg-elevated)]' 
                         : 'border-[#DAA520]/30 bg-[#DAA520]/5'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-bold text-gray-800">{shiChen.name}</span>
-                    <span className="text-xs text-gray-500">{shiChen.start}-{shiChen.end}</span>
+                    <span className="font-bold text-[var(--color-text)]">{shiChen.name}</span>
+                    <span className="text-xs text-[var(--color-text-muted)]">{shiChen.start}-{shiChen.end}</span>
                   </div>
-                  <div className="text-sm text-[#8B4513] mb-1">{shiChen.ganZhi}</div>
-                  <div className="text-xs text-gray-500 mb-2">{shiChen.animal}</div>
+                  <div className="text-sm text-[var(--color-primary)] mb-1">{shiChen.ganZhi}</div>
+                  <div className="text-xs text-[var(--color-text-muted)] mb-2">{shiChen.animal}</div>
                   {shiChen.yi.length > 0 && (
-                    <div className="text-xs text-[#C41E3A] mb-1">
+                    <div className="text-xs text-[var(--color-primary)] mb-1">
                       宜: {shiChen.yi.slice(0, 2).join('、')}
                     </div>
                   )}
                   {shiChen.ji.length > 0 && (
-                    <div className="text-xs text-gray-600">
+                    <div className="text-xs text-[var(--color-text-secondary)]">
                       忌: {shiChen.ji.slice(0, 2).join('、')}
                     </div>
                   )}
@@ -628,49 +634,49 @@ export function CalendarPage() {
           <Card.Body className="px-4 pb-4">
             <div className="space-y-2 text-sm">
               <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
-                <span className="text-gray-500">公历</span>
+                <span className="text-[var(--color-text-muted)]">公历</span>
                 <span className="font-medium">{formatGregorianDate(selectedDate)}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
-                <span className="text-gray-500">农历</span>
+                <span className="text-[var(--color-text-muted)]">农历</span>
                 <span className="font-medium">{lunarInfo?.fullStr}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
-                <span className="text-gray-500">星期</span>
+                <span className="text-[var(--color-text-muted)]">星期</span>
                 <span className="font-medium">{weekday}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
-                <span className="text-gray-500">生肖</span>
+                <span className="text-[var(--color-text-muted)]">生肖</span>
                 <span className="font-medium">{zodiac}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
-                <span className="text-gray-500">年柱</span>
+                <span className="text-[var(--color-text-muted)]">年柱</span>
                 <span className="font-medium">{yearGanZhi}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
-                <span className="text-gray-500">月柱</span>
+                <span className="text-[var(--color-text-muted)]">月柱</span>
                 <span className="font-medium">{monthGanZhi}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
-                <span className="text-gray-500">日柱</span>
+                <span className="text-[var(--color-text-muted)]">日柱</span>
                 <span className="font-medium">{dayGanZhi}</span>
               </div>
               {jianChu && (
                 <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
-                  <span className="text-gray-500">建除</span>
-                  <span className="font-medium text-[#C41E3A]">{jianChu}日</span>
+                  <span className="text-[var(--color-text-muted)]">建除</span>
+                  <span className="font-medium text-[var(--color-primary)]">{jianChu}日</span>
                 </div>
               )}
               {xiu && (
                 <div className="flex justify-between py-2 border-b border-[#D4C5B5]/50">
-                  <span className="text-gray-500">星宿</span>
+                  <span className="text-[var(--color-text-muted)]">星宿</span>
                   <span className="font-medium text-[#DAA520]">{xiu}宿</span>
                 </div>
               )}
               {solarTerm && (
                 <div className="flex justify-between py-2">
-                  <span className="text-gray-500">节气</span>
-                  <span className="font-medium text-[#C41E3A]">{solarTerm}</span>
+                  <span className="text-[var(--color-text-muted)]">节气</span>
+                  <span className="font-medium text-[var(--color-primary)]">{solarTerm}</span>
                 </div>
               )}
             </div>

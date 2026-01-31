@@ -20,14 +20,14 @@ import { ShiChenDialCanvas } from "../components/ShiChenDialCanvas";
 
 // 中国传统色彩
 const COLORS = {
-  primary: "#C41E3A",     // 朱砂红
-  primaryLight: "#E85A71",
-  gold: "#D4AF37",        // 金色
-  goldLight: "#F4D03F",
-  ink: "#2C1810",         // 墨黑
-  paper: "#FAF8F5",       // 宣纸色
-  jade: "#00A86B",        // 翡翠绿
-  amber: "#FFBF00",       // 琥珀
+  primary: "var(--color-primary)",     // 朱砂红
+  primaryLight: "var(--color-primary-light)",
+  gold: "var(--color-gold)",        // 金色
+  goldLight: "var(--color-gold-light)",
+  ink: "var(--color-ink)",         // 墨黑
+  paper: "var(--color-paper)",       // 宣纸色
+  jade: "var(--color-jade)",        // 翡翠绿
+  amber: "var(--color-amber)",       // 琥珀
 };
 
 // 获取今日宜忌
@@ -122,7 +122,7 @@ export function HomePage() {
             <span className="text-white/80 text-xs">{todayGanZhi}</span>
             <button 
               onClick={() => navigate("/settings")}
-              className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+              className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center transition-colors"
             >
               <Settings className="w-4 h-4 text-white" />
             </button>
@@ -170,15 +170,15 @@ export function HomePage() {
           <Card.Body className="p-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <div className="flex items-center gap-1.5 text-sm text-green-700 font-bold">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                <div className="flex items-center gap-1.5 text-sm text-[var(--color-yi)] font-medium">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-yi)]" />
                   <span>今日宜</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {todayYiJi.yi.slice(0, 3).map((item, i) => (
                     <span 
                       key={i}
-                      className="text-xs px-2 py-1 rounded-md bg-green-100/50 text-green-700 border border-green-200/50 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800/50"
+                      className="text-xs px-2 py-1 rounded-md bg-[var(--color-yi-soft)] text-[var(--color-yi)]"
                     >
                       {item}
                     </span>
@@ -186,15 +186,15 @@ export function HomePage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <div className="flex items-center gap-1.5 text-sm text-red-700 font-bold">
-                  <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                <div className="flex items-center gap-1.5 text-sm text-[var(--color-ji)] font-medium">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-ji)]" />
                   <span>今日忌</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {todayYiJi.ji.slice(0, 3).map((item, i) => (
                     <span 
                       key={i}
-                      className="text-xs px-2 py-1 rounded-md bg-red-100/50 text-red-700 border border-red-200/50 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800/50"
+                      className="text-xs px-2 py-1 rounded-md bg-[var(--color-ji-soft)] text-[var(--color-ji)]"
                     >
                       {item}
                     </span>
@@ -218,7 +218,7 @@ export function HomePage() {
           <div className="grid grid-cols-4 gap-3">
             <button 
               onClick={() => navigate("/paipan")}
-              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm hover:shadow-md transition-all active:scale-95"
+              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm transition-all active:scale-95"
             >
               <div 
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -231,7 +231,7 @@ export function HomePage() {
             
             <button 
               onClick={() => navigate("/calendar")}
-              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm hover:shadow-md transition-all active:scale-95"
+              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm transition-all active:scale-95"
             >
               <div 
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -244,7 +244,7 @@ export function HomePage() {
             
             <button 
               onClick={() => navigate("/solar-terms")}
-              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm hover:shadow-md transition-all active:scale-95"
+              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm transition-all active:scale-95"
             >
               <div 
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -257,7 +257,7 @@ export function HomePage() {
             
             <button 
               onClick={() => navigate("/history")}
-              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm hover:shadow-md transition-all active:scale-95"
+              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm transition-all active:scale-95"
             >
               <div 
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -280,7 +280,7 @@ export function HomePage() {
               </h2>
               <button 
                 onClick={() => navigate("/history")}
-                className="text-xs flex items-center gap-1 text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+                className="text-xs flex items-center gap-1 text-[var(--color-text-muted)]"
               >
                 查看全部
                 <ChevronRight className="w-3 h-3" />
@@ -292,7 +292,7 @@ export function HomePage() {
                 <Card 
                   key={item.id}
                   style={{ marginBottom: 0 }}
-                  className="cursor-pointer hover:shadow-md transition-shadow"
+                  className="cursor-pointer transition-shadow"
                   onClick={() => handleHistoryClick(item)}
                 >
                   <Card.Body className="p-4">

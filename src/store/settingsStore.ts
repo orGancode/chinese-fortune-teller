@@ -16,7 +16,7 @@ export const useSettingsStore = create<SettingsState>()(
     (set) => ({
       version: '1.0.0',
       theme: 'system',
-      setTheme: (theme: Theme) => set({ theme }),
+      setTheme: (theme: ThemeType) => set({ theme }),
       toggleTheme: () => set((state) => {
         const themes: ThemeType[] = ['light', 'dark', 'system'];
         const currentIndex = themes.indexOf(state.theme);

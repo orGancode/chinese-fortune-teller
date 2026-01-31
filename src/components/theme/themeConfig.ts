@@ -1,11 +1,10 @@
-import type { LucideIcon } from "lucide-react";
-import type { ThemeType } from "../store/settingsStore";
+import type { ThemeType } from "../../store/settingsStore"
 
 export interface ThemeOption {
   id: ThemeType;
   name: string;
   subtitle: string;
-  icon: LucideIcon;
+  icon: any;
   accentColor: string;
   previewBg: string;
   hoverBorderColor: string;

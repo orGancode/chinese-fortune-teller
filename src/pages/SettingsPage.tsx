@@ -1,4 +1,4 @@
-import { Card, Button, Dialog, Cell } from "react-vant";
+import { Card, Button, Dialog } from "react-vant";
 import { useSettingsStore, type ThemeType } from "../store/settingsStore";
 import { useHistoryStore } from "../store/historyStore";
 import { 

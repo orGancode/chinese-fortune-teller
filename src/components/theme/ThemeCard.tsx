@@ -1,6 +1,5 @@
 import { Sun, Moon, Monitor, type LucideIcon } from "lucide-react";
 import type { ThemeOption } from "./themeConfig";
-import type { ThemeType } from "../../store/settingsStore";
 
 interface ThemeCardProps {
   option: ThemeOption;

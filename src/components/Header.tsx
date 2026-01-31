@@ -1,4 +1,3 @@
-import { NavBar } from 'react-vant';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 
@@ -26,20 +25,27 @@ export function Header({
   };
 
   return (
-    <NavBar
-      title={
-        <div className="text-center">
-          <div className="text-lg font-bold">{title}</div>
-          {subtitle && <div className="text-xs opacity-80">{subtitle}</div>}
+    <header className="modern-header">
+      <div className="modern-header-bg" />
+      <div className="modern-header-content">
+        {showBack ? (
+          <button 
+            className="header-back-btn"
+            onClick={handleBack}
+            aria-label="返回"
+          >
+            <ChevronLeft size={24} strokeWidth={2} />
+          </button>
+        ) : (
+          <div className="header-spacer" />
+        )}
+        <div className="header-title-wrapper">
+          <h1 className="header-title">{title}</h1>
+          {subtitle && <p className="header-subtitle">{subtitle}</p>}
         </div>
-      }
-      fixed={false}
-      leftArrow={showBack ? <ChevronLeft /> : null}
-      onClickLeft={showBack ? handleBack : undefined}
-      style={{ 
-        background: '#8B4513',
-        color: 'white'
-      }}
-    />
+        <div className="header-spacer" />
+      </div>
+      <div className="header-safe-area" />
+    </header>
   );
 }

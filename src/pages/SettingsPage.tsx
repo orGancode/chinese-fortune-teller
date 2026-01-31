@@ -26,7 +26,7 @@ export function SettingsPage() {
               <History className="w-5 h-5 text-[#C41E3A]" />
               排盘记录
             </h3>
-            <p className="text-sm text-gray-500 mt-1">查看八字排盘历史记录</p>
+            <p className="text-sm text-[var(--color-text-muted)] mt-1">查看八字排盘历史记录</p>
           </div>
           <Card.Body className="px-4 pb-4">
             <Cell
@@ -51,7 +51,7 @@ export function SettingsPage() {
               )}
               主题设置
             </h3>
-            <p className="text-sm text-gray-500 mt-1">切换应用的显示主题</p>
+            <p className="text-sm text-[var(--color-text-muted)] mt-1">切换应用的显示主题</p>
           </div>
           <Card.Body className="px-4 pb-4">
             <div className="flex gap-2">
@@ -60,7 +60,7 @@ export function SettingsPage() {
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border transition-all ${
                   theme === 'light'
                     ? 'bg-[#C41E3A] text-white border-[#C41E3A]'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-[#C41E3A]'
+                    : 'bg-[var(--color-card)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-[#C41E3A]'
                 }`}
               >
                 <Sun size={18} />
@@ -71,7 +71,7 @@ export function SettingsPage() {
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border transition-all ${
                   theme === 'dark'
                     ? 'bg-[#C41E3A] text-white border-[#C41E3A]'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-[#C41E3A]'
+                    : 'bg-[var(--color-card)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-[#C41E3A]'
                 }`}
               >
                 <Moon size={18} />
@@ -82,7 +82,7 @@ export function SettingsPage() {
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border transition-all ${
                   theme === 'system'
                     ? 'bg-[#C41E3A] text-white border-[#C41E3A]'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-[#C41E3A]'
+                    : 'bg-[var(--color-card)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-[#C41E3A]'
                 }`}
               >
                 <Monitor size={18} />
@@ -99,7 +99,7 @@ export function SettingsPage() {
               <Database className="w-5 h-5 text-[#8B4513]" />
               数据管理
             </h3>
-            <p className="text-sm text-gray-500 mt-1">管理本地存储的数据</p>
+            <p className="text-sm text-[var(--color-text-muted)] mt-1">管理本地存储的数据</p>
           </div>
           <Card.Body className="px-4 pb-4">
             <Button 
@@ -109,7 +109,7 @@ export function SettingsPage() {
             >
               清除所有缓存数据
             </Button>
-            <p className="text-xs text-gray-500 mt-3">
+            <p className="text-xs text-[var(--color-text-muted)] mt-3">
               清除缓存将删除所有历史记录和设置，应用将恢复到初始状态
             </p>
           </Card.Body>
@@ -144,13 +144,13 @@ export function SettingsPage() {
           </div>
           <Card.Body className="px-4 pb-4">
             <div className="space-y-4">
-              <div className="flex items-center justify-between py-2 border-b border-[#D4C5B5]/50">
-                <span className="text-gray-600">版本号</span>
-                <span className="font-medium text-gray-800">v{version}</span>
+              <div className="flex items-center justify-between py-2 border-b border-[var(--color-border)]">
+                <span className="text-[var(--color-text-muted)]">版本号</span>
+                <span className="font-medium text-[var(--color-text)]">v{version}</span>
               </div>
               <div className="flex items-center justify-between py-2">
-                <span className="text-gray-600">应用名称</span>
-                <span className="font-medium text-gray-800">八字排盘命理分析</span>
+                <span className="text-[var(--color-text-muted)]">应用名称</span>
+                <span className="font-medium text-[var(--color-text)]">八字排盘命理分析</span>
               </div>
             </div>
           </Card.Body>
@@ -165,7 +165,7 @@ export function SettingsPage() {
             </h3>
           </div>
           <Card.Body className="px-4 pb-4">
-            <div className="text-sm text-gray-600 space-y-3">
+            <div className="text-sm text-[var(--color-text-muted)] space-y-3">
               <p>
                 <strong className="text-amber-700">1. 娱乐参考：</strong>
                 本应用提供的八字排盘和命理分析仅供娱乐和参考，不构成任何形式的专业建议。
@@ -187,7 +187,7 @@ export function SettingsPage() {
         </Card>
 
         {/* Copyright */}
-        <div className="text-center text-sm text-gray-400 py-4">
+        <div className="text-center text-sm text-[var(--color-text-muted)] py-4">
           <p>© 2024 Chinese Fortune Teller</p>
           <p className="mt-1">传承中华传统文化</p>
         </div>

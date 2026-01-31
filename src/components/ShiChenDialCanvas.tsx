@@ -290,38 +290,38 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
 
       // 步骤1：绘制白色右半圆（阳鱼）
       ctx.beginPath();
-      ctx.arc(0, 0, r, -Math.PI/2, Math.PI/2);
+      ctx.arc(0, 0, r, 0, Math.PI, true);
       ctx.fillStyle = "#FAF8F5";
       ctx.fill();
 
       // 步骤2：绘制黑色左半圆（阴鱼）
       ctx.beginPath();
-      ctx.arc(0, 0, r, Math.PI/2, -Math.PI/2);
+      ctx.arc(0, 0, r, 0, Math.PI, false);
       ctx.fillStyle = "#2C1810";
       ctx.fill();
 
       // 步骤3：在右侧（阳鱼位置）下方绘制黑色小圆（黑眼）
       ctx.beginPath();
-      ctx.arc(0, r/2, r/2, 0, Math.PI*2);
-      ctx.fillStyle = "#2C1810";
+      ctx.arc(r/2, 0, r/2, 0, Math.PI*2);
+      ctx.fillStyle = "#FAF8F5";
       ctx.fill();
 
       // 步骤4：在左侧（阴鱼位置）上方绘制白色小圆（白眼）
       ctx.beginPath();
-      ctx.arc(0, -r/2, r/2, 0, Math.PI*2);
-      ctx.fillStyle = "#FAF8F5";
+      ctx.arc(-r/2, 0, r/2, 0, Math.PI*2);
+      ctx.fillStyle = "#2C1810";
       ctx.fill();
 
       // 步骤5：在黑色小圆中心绘制白色鱼眼（阴中之阳）
       ctx.beginPath();
-      ctx.arc(0, r/2, r/6, 0, Math.PI*2);
-      ctx.fillStyle = "#FAF8F5";
+      ctx.arc(r/2, 0, r/6, 0, Math.PI*2);
+      ctx.fillStyle = "#2C1810";
       ctx.fill();
 
       // 步骤6：在白色小圆中心绘制黑色鱼眼（阳中之阴）
       ctx.beginPath();
-      ctx.arc(0, -r/2, r/6, 0, Math.PI*2);
-      ctx.fillStyle = "#2C1810";
+      ctx.arc(-r/2, 0, r/6, 0, Math.PI*2);
+      ctx.fillStyle = "#FAF8F5";
       ctx.fill();
       
       ctx.restore();
@@ -411,3 +411,4 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
     </div>
   );
 }
+

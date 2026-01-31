@@ -1,5 +1,54 @@
 import { useEffect, useRef, useState } from "react";
 
+// 天干地支数组
+const TIANGAN = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
+const DIZHI = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+
+// 计算日柱
+function getDayPillar(date: Date): string {
+  const baseDate = new Date(1900, 0, 31); // 1900年1月31日是甲戌日
+  const diffTime = date.getTime() - baseDate.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const ganIndex = (diffDays % 10 + 10) % 10;
+  const zhiIndex = (diffDays % 12 + 12) % 12;
+  return TIANGAN[ganIndex] + DIZHI[zhiIndex];
+}
+
+// 计算时柱
+function getHourPillar(date: Date): string {
+  const dayPillar = getDayPillar(date);
+  const hour = date.getHours();
+  
+  // 计算时辰索引
+  let zhiIndex: number;
+  if (hour >= 23 || hour < 1) zhiIndex = 0;  // 子
+  else if (hour >= 1 && hour < 3) zhiIndex = 1;  // 丑
+  else if (hour >= 3 && hour < 5) zhiIndex = 2;  // 寅
+  else if (hour >= 5 && hour < 7) zhiIndex = 3;  // 卯
+  else if (hour >= 7 && hour < 9) zhiIndex = 4;  // 辰
+  else if (hour >= 9 && hour < 11) zhiIndex = 5; // 巳
+  else if (hour >= 11 && hour < 13) zhiIndex = 6; // 午
+  else if (hour >= 13 && hour < 15) zhiIndex = 7; // 未
+  else if (hour >= 15 && hour < 17) zhiIndex = 8; // 申
+  else if (hour >= 17 && hour < 19) zhiIndex = 9; // 酉
+  else if (hour >= 19 && hour < 21) zhiIndex = 10; // 戌
+  else zhiIndex = 11; // 亥
+  
+  // 五鼠遁：根据日干推算时干
+  const dayGan = dayPillar.charAt(0);
+  const dayGanIndex = TIANGAN.indexOf(dayGan);
+  
+  let startGan: number;
+  if (dayGanIndex === 0 || dayGanIndex === 5) startGan = 0; // 甲己->甲
+  else if (dayGanIndex === 1 || dayGanIndex === 6) startGan = 2; // 乙庚->丙
+  else if (dayGanIndex === 2 || dayGanIndex === 7) startGan = 4; // 丙辛->戊
+  else if (dayGanIndex === 3 || dayGanIndex === 8) startGan = 6; // 丁壬->庚
+  else startGan = 8; // 戊癸->壬
+  
+  const ganIndex = (startGan + zhiIndex) % 10;
+  return TIANGAN[ganIndex] + DIZHI[zhiIndex];
+}
+
 // 十二时辰数据（传统划分）
 const SHI_CHEN_DATA = [
   { name: "子", time: "23-1", zodiac: "鼠", startHour: 23 },
@@ -36,6 +85,7 @@ interface ShiChenDialCanvasProps {
 export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [currentShiChen, setCurrentShiChen] = useState(SHI_CHEN_DATA[0]);
+  const [hourPillar, setHourPillar] = useState("");
   const animationRef = useRef<number>();
 
   useEffect(() => {
@@ -68,6 +118,9 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
       // 计算当前时辰索引（传统时辰划分）
       const currentIndex = Math.floor(((hours + 1) % 24) / 2);
       setCurrentShiChen(SHI_CHEN_DATA[currentIndex]);
+      
+      // 计算当前时柱
+      setHourPillar(getHourPillar(now));
 
       // 计算当前时辰开始的小时
       const currentShiChenStartHour = SHI_CHEN_DATA[currentIndex].startHour;
@@ -403,9 +456,9 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
           filter: "drop-shadow(0 4px 16px rgba(139, 69, 19, 0.25))",
         }}
       />
-      <div className="mt-2 text-center">
+      <div className="mt-2 text-center space-y-1">
         <div className="text-base font-bold" style={{ color: "#f7bec7" }}>
-          {currentShiChen.name}时 · {currentShiChen.zodiac} · {currentShiChen.time}
+          {currentShiChen.name}时 · {currentShiChen.zodiac} · {currentShiChen.time} · <span style={{ color: '#D4AF37' }}>{hourPillar}</span>
         </div>
       </div>
     </div>

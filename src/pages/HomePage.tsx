@@ -142,19 +142,21 @@ export function HomePage() {
           </div>
           
           {/* 当前节气标签 */}
-          {currentJieQi && (
-            <div 
-              className="mt-3 px-4 py-1.5 rounded-full text-sm font-medium"
-              style={{ 
-                backgroundColor: `${COLORS.gold}25`, 
-                color: COLORS.goldLight,
-                border: `1px solid ${COLORS.gold}40`,
-                backdropFilter: "blur(4px)"
-              }}
-            >
-              今日节气 · {currentJieQi}
-            </div>
-          )}
+          <div className="mt-3 flex items-center gap-2">
+            {currentJieQi && (
+              <div 
+                className="px-4 py-1.5 rounded-full text-sm font-medium"
+                style={{ 
+                  backgroundColor: `${COLORS.gold}25`, 
+                  color: COLORS.goldLight,
+                  border: `1px solid ${COLORS.gold}40`,
+                  backdropFilter: "blur(4px)"
+                }}
+              >
+                节气 · {currentJieQi}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

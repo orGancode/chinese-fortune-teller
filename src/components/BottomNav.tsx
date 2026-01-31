@@ -26,8 +26,8 @@ const navItems: NavItem[] = [
   {
     path: "/paipan",
     label: "排盘",
-    icon: <Sparkles size={28} strokeWidth={1.5} />,
-    activeIcon: <Sparkles size={28} strokeWidth={2} />,
+    icon: <Sparkles size={28} strokeWidth={1} />,
+    activeIcon: <Sparkles size={28} strokeWidth={1.5} />,
     isCenter: true,
   },
   {

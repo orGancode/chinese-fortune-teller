@@ -34,7 +34,6 @@ export function SettingsPage() {
               label={`共 ${history.length} 条记录`}
               onClick={() => navigate("/history")}
               isLink
-              icon={<History className="w-5 h-5 text-[#C41E3A]" />}
             />
           </Card.Body>
         </Card>

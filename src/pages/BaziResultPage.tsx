@@ -114,14 +114,7 @@ export function BaziResultPage() {
       
       {/* 顶部操作栏 */}
       <div className="px-4 py-3 flex items-center justify-between" style={{ backgroundColor: COLORS.cardBg }}>
-        <button 
-          onClick={handleBack}
-          className="flex items-center gap-1 text-sm"
-          style={{ color: COLORS.primary }}
-        >
-          <ArrowLeft size={18} />
-          返回
-        </button>
+        <div></div>
         <div className="flex items-center gap-3">
           <button 
             className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-lg"

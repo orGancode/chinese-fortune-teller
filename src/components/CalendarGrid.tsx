@@ -245,7 +245,7 @@ export function CalendarGrid({
               ${day.isSelected 
                 ? 'bg-[#C41E3A] text-white shadow-md' 
                 : day.isToday 
-                  ? 'bg-[#DAA520]/20 border-2 border-[#DAA520]'
+                  ? 'bg-[#DAA520]/20 border border-[#DAA520]'
                   : day.customLabel 
                     ? 'bg-blue-50'
                     : 'hover:bg-gray-100'

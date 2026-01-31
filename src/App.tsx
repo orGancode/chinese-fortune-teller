@@ -10,7 +10,7 @@ import { HistoryPage } from "./pages/HistoryPage";
 
 function Layout() {
   return (
-    <div className="min-h-screen bg-[#FAF8F5] pb-16">
+    <div className="min-h-screen bg-[#FAF8F5] pb-24">
       <Outlet />
       <BottomNav />
     </div>

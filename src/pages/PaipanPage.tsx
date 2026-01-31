@@ -314,6 +314,7 @@ export function PaipanPage() {
                 nativeType="submit"
                 className="w-full mt-4"
                 size="large"
+                iconPosition="right"
                 icon={<ArrowRight className="mr-2 h-5 w-5" />}
                 loading={isLoading}
                 disabled={isLoading || !birthDate || !birthTime || !location}

@@ -247,7 +247,7 @@ export function CalendarGrid({
                 : day.isToday 
                   ? 'bg-[#DAA520]/20 border-2 border-[#DAA520]'
                   : day.customLabel 
-                    ? 'bg-blue-50 border border-blue-200'
+                    ? 'bg-blue-50'
                     : 'hover:bg-gray-100'
               }
             `}

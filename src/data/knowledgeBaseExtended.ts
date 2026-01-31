@@ -1,7 +1,6 @@
 import type {
   TianGanInfo,
   DiZhiInfo,
-  ShiShenRelation,
   ShiShenDesc,
   GeJuInfo,
   DayMasterInfo,
@@ -10,10 +9,8 @@ import type {
   NaYinInfo,
   JianChuInfo,
   XiuInfo,
-  PengZuInfo,
   ShiChenInfo,
-  XiYongShen,
-  WuXingAnalysis
+  XiYongShen
 } from '../types';
 
 // 天干详细信息
@@ -1161,9 +1158,7 @@ export function analyzeXiYongShen(bazi: { year: string; month: string; day: stri
       suggestions: ['请检查月柱数据', '确保输入的出生时间正确']
     };
   }
-  
-  const monthElement = DIZHI_DETAIL[monthBranch].element;
-  
+
   // 计算五行数量
   const wuxingCount = { '木': 0, '火': 0, '土': 0, '金': 0, '水': 0 };
   const allStems = [bazi.year.charAt(0), bazi.month.charAt(0), bazi.day.charAt(0), bazi.hour.charAt(0)];
@@ -1473,7 +1468,7 @@ export const PENGZU: Record<string, string[]> = {
 };
 
 // 时辰黄历信息
-export function getShiChenHuangLi(dayGan: string, dayZhi: string): ShiChenInfo[] {
+export function getShiChenHuangLi(dayGan: string): ShiChenInfo[] {
   return [
     { name: '子时', start: '23:00', end: '01:00', ganZhi: `${dayGan === '甲' || dayGan === '己' ? '甲' : dayGan === '乙' || dayGan === '庚' ? '丙' : dayGan === '丙' || dayGan === '辛' ? '戊' : dayGan === '丁' || dayGan === '壬' ? '庚' : '壬'}子`, animal: '鼠', yi: ['安床', '祈福', '求财'], ji: ['出行', '动土'] },
     { name: '丑时', start: '01:00', end: '03:00', ganZhi: `${dayGan === '甲' || dayGan === '己' ? '乙' : dayGan === '乙' || dayGan === '庚' ? '丁' : dayGan === '丙' || dayGan === '辛' ? '己' : dayGan === '丁' || dayGan === '壬' ? '辛' : '癸'}丑`, animal: '牛', yi: ['祭祀', '祈福'], ji: ['出行', '嫁娶'] },
@@ -1535,7 +1530,7 @@ export function getPengZu(dayGan: string, dayZhi: string): string[] {
 }
 
 // 获取每日宜忌（简化版）
-export function getYiJi(dayGan: string, dayZhi: string, jianChu: string, xiu: string): { yi: string[], ji: string[] } {
+export function getYiJi(jianChu: string, xiu: string): { yi: string[], ji: string[] } {
   const yi: string[] = [];
   const ji: string[] = [];
   

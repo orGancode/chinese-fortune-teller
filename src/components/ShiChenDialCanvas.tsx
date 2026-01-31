@@ -174,16 +174,15 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
           } else {
             // 阴爻：两条短线（断开，沿切线方向）
             const gap = 4; // 中间断开距离
-            const halfLength = (yaoLength - gap) / 2;
-            
+
             // 左短线（沿切线方向）
             ctx.beginPath();
             ctx.moveTo(
-              cx - Math.cos(tangentAngle) * (yaoLength/2), 
+              cx - Math.cos(tangentAngle) * (yaoLength/2),
               cy - Math.sin(tangentAngle) * (yaoLength/2)
             );
             ctx.lineTo(
-              cx - Math.cos(tangentAngle) * (gap/2), 
+              cx - Math.cos(tangentAngle) * (gap/2),
               cy - Math.sin(tangentAngle) * (gap/2)
             );
             ctx.strokeStyle = "#8B4513";

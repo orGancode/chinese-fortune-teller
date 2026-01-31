@@ -8,8 +8,6 @@ import {
   getNayin,
 } from "../data/knowledgeBase";
 import {
-  TIANGAN_DETAIL,
-  DIZHI_DETAIL,
   NAYIN_DETAIL,
   SHISHEN_DETAIL,
   GEJU_DETAIL,
@@ -21,7 +19,7 @@ import {
   analyzeXiYongShen,
 } from "../data/knowledgeBaseExtended";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Share2, RotateCcw, Star, Sparkles, Crown, Leaf, Droplets, Flame, Mountain } from "lucide-react";
+import { Share2, RotateCcw, Star, Sparkles, Crown } from "lucide-react";
 import { Header } from "../components/Header";
 
 // 传统中式配色
@@ -52,15 +50,6 @@ const WUXING_COLORS: Record<string, string> = {
   水: COLORS.water,
 };
 
-// 五行对应的图标
-const WUXING_ICONS: Record<string, React.ReactNode> = {
-  木: <Leaf size={20} />,
-  火: <Flame size={20} />,
-  土: <Mountain size={20} />,
-  金: <Crown size={20} />,
-  水: <Droplets size={20} />,
-};
-
 export function BaziResultPage() {
   const navigate = useNavigate();
   const { currentBazi } = useBaziStore();
@@ -80,10 +69,6 @@ export function BaziResultPage() {
       </div>
     );
   }
-
-  const handleBack = () => {
-    navigate(-1);
-  };
 
   const handleRecalculate = () => {
     navigate("/paipan");
@@ -853,7 +838,7 @@ export function BaziResultPage() {
             <div className="space-y-4">
               {['year', 'month', 'hour'].map((pillar) => {
                 const ganZhi = currentBazi[pillar as keyof typeof currentBazi];
-                const gan = ganZhi.charAt(0);
+                const gan = String(ganZhi).charAt(0);
                 const shishen = getShishen(dayMaster, gan);
                 const shishenDetail = SHISHEN_DETAIL[shishen];
                 

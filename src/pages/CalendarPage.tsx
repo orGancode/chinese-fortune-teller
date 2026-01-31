@@ -6,7 +6,6 @@ import { CalendarGrid } from "../components/CalendarGrid";
 import {
   JIANCHU,
   XIUS,
-  PENGZU,
   getJianChu,
   getXiu,
   getPengZu,
@@ -180,7 +179,6 @@ function formatGregorianDate(date: Date): string {
 
 // 获取冲煞信息
 function getChongSha(dayZhi: string): { chong: string; sha: string; direction: string } {
-  const zhiOrder = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
   const chongMap: Record<string, string> = {
     '子': '午', '丑': '未', '寅': '申', '卯': '酉',
     '辰': '戌', '巳': '亥', '午': '子', '未': '丑',
@@ -242,8 +240,8 @@ export function CalendarPage() {
     const jc = getJianChu(dayZhi, monthZhi);
     const x = getXiu(dayZhi, dayGan);
     const pz = getPengZu(dayGan, dayZhi);
-    const yj = getYiJi(dayGan, dayZhi, jc, x);
-    const sc = getShiChenHuangLi(dayGan, dayZhi);
+    const yj = getYiJi(jc, x);
+    const sc = getShiChenHuangLi(dayGan);
     const cs = getChongSha(dayZhi);
     
     setJianChu(jc);

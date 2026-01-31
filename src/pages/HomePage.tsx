@@ -1,20 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import { Card, Button } from "react-vant";
+import { Card } from "react-vant";
 import { useHistoryStore } from "../store/historyStore";
 import { useBaziStore } from "../store/baziStore";
 import type { HistoryItem } from "../types";
 import lunisolar from "lunisolar";
-import { 
-  Sparkles, 
-  Calendar, 
-  Sun, 
-  History, 
+import {
+  Sparkles,
+  Calendar,
+  Sun,
+  History,
   ChevronRight,
-  User,
   Compass,
   BookOpen,
   Scroll,
-  CircleDot,
   Star,
   Settings
 } from "lucide-react";
@@ -35,8 +33,7 @@ const COLORS = {
 // 获取今日宜忌
 function getTodayYiJi(): { yi: string[]; ji: string[] } {
   const today = new Date();
-  const lsr = lunisolar(today);
-  
+
   // 基于农历日期生成宜忌（示例）
   const day = today.getDate();
   const yi = [];

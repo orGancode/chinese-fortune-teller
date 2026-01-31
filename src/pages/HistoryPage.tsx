@@ -4,7 +4,7 @@ import { useHistoryStore } from "../store/historyStore";
 import { useBaziStore } from "../store/baziStore";
 import type { HistoryItem } from "../types";
 import { useNavigate } from "react-router-dom";
-import { History, Trash2, ChevronRight, Clock, User } from "lucide-react";
+import { History, ChevronRight, Clock, User } from "lucide-react";
 
 // 格式化日期时间
 function formatDateTime(timestamp: number): string {

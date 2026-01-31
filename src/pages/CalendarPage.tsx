@@ -266,9 +266,9 @@ export function CalendarPage() {
   // 获取吉凶背景色
   const getNatureBgColor = (nature: string) => {
     switch (nature) {
-      case '吉': return 'bg-[#C41E3A]/10';
-      case '凶': return 'bg-gray-200';
-      default: return 'bg-[#DAA520]/10';
+      case '吉': return 'bg-[#C41E3A]/10 dark:bg-[#C41E3A]/20';
+      case '凶': return 'bg-gray-200 dark:bg-gray-700';
+      default: return 'bg-[#DAA520]/10 dark:bg-[#DAA520]/20';
     }
   };
 

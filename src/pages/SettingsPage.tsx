@@ -22,7 +22,7 @@ const themeColors: Record<ThemeType, string> = {
 };
 
 export function SettingsPage() {
-  const { version, clearAllData, theme, setTheme } = useSettingsStore();
+  const { clearAllData, theme, setTheme } = useSettingsStore();
   const { history } = useHistoryStore();
   const [dialogVisible, setDialogVisible] = useState(false);
   const navigate = useNavigate();

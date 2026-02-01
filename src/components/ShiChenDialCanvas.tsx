@@ -87,6 +87,7 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
   const [currentShiChen, setCurrentShiChen] = useState(SHI_CHEN_DATA[0]);
   const [hourPillar, setHourPillar] = useState("");
   const animationRef = useRef<number>();
+  const lastShiChenIndexRef = useRef<number>(-1);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -117,10 +118,13 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
 
       // 计算当前时辰索引（传统时辰划分）
       const currentIndex = Math.floor(((hours + 1) % 24) / 2);
-      setCurrentShiChen(SHI_CHEN_DATA[currentIndex]);
       
-      // 计算当前时柱
-      setHourPillar(getHourPillar(now));
+      // 只在时辰变化时才更新状态，避免不必要的重渲染
+      if (currentIndex !== lastShiChenIndexRef.current) {
+        lastShiChenIndexRef.current = currentIndex;
+        setCurrentShiChen(SHI_CHEN_DATA[currentIndex]);
+        setHourPillar(getHourPillar(now));
+      }
 
       // 计算当前时辰开始的小时
       const currentShiChenStartHour = SHI_CHEN_DATA[currentIndex].startHour;

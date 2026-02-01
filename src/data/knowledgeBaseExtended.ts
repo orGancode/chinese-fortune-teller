@@ -1537,8 +1537,8 @@ export function getYiJi(jianChu: string, xiu: string): { yi: string[], ji: strin
   // 根据建除十二神
   const jianChuInfo = JIANCHU[jianChu];
   if (jianChuInfo) {
-    yi.push(...jianChuInfo.yi);
-    ji.push(...jianChuInfo.ji);
+    yi.push(...(jianChuInfo.yi || []));
+    ji.push(...(jianChuInfo.ji || []));
   }
   
   // 根据二十八宿

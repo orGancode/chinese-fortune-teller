@@ -153,7 +153,7 @@ export function SettingsPage() {
             <div className="space-y-4">
               <div className="flex items-center justify-between py-2 border-b border-[var(--color-border)]">
                 <span className="text-[var(--color-text-muted)]">版本号</span>
-                <span className="font-medium text-[var(--color-text)]">v{version}</span>
+                <span className="font-medium text-[var(--color-text)]">v1.0.43</span>
               </div>
               <div className="flex items-center justify-between py-2">
                 <span className="text-[var(--color-text-muted)]">应用名称</span>

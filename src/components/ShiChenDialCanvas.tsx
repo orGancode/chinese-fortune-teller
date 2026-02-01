@@ -95,7 +95,6 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
   const lastOuterDrawTimeRef = useRef<number>(0);
   const lastInnerDrawTimeRef = useRef<number>(0);
   const isMobileRef = useRef<boolean>(false);
-  const [isReady, setIsReady] = useState(false);
   const [outerDialReady, setOuterDialReady] = useState(false);
 
   useEffect(() => {
@@ -136,9 +135,6 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
     const outerTargetFPS = isMobileRef.current ? 1 : 2;
     const outerFrameInterval = 1000 / outerTargetFPS;
 
-    // 小表盘：1分钟转一圈，中等帧率更新（移动设备10fps，桌面15fps）
-    const innerTargetFPS = isMobileRef.current ? 10 : 15;
-    const innerFrameInterval = 1000 / innerTargetFPS;
 
     // 绘制大表盘（时辰盘）
     const drawOuterDial = (timestamp: number) => {
@@ -509,7 +505,6 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
         
         // 两个表盘都开始渲染后，设置ready状态
         setTimeout(() => {
-          setIsReady(true);
           setIsLoading(false);
         }, 300);
       });

@@ -14,7 +14,7 @@ interface SettingsState {
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
-      version: '1.0.0',
+      version: '1.0.1',
       theme: 'system',
       setTheme: (theme: ThemeType) => set({ theme }),
       toggleTheme: () => set((state) => {

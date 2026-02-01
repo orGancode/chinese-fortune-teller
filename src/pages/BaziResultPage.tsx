@@ -98,7 +98,7 @@ export function BaziResultPage() {
       <Header title="八字排盘结果" subtitle="中华传统命理" showBack={true} />
       
       {/* 顶部操作栏 */}
-      <div className="px-4 py-3 flex items-center justify-between" style={{ backgroundColor: COLORS.cardBg }}>
+      <div className="px-4 py-3 flex items-center justify-between" style={{ backgroundColor: COLORS.cardBg, marginTop: 'calc(56px + env(safe-area-inset-top))' }}>
         <div></div>
         <div className="flex items-center gap-3">
           <button 

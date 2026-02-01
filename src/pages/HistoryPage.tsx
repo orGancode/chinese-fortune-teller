@@ -61,7 +61,7 @@ export function HistoryPage() {
   return (
     <div className="flex flex-col h-full">
       <Header title="排盘历史" subtitle="八字排盘记录" showBack />
-      <main className="flex-1 p-4 pb-24 overflow-y-auto">
+      <main className="flex-1 p-4 pb-24 overflow-y-auto" style={{ paddingTop: 'calc(80px + env(safe-area-inset-top))' }}>
         {history.length === 0 ? (
           <Card>
             <Card.Body className="py-12">

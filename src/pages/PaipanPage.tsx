@@ -98,9 +98,10 @@ export function PaipanPage() {
       }}
     >
       <div 
-        className="px-4 pt-6 pb-6 text-center relative overflow-hidden"
+        className="px-4 pt-safe-top pb-6 text-center relative overflow-hidden"
         style={{
-          background: 'linear-gradient(135deg, var(--color-accent) 0%, #8B0000 100%)',
+          background: 'linear-gradient(135deg, #C41E3A 0%, #8B0000 100%)',
+          paddingTop: 'calc(24px + env(safe-area-inset-top))',
         }}
       >
         <div className="absolute inset-0 opacity-10">
@@ -134,7 +135,7 @@ export function PaipanPage() {
           <div 
             className="text-center py-5 relative overflow-hidden"
             style={{ 
-              background: 'linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%)',
+              background: 'linear-gradient(135deg, #C41E3A 0%, #E85A71 100%)',
             }}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent shimmer" />

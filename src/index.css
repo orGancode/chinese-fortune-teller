@@ -691,8 +691,11 @@
    现代头部样式
    ============================================ */
 .modern-header {
-  position: relative;
-  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
 }

@@ -157,7 +157,10 @@ function getMonthGanZhi(year: number, month: number): string {
 function getSolarTerm(date: Date): string | null {
   const lsr = lunisolar(date);
   const term = lsr.solarTerm;
-  return term || null;
+  if (term) {
+      return typeof term === "string" ? term : String(term);
+    }
+    return null;
 }
 
 // 计算周数

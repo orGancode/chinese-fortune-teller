@@ -98,11 +98,13 @@ export function HomePage() {
         className="relative overflow-hidden"
         style={{ 
           background: `linear-gradient(160deg, ${COLORS.primary} 0%, #8B0000 50%, ${COLORS.primary} 100%)`,
-          paddingBottom: "20px"
+          paddingBottom: "20px",
+          transform: "translateZ(0)", // 硬件加速
+          willChange: "transform"
         }}
       >
         {/* 装饰云纹图案 */}
-        <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
           <svg className="w-full h-full" viewBox="0 0 400 200" preserveAspectRatio="none">
             <path d="M0,100 Q100,50 200,100 T400,100" fill="none" stroke="white" strokeWidth="2"/>
             <path d="M0,120 Q100,70 200,120 T400,120" fill="none" stroke="white" strokeWidth="1.5"/>
@@ -122,7 +124,8 @@ export function HomePage() {
             <span className="text-white/80 text-xs">{todayGanZhi}</span>
             <button 
               onClick={() => navigate("/settings")}
-              className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center transition-colors"
+              className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center transition-colors active:scale-95"
+              style={{ touchAction: "manipulation" }} // 优化触摸响应
             >
               <Settings className="w-4 h-4 text-white" />
             </button>
@@ -136,6 +139,7 @@ export function HomePage() {
             className="relative"
             style={{
               filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.3))",
+              transform: "translateZ(0)", // 硬件加速
             }}
           >
             <ShiChenDialCanvas size={220} />
@@ -150,7 +154,8 @@ export function HomePage() {
                   backgroundColor: `${COLORS.gold}25`, 
                   color: COLORS.goldLight,
                   border: `1px solid ${COLORS.gold}40`,
-                  backdropFilter: "blur(4px)"
+                  backdropFilter: "blur(4px)",
+                  transform: "translateZ(0)" // 硬件加速
                 }}
               >
                 节气 · {currentJieQi}
@@ -221,6 +226,7 @@ export function HomePage() {
             <button 
               onClick={() => navigate("/paipan")}
               className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm transition-all active:scale-95"
+              style={{ touchAction: "manipulation", transform: "translateZ(0)" }}
             >
               <div 
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -234,6 +240,7 @@ export function HomePage() {
             <button 
               onClick={() => navigate("/calendar")}
               className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm transition-all active:scale-95"
+              style={{ touchAction: "manipulation", transform: "translateZ(0)" }}
             >
               <div 
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -247,6 +254,7 @@ export function HomePage() {
             <button 
               onClick={() => navigate("/solar-terms")}
               className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm transition-all active:scale-95"
+              style={{ touchAction: "manipulation", transform: "translateZ(0)" }}
             >
               <div 
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -260,6 +268,7 @@ export function HomePage() {
             <button 
               onClick={() => navigate("/history")}
               className="flex flex-col items-center gap-2 p-3 rounded-xl bg-[var(--color-card)] shadow-sm transition-all active:scale-95"
+              style={{ touchAction: "manipulation", transform: "translateZ(0)" }}
             >
               <div 
                 className="w-12 h-12 rounded-full flex items-center justify-center"
@@ -293,8 +302,8 @@ export function HomePage() {
               {recentHistory.map((item) => (
                 <Card 
                   key={item.id}
-                  style={{ marginBottom: 0 }}
-                  className="cursor-pointer transition-shadow"
+                  style={{ marginBottom: 0, transform: "translateZ(0)" }}
+                  className="cursor-pointer transition-shadow active:scale-[0.99]"
                   onClick={() => handleHistoryClick(item)}
                 >
                   <Card.Body className="p-4">

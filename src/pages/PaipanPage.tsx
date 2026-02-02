@@ -320,23 +320,12 @@ export function PaipanPage() {
 
               <Button
                 nativeType="submit"
-                className="w-full mt-4"
+                className="w-full mt-4 paipan-submit-btn"
                 size="large"
                 iconPosition="right"
                 icon={<ArrowRight className="mr-2 h-5 w-5" />}
                 loading={isLoading}
                 disabled={isLoading || !birthDate || !birthTime || !location}
-                style={{
-                  backgroundColor: COLORS.accent,
-                  border: `2px solid ${COLORS.accent}`,
-                  borderRadius: "14px",
-                  height: "52px",
-                  fontSize: "16px",
-                  fontWeight: 600,
-                  color: 'white',
-                  boxShadow: `0 6px 20px rgba(196, 30, 58, 0.35)`,
-                  letterSpacing: "0.05em",
-                }}
               >
                 {isLoading ? (
                   <>

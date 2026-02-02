@@ -161,6 +161,7 @@ export function PaipanPage() {
                   出生日期
                 </label>
                 <Field
+                  readOnly
                   isLink
                   label={formatDateDisplay(birthDate)}
                   labelWidth={150}
@@ -187,7 +188,11 @@ export function PaipanPage() {
                   visible={showDatePicker}
                   onClose={() => setShowDatePicker(false)}
                   onConfirm={(date: Date) => {
-                    const formatted = date.toISOString().split('T')[0];
+                    // 使用本地时区格式化日期，避免时区问题导致日期减少一天
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const formatted = `${year}-${month}-${day}`;
                     setBirthDate(formatted);
                     setShowDatePicker(false);
                   }}
@@ -205,6 +210,7 @@ export function PaipanPage() {
                   出生时间
                 </label>
                 <Field
+                  readOnly
                   isLink
                   labelWidth={150}
                   label={formatTimeDisplay(birthTime)}
@@ -244,6 +250,7 @@ export function PaipanPage() {
                   出生地点
                 </label>
                 <Field
+                  readOnly
                   isLink
                   labelWidth={150}
                   label={location || "请选择出生城市"}

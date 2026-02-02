@@ -86,33 +86,27 @@ interface ShiChenDialCanvasProps {
 export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
   const outerCanvasRef = useRef<HTMLCanvasElement>(null);
   const innerCanvasRef = useRef<HTMLCanvasElement>(null);
+  const pointerCanvasRef = useRef<HTMLCanvasElement>(null);
   const [currentShiChen, setCurrentShiChen] = useState(SHI_CHEN_DATA[0]);
   const [hourPillar, setHourPillar] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const outerAnimationRef = useRef<number>();
-  const innerAnimationRef = useRef<number>();
   const lastShiChenIndexRef = useRef<number>(-1);
-  const lastOuterDrawTimeRef = useRef<number>(0);
-  const lastInnerDrawTimeRef = useRef<number>(0);
-  const isMobileRef = useRef<boolean>(false);
-  const [outerDialReady, setOuterDialReady] = useState(false);
+  const outerIntervalRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // 检测是否为移动设备
-    isMobileRef.current = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    
     const outerCanvas = outerCanvasRef.current;
     const innerCanvas = innerCanvasRef.current;
-    if (!outerCanvas || !innerCanvas) return;
+    const pointerCanvas = pointerCanvasRef.current;
+    if (!outerCanvas || !innerCanvas || !pointerCanvas) return;
 
     const ctx = outerCanvas.getContext("2d", { alpha: true });
     const innerCtx = innerCanvas.getContext("2d", { alpha: true });
-    if (!ctx || !innerCtx) return;
+    const pointerCtx = pointerCanvas.getContext("2d", { alpha: true });
+    if (!ctx || !innerCtx || !pointerCtx) return;
 
     // 设置canvas实际尺寸（高清屏适配）
     const dpr = window.devicePixelRatio || 1;
-    // 移动设备降低DPR以提升性能
-    const effectiveDpr = isMobileRef.current ? Math.min(dpr, 2) : dpr;
+    const effectiveDpr = dpr;
     
     outerCanvas.width = size * effectiveDpr;
     outerCanvas.height = size * effectiveDpr;
@@ -126,30 +120,19 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
     innerCanvas.style.height = `${size}px`;
     innerCtx.scale(effectiveDpr, effectiveDpr);
 
+    pointerCanvas.width = size * effectiveDpr;
+    pointerCanvas.height = size * effectiveDpr;
+    pointerCanvas.style.width = `${size}px`;
+    pointerCanvas.style.height = `${size}px`;
+    pointerCtx.scale(effectiveDpr, effectiveDpr);
+
     const centerX = size / 2;
     const centerY = size / 2;
     const outerRadius = size * 0.46;
     const innerRadius = size * 0.20;
 
-    // 大表盘：4分钟变动1度，低帧率更新（移动设备1fps，桌面2fps）
-    const outerTargetFPS = isMobileRef.current ? 1 : 2;
-    const outerFrameInterval = 1000 / outerTargetFPS;
-
-
-    // 绘制大表盘（时辰盘）
-    const drawOuterDial = (timestamp: number) => {
-      const elapsed = timestamp - lastOuterDrawTimeRef.current;
-      if (elapsed < outerFrameInterval) {
-        outerAnimationRef.current = requestAnimationFrame(drawOuterDial);
-        return;
-      }
-      lastOuterDrawTimeRef.current = timestamp;
-      
-      // 第一次绘制时标记大表盘已准备就绪
-      if (!outerDialReady) {
-        setOuterDialReady(true);
-      }
-
+    // 绘制大表盘（时辰盘）- 静态版本
+    const drawOuterDialStatic = () => {
       const now = new Date();
       const hours = now.getHours();
       const minutes = now.getMinutes();
@@ -157,12 +140,10 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
       // 计算当前时辰索引
       const currentIndex = Math.floor(((hours + 1) % 24) / 2);
       
-      // 只在时辰变化时才更新状态
-      if (currentIndex !== lastShiChenIndexRef.current) {
-        lastShiChenIndexRef.current = currentIndex;
-        setCurrentShiChen(SHI_CHEN_DATA[currentIndex]);
-        setHourPillar(getHourPillar(now));
-      }
+      // 更新状态
+      lastShiChenIndexRef.current = currentIndex;
+      setCurrentShiChen(SHI_CHEN_DATA[currentIndex]);
+      setHourPillar(getHourPillar(now));
 
       // 计算进入当前时辰的分钟数
       const currentShiChenStartHour = SHI_CHEN_DATA[currentIndex].startHour;
@@ -296,7 +277,8 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
       ctx.globalAlpha = 1;
 
       // 绘制时辰文字
-      ctx.font = "bold 15px system-ui, -apple-system, sans-serif";
+      // ctx.font = "bold 15px system-ui, -apple-system, sans-serif";
+      ctx.font = "normal 15px PingFang SC, Microsoft YaHei, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
@@ -325,191 +307,144 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
       ctx.strokeStyle = "#D4AF37";
       ctx.lineWidth = 2;
       ctx.stroke();
-
-      outerAnimationRef.current = requestAnimationFrame(drawOuterDial);
     };
 
+    // 绘制小表盘（秒盘）- 静态版本（CSS动画控制旋转）
+    const drawInnerDialStatic = () => {
+      // 清空画布
+      innerCtx.clearRect(0, 0, size, size);
 
+      // 绘制旋转的小表盘（太极图）
+      innerCtx.save();
+      innerCtx.translate(centerX, centerY);
+      // 去掉 JS 旋转逻辑，由 CSS 动画控制
+      // const totalSeconds = seconds + milliseconds / 1000;
+      // const secondsRotation = (totalSeconds / 60) * 360;
+      // innerCtx.rotate((secondsRotation * Math.PI) / 180);
 
-    // 启动两个动画循环（先画大表盘，后画小表盘）
-    const startAnimations = (timestamp: number) => {
-      lastOuterDrawTimeRef.current = timestamp;
-      lastInnerDrawTimeRef.current = timestamp;
+      const r = innerRadius;
+
+      // 白色右半圆（阳鱼）
+      innerCtx.beginPath();
+      innerCtx.arc(0, 0, r, 0, Math.PI, true);
+      innerCtx.fillStyle = "#FAF8F5";
+      innerCtx.fill();
+
+      // 黑色左半圆（阴鱼）
+      innerCtx.beginPath();
+      innerCtx.arc(0, 0, r, 0, Math.PI, false);
+      innerCtx.fillStyle = "#2C1810";
+      innerCtx.fill();
+
+      // 黑色小圆（黑眼）
+      innerCtx.beginPath();
+      innerCtx.arc(r/2, 0, r/2, 0, Math.PI*2);
+      innerCtx.fillStyle = "#FAF8F5";
+      innerCtx.fill();
+
+      // 白色小圆（白眼）
+      innerCtx.beginPath();
+      innerCtx.arc(-r/2, 0, r/2, 0, Math.PI*2);
+      innerCtx.fillStyle = "#2C1810";
+      innerCtx.fill();
       
-      // 先启动大表盘动画
-      drawOuterDial(timestamp);
-    };
-    
+      // 白色鱼眼（阴中之阳）
+      innerCtx.beginPath();
+      innerCtx.arc(r/2, 0, r/6, 0, Math.PI*2);
+      innerCtx.fillStyle = "#2C1810";
+      innerCtx.fill();
 
+      // 黑色鱼眼（阳中之阴）
+      innerCtx.beginPath();
+      innerCtx.arc(-r/2, 0, r/6, 0, Math.PI*2);
+      innerCtx.fillStyle = "#FAF8F5";
+      innerCtx.fill();
+      
+      innerCtx.restore();
+      
+      // 外圈边框
+      innerCtx.beginPath();
+      innerCtx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2);
+      innerCtx.strokeStyle = "#D4AF37";
+      innerCtx.lineWidth = 1;
+      innerCtx.stroke();
+    };
+
+    // 绘制时辰指针（独立canvas，保持不动）
+    const drawPointerStatic = () => {
+      pointerCtx.clearRect(0, 0, size, size);
+
+      const circleRadius = 4;
+      const gapToText = 6;
+      const totalLength = size * 0.46 - 25;
+      const circleCenterY = centerY - totalLength * 0.75;
+      const endY = centerY - totalLength + gapToText;
+      
+      // 第一段直线
+      pointerCtx.beginPath();
+      pointerCtx.moveTo(centerX, centerY);
+      pointerCtx.lineTo(centerX, circleCenterY + circleRadius);
+      const pointerGrad = pointerCtx.createLinearGradient(centerX, centerY, centerX, circleCenterY);
+      pointerGrad.addColorStop(0, "#D4AF37");
+      pointerGrad.addColorStop(1, "#C41E3A");
+      pointerCtx.strokeStyle = pointerGrad;
+      pointerCtx.lineWidth = 3;
+      pointerCtx.lineCap = "round";
+      pointerCtx.stroke();
+      
+      // 空心圆
+      pointerCtx.beginPath();
+      pointerCtx.arc(centerX, circleCenterY, circleRadius, 0, Math.PI * 2);
+      pointerCtx.strokeStyle = "#C41E3A";
+      pointerCtx.lineWidth = 2;
+      pointerCtx.stroke();
+      
+      // 第二段直线
+      pointerCtx.beginPath();
+      pointerCtx.moveTo(centerX, circleCenterY - circleRadius);
+      pointerCtx.lineTo(centerX, endY);
+      const endGrad = pointerCtx.createLinearGradient(centerX, circleCenterY - circleRadius, centerX, endY);
+      endGrad.addColorStop(0, "#C41E3A");
+      endGrad.addColorStop(1, "#8B0000");
+      pointerCtx.strokeStyle = endGrad;
+      pointerCtx.lineWidth = 3;
+      pointerCtx.lineCap = "round";
+      pointerCtx.stroke();
+
+      // 中心圆点
+      pointerCtx.beginPath();
+      pointerCtx.arc(centerX, centerY, 5, 0, Math.PI * 2);
+      const centerGrad = pointerCtx.createRadialGradient(centerX - 2, centerY - 2, 0, centerX, centerY, 5);
+      centerGrad.addColorStop(0, "#F4D03F");
+      centerGrad.addColorStop(1, "#D4AF37");
+      pointerCtx.fillStyle = centerGrad;
+      pointerCtx.fill();
+      pointerCtx.strokeStyle = "#B8960C";
+      pointerCtx.lineWidth = 1;
+      pointerCtx.stroke();
+    };
+
+    outerIntervalRef.current = window.setInterval(() => {
+      drawOuterDialStatic();
+    }, 4 * 60 * 1000); // 每4分钟更新一次大表盘
+
+    // 大表盘立即绘制一次
+    drawOuterDialStatic();
     
-    // 启动动画
-    requestAnimationFrame(startAnimations);
+    // 小表盘使用 CSS3 动画，这里只需绘制静态内容
+    drawInnerDialStatic();
+    
+    // 绘制指针（独立canvas，保持不动）
+    drawPointerStatic();
+    
+    setIsLoading(false);
 
     return () => {
-      if (outerAnimationRef.current) {
-        cancelAnimationFrame(outerAnimationRef.current);
-      }
-      if (innerAnimationRef.current) {
-        cancelAnimationFrame(innerAnimationRef.current);
+      if (outerIntervalRef.current) {
+        clearInterval(outerIntervalRef.current);
       }
     };
   }, [size]);
-
-  // 监听大表盘准备状态，启动小表盘动画
-  useEffect(() => {
-    if (outerDialReady) {
-      // 大表盘已准备就绪，启动小表盘动画
-      const innerCanvas = innerCanvasRef.current;
-      if (!innerCanvas) return;
-      
-      const innerCtx = innerCanvas.getContext("2d", { alpha: true });
-      if (!innerCtx) return;
-      
-      const centerX = size / 2;
-      const centerY = size / 2;
-      const innerRadius = size * 0.20;
-      
-      // 小表盘：1分钟转一圈，中等帧率更新（移动设备10fps，桌面15fps）
-      const innerTargetFPS = isMobileRef.current ? 10 : 15;
-      const innerFrameInterval = 1000 / innerTargetFPS;
-      
-      // 绘制小表盘（秒盘）
-      const drawInnerDial = (timestamp: number) => {
-        const elapsed = timestamp - lastInnerDrawTimeRef.current;
-        if (elapsed < innerFrameInterval) {
-          innerAnimationRef.current = requestAnimationFrame(drawInnerDial);
-          return;
-        }
-        lastInnerDrawTimeRef.current = timestamp;
-
-        const now = new Date();
-        const seconds = now.getSeconds();
-        const milliseconds = now.getMilliseconds();
-
-        // 秒盘旋转（60秒一圈）
-        const totalSeconds = seconds + milliseconds / 1000;
-        const secondsRotation = (totalSeconds / 60) * 360;
-
-        // 清空画布
-        innerCtx.clearRect(0, 0, size, size);
-
-        // 绘制旋转的小表盘（太极图）
-        innerCtx.save();
-        innerCtx.translate(centerX, centerY);
-        innerCtx.rotate((secondsRotation * Math.PI) / 180);
-
-        const r = innerRadius;
-
-        // 白色右半圆（阳鱼）
-        innerCtx.beginPath();
-        innerCtx.arc(0, 0, r, 0, Math.PI, true);
-        innerCtx.fillStyle = "#FAF8F5";
-        innerCtx.fill();
-
-        // 黑色左半圆（阴鱼）
-        innerCtx.beginPath();
-        innerCtx.arc(0, 0, r, 0, Math.PI, false);
-        innerCtx.fillStyle = "#2C1810";
-        innerCtx.fill();
-
-        // 黑色小圆（黑眼）
-        innerCtx.beginPath();
-        innerCtx.arc(r/2, 0, r/2, 0, Math.PI*2);
-        innerCtx.fillStyle = "#FAF8F5";
-        innerCtx.fill();
-
-        // 白色小圆（白眼）
-        innerCtx.beginPath();
-        innerCtx.arc(-r/2, 0, r/2, 0, Math.PI*2);
-        innerCtx.fillStyle = "#2C1810";
-        innerCtx.fill();
-
-        // 白色鱼眼（阴中之阳）
-        innerCtx.beginPath();
-        innerCtx.arc(r/2, 0, r/6, 0, Math.PI*2);
-        innerCtx.fillStyle = "#2C1810";
-        innerCtx.fill();
-
-        // 黑色鱼眼（阳中之阴）
-        innerCtx.beginPath();
-        innerCtx.arc(-r/2, 0, r/6, 0, Math.PI*2);
-        innerCtx.fillStyle = "#FAF8F5";
-        innerCtx.fill();
-        
-        innerCtx.restore();
-        
-        // 外圈边框
-        innerCtx.beginPath();
-        innerCtx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2);
-        innerCtx.strokeStyle = "#D4AF37";
-        innerCtx.lineWidth = 1;
-        innerCtx.stroke();
-
-        // 绘制固定的时辰指针
-        const circleRadius = 4;
-        const gapToText = 6;
-        const totalLength = size * 0.46 - 30;
-        const circleCenterY = centerY - totalLength * 0.75;
-        const endY = centerY - totalLength + gapToText;
-        
-        // 第一段直线
-        innerCtx.beginPath();
-        innerCtx.moveTo(centerX, centerY);
-        innerCtx.lineTo(centerX, circleCenterY + circleRadius);
-        const pointerGrad = innerCtx.createLinearGradient(centerX, centerY, centerX, circleCenterY);
-        pointerGrad.addColorStop(0, "#D4AF37");
-        pointerGrad.addColorStop(1, "#C41E3A");
-        innerCtx.strokeStyle = pointerGrad;
-        innerCtx.lineWidth = 3;
-        innerCtx.lineCap = "round";
-        innerCtx.stroke();
-        
-        // 空心圆
-        innerCtx.beginPath();
-        innerCtx.arc(centerX, circleCenterY, circleRadius, 0, Math.PI * 2);
-        innerCtx.strokeStyle = "#C41E3A";
-        innerCtx.lineWidth = 2;
-        innerCtx.stroke();
-        
-        // 第二段直线
-        innerCtx.beginPath();
-        innerCtx.moveTo(centerX, circleCenterY - circleRadius);
-        innerCtx.lineTo(centerX, endY);
-        const endGrad = innerCtx.createLinearGradient(centerX, circleCenterY - circleRadius, centerX, endY);
-        endGrad.addColorStop(0, "#C41E3A");
-        endGrad.addColorStop(1, "#8B0000");
-        innerCtx.strokeStyle = endGrad;
-        innerCtx.lineWidth = 3;
-        innerCtx.lineCap = "round";
-        innerCtx.stroke();
-
-        // 中心圆点
-        innerCtx.beginPath();
-        innerCtx.arc(centerX, centerY, 5, 0, Math.PI * 2);
-        const centerGrad = innerCtx.createRadialGradient(centerX - 2, centerY - 2, 0, centerX, centerY, 5);
-        centerGrad.addColorStop(0, "#F4D03F");
-        centerGrad.addColorStop(1, "#D4AF37");
-        innerCtx.fillStyle = centerGrad;
-        innerCtx.fill();
-        innerCtx.strokeStyle = "#B8960C";
-        innerCtx.lineWidth = 1;
-        innerCtx.stroke();
-
-        innerAnimationRef.current = requestAnimationFrame(drawInnerDial);
-      };
-      
-      // 启动小表盘动画
-      requestAnimationFrame((timestamp) => {
-        lastInnerDrawTimeRef.current = timestamp;
-        drawInnerDial(timestamp);
-        
-        // 两个表盘都开始渲染后，设置ready状态
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 300);
-      });
-    }
-  }, [outerDialReady, size]);
 
   return (
     <div className="flex flex-col items-center relative" style={{ width: size }}>
@@ -534,10 +469,29 @@ export function ShiChenDialCanvas({ size = 220 }: ShiChenDialCanvasProps) {
           touchAction: "none",
           willChange: "transform",
           backgroundColor: "transparent",
-          opacity: (outerDialReady && !isLoading) ? 1 : 0,
+          opacity: isLoading ? 0 : 1,
+          transition: "opacity 0.3s ease-in-out",
+          animation: "spin 60s linear infinite",
+        }}
+      />
+      {/* 时辰指针 - 独立层，保持不动 */}
+      <canvas
+        ref={pointerCanvasRef}
+        className="absolute inset-0"
+        style={{
+          touchAction: "none",
+          pointerEvents: "none",
+          backgroundColor: "transparent",
+          opacity: isLoading ? 0 : 1,
           transition: "opacity 0.3s ease-in-out",
         }}
       />
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
       <div className="mt-2 text-center space-y-1" style={{ marginTop: size + 8 }}>
         <div className="text-base font-bold" style={{ color: "#f7bec7" }}>
           {currentShiChen.name}时 · {currentShiChen.zodiac} · {currentShiChen.time} · <span style={{ color: '#D4AF37' }}>{hourPillar}</span>

@@ -27,3 +27,16 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
+# Testing
+/coverage
+.nyc_output
+*.vitest-temp.json
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/e2e/test-results/
+/e2e/playwright-report/

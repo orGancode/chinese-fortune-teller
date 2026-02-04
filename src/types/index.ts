@@ -6,6 +6,8 @@ export interface BaziInput {
 }
 
 export interface BaziResult {
+  lunarMonth: ReactNode;
+  lunarDay: ReactNode;
   year: string;
   month: string;
   day: string;

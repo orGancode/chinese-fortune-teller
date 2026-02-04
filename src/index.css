@@ -477,8 +477,8 @@
 }
 
 /* ============================================
-   现代底部导航样式
-   ============================================ */
+    现代底部导航样式
+    ============================================ */
 .modern-tabbar {
   position: fixed;
   bottom: 0;
@@ -498,8 +498,212 @@
   background: var(--glass-bg);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-top: 1px solid var(--glass-border);
+}
+
+/* ============================================
+    排盘结果页专用样式
+    ============================================ */
+
+/* 卡片悬停效果 */
+.bazi-card {
+  transition: all 0.3s ease;
+}
+
+.bazi-card:hover {
+  transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
+}
+
+/* 五行环形图 */
+.wuxing-ring {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+}
+
+.wuxing-ring-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    var(--color-wood) 0deg 72deg,
+    var(--color-fire) 72deg 144deg,
+    var(--color-earth) 144deg 216deg,
+    var(--color-gold) 216deg 288deg,
+    var(--color-water) 288deg 360deg
+  );
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.wuxing-ring-center {
+  position: absolute;
+  inset: 16px;
+  border-radius: 50%;
+  background: var(--color-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 日主圆形展示 */
+.day-master-circle {
+  position: relative;
+  display: inline-block;
+}
+
+.day-master-circle::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 八字表格样式 */
+.bazi-table {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.bazi-pillar {
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.bazi-pillar:hover {
+  transform: scale(1.05);
+}
+
+.bazi-pillar-header {
+  padding: 12px 8px;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.bazi-pillar-content {
+  padding: 16px 8px;
+  border-radius: 0 0 8px 8px;
+  font-size: 24px;
+  font-weight: bold;
+  position: relative;
+}
+
+.bazi-pillar-content.day-master {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.bazi-wuxing-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.wuxing-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* 响应式设计 */
+@media (max-width: 640px) {
+  .bazi-table {
+    gap: 4px;
+  }
+  
+  .bazi-pillar-header {
+    padding: 8px 4px;
+    font-size: 14px;
+  }
+  
+  .bazi-pillar-content {
+    padding: 12px 4px;
+    font-size: 18px;
+  }
+  
+  .wuxing-ring {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .wuxing-ring-center {
+    inset: 12px;
+  }
+}
+
+/* 卡片内容截断 */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 悬停缩放效果 */
+.hover-scale-102:hover {
+  transform: scale(1.02);
+}
+
+.hover-scale-105:hover {
+  transform: scale(1.05);
+}
+
+/* 渐变文字效果 */
+.gradient-text-accent {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 玻璃拟态卡片 */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+}
+
+/* 状态指示器 */
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.status-good {
+  background-color: var(--color-success);
+  box-shadow: 0 0 8px var(--color-success);
+}
+
+.status-bad {
+  background-color: var(--color-error);
+  box-shadow: 0 0 8px var(--color-error);
+}
+
+.status-neutral {
+  background-color: var(--color-warning);
+  box-shadow: 0 0 8px var(--color-warning);
 }
 
 .modern-tabbar-content {

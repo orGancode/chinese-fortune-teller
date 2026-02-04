@@ -182,7 +182,7 @@ export class BaziCalculator {
    */
   calculateYearPillar(year: number, month: number, day: number, hour: number = 0, minute: number = 0): string {
     const liChun = this.getLiChunDate(year);
-    const isAfterLiChun = this.isAfterJieQi(year, month, day, hour, minute, liChun);
+    const isAfterLiChun = this.isAfterJieQi(month, day, hour, minute, liChun);
     
     let nian: number;
     if (!isAfterLiChun) {
@@ -218,7 +218,7 @@ export class BaziCalculator {
       // 1月：小寒后丑月
       zhiIndex = 1; // 丑月
     } else if (month === 2) {
-      if (!this.isAfterJieQi(year, month, day, hour, minute, liChun)) {
+      if (!this.isAfterJieQi(month, day, hour, minute, liChun)) {
         // 立春前还是丑月
         zhiIndex = 1; // 丑月
       } else {
@@ -357,10 +357,9 @@ export class BaziCalculator {
    * 判断是否已经过了某个节气
    */
   private isAfterJieQi(
-    year: number, 
-    month: number, 
-    day: number, 
-    hour: number, 
+    month: number,
+    day: number,
+    hour: number,
     minute: number,
     jieQi: { month: number; day: number; hour: number; minute: number }
   ): boolean {

@@ -57,13 +57,6 @@ function getTodayGanZhi(): string {
   return lsr.format("YYYY年MM月DD日");
 }
 
-// 获取当前节气
-function getCurrentJieQi(): string | null {
-  const today = new Date();
-  const lsr = lunisolar(today);
-  return lsr.solarTerm || null;
-}
-
 // 格式化日期时间
 function formatDateTime(timestamp: number): string {
   const date = new Date(timestamp);
@@ -82,7 +75,6 @@ export function HomePage() {
   
   const todayYiJi = getTodayYiJi();
   const todayGanZhi = getTodayGanZhi();
-  const currentJieQi = getCurrentJieQi();
   const recentHistory = history.slice(0, 3);
 
   // 点击历史记录
@@ -90,7 +82,6 @@ export function HomePage() {
     setCurrentBazi(item.result);
     navigate("/result");
   };
-
   return (
     <div className="min-h-screen bg-[var(--color-bg)]">
       {/* 顶部横幅区域 - 渐变背景 */}
@@ -143,24 +134,6 @@ export function HomePage() {
             }}
           >
             <ShiChenDialCanvas size={220} />
-          </div>
-          
-          {/* 当前节气标签 */}
-          <div className="mt-3 flex items-center gap-2">
-            {currentJieQi && (
-              <div 
-                className="px-4 py-1.5 rounded-full text-sm font-medium"
-                style={{ 
-                  backgroundColor: `${COLORS.gold}25`, 
-                  color: COLORS.goldLight,
-                  border: `1px solid ${COLORS.gold}40`,
-                  backdropFilter: "blur(4px)",
-                  transform: "translateZ(0)" // 硬件加速
-                }}
-              >
-                节气 · {currentJieQi}
-              </div>
-            )}
           </div>
         </div>
       </div>

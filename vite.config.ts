@@ -9,6 +9,12 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true
+    sourcemap: true,
+    rollupOptions: {
+      external: []
+    }
+  },
+  esbuild: {
+    exclude: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**', '**/*.spec.ts', 'e2e/**']
   }
 })

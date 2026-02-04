@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface BaziInput {
   birthDate: string;
   birthTime: string;
